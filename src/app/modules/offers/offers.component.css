@@ -1,0 +1,143 @@
+mat-card-header {
+    background-color: #000000;
+    color: #fff;
+    padding: 10px;
+    display: -webkit-flex;
+  }
+  
+  mat-card {
+    margin-bottom: 15px;
+  }
+  mat-card-header-text {
+    width:100%;
+  }
+  .card-padding {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  @media (max-width: 599px){}
+  mat-card {
+    padding: 0px; margin-top:10px
+  }
+  
+  .modal {
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.6s;
+    animation-name: fadeIn;
+    animation-duration: 0.6s
+    }
+    
+    /* Modal Content */
+    .modal-content {
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.6s;
+    animation-name: slideIn;
+    animation-duration: 0.6s
+    }
+    
+        
+      /* Add Animation */
+      @-webkit-keyframes slideIn {
+        from {bottom: -300px; opacity: 0} 
+        to {bottom: 0; opacity: 1}
+      }
+      
+      @keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+      }
+      
+      @-webkit-keyframes fadeIn {
+        from {opacity: 0} 
+        to {opacity: 1}
+      }
+      
+      @keyframes fadeIn {
+        from {opacity: 0} 
+        to {opacity: 1}
+      }
+  
+  .aligncardfoot{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:15px 0;
+  }
+  
+  .btnstylenew{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+  .alignview{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center; 
+  }
+  
+  .hideItemDiv{
+  opacity: 0.5;
+  pointer-events: none;
+  }
+  
+  .itemStatusDiv{
+    position: absolute;
+    background: black;
+    color: #fff;
+    border-radius: 0px 15px;
+  }
+  .itemStatusDivText{
+    font-size: 12px;
+    padding: 10px;
+  }
+  
+  .no-items{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 75px;
+    margin-top: 25px;
+  }
+  
+  *, :before, :after {
+    box-sizing: border-box;
+  }
+  
+  .container {
+    display: none;
+    
+    img {
+      display: block;
+      transition: opacity 400ms;
+    }
+  }
+  
+  .img-wrapper {
+    width: 100%;
+    max-width: 200px;
+    min-height: 200px;
+    background-color: #f5f5f5;
+    margin-bottom: 1px;
+  }
+  
+  .lazyload, .lazyloading {
+    opacity: 0.1;
+  }
+  
+  .lazyloaded {
+    opacity: 1;
+  }
+  
+  .blur-up {
+      -webkit-filter: blur(10px);
+      filter: blur(10px);
+      transition: filter 400ms, -webkit-filter 400ms;
+  }
+  
+  .blur-up.lazyloaded {
+      -webkit-filter: blur(0);
+      filter: blur(0);
+  }
+  

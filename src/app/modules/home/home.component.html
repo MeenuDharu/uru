@@ -1,0 +1,1335 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-black " id="nav-fade">
+
+	<div *ngIf="restaurant_details.isBanner">
+		<div (click)="userIconClick(newUserModal, logoutModal)" class="pull-right img-circle">
+
+			<svg *ngIf="!photo_url" class="acc-icon" xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+				viewBox="0 0 18 18" fill="#ffffff" style="z-index: 999;">
+				<path
+					d="M15 2H3c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zM9 4.75c1.24 0 2.25 1.01 2.25 2.25S10.24 9.25 9 9.25 6.75 8.24 6.75 7 7.76 4.75 9 4.75zM13.5 14h-9v-.75c0-1.5 3-2.25 4.5-2.25s4.5.75 4.5 2.25V14z" />
+			</svg>
+
+			<img *ngIf="photo_url" style="border:2px solid #ccc;" class="acc-icon" [src]="photo_url" width="30"
+				height="30" />
+		</div>
+		<div class="swiper-container carousal_1"  appHomeSwiper>
+			<div class="swiper-wrapper" style="height: 200px!important;">
+			  <div class="swiper-slide" *ngFor="let x of restaurant_details.banner_images; let i=index;" >		
+				  <img  appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive">			
+			  </div>
+			  
+			</div>
+			<ng-container>
+			  <div  id="primary_pagination" class="swiper-pagination"></div>
+			 
+			</ng-container>
+		  </div>
+	</div>
+	
+	<div class="container-fluid col-md-12" align="center" *ngIf="!restaurant_details.isBanner">
+		<div class="navbar-header col-md-11 wow fadeIn pad20 dis-inline-block">
+			
+			<img appLogoImgBroken [src]="restaurant_details.logo_url"  class="logo-style" style="height:100px">
+			<h3 class="p-t-10">{{ restaurant_details.branch_name }}</h3>
+		</div>
+		<div (click)="userIconClick(newUserModal, logoutModal)" class="col-md-1 no-pad pull-right">
+
+			<svg *ngIf="!photo_url" class="acc-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+				viewBox="0 0 18 18" fill="#ffffff">
+				<path
+					d="M15 2H3c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zM9 4.75c1.24 0 2.25 1.01 2.25 2.25S10.24 9.25 9 9.25 6.75 8.24 6.75 7 7.76 4.75 9 4.75zM13.5 14h-9v-.75c0-1.5 3-2.25 4.5-2.25s4.5.75 4.5 2.25V14z" />
+			</svg>
+
+			<img *ngIf="photo_url" style="border:2px solid #ccc;" class="acc-icon" [src]="photo_url" width="30"
+				height="30" />
+		</div>
+	</div>
+</nav>
+
+
+<!-- Pre loader -->
+
+<div  *ngIf="loaderStatus" id="loader" class="pr__dark" style="z-index: 9999;" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+	<span class="progress">
+		<div class="mobile-preloader">
+			<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+	
+</div>
+
+<!-- Pre loader End -->
+
+<!-- #Top Bar -->
+<section class="content wow fadeIn wrapper" data-wow-delay="400ms">
+	<div class="container-fluid page-body">
+		<div class="row clearfix p-l-5 p-r-5" id="welcome-content"
+			[ngClass]="userService.placed_order_status ? 'matcard-mb80' : ''">
+			<div class="col-md-12 no-pad m-t-160">
+				<h1><a>Welcome <span *ngIf="userService.user_name">{{ userService.user_name }}</span></a></h1>
+				<div class="p1 p-b-20">Start by selecting your desired option</div>
+			</div>
+			<!-- <div class="loading">Loading</div> -->
+			<!-- <iframe id="iframeID" #iframeID name="iFrameName"></iframe> -->
+			<!-- Order Food -->
+			<div *ngIf="!isDepart">
+			<div  *ngFor="let x of restaurant_details.departments[0].menu_sections; let i=index;" (click)="categoryList(x)"  class="col-md-12 no-pad"
+				[ngClass]="userService.showOrderNow ? 'order-block-point' : ''">
+				<div class="card" [ngClass]="userService.showOrderNow ? 'order-block-color' : ''">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img appMenuSectionImgBroken [src]="baseUrl+x.imageUrl"
+											[ngClass]="userService.showOrderNow ? 'order-block' : ''" class="menu_img">
+									</div>
+									<div class="col-md-10 valign-center"
+										[ngClass]="userService.showOrderNow ? 'order-block' : ''">
+										<h2>{{x.header}}</h2>
+
+										<!-- <button (click)="payUBiz()">payU</button>  -->
+										<!--  <button (click)="loadIFrame()">payU</button> -->
+									</div>
+								</div>
+								<!-- <div class="col-md-4 pull-right no-pad home-righttext "
+									[ngClass]="userService.showOrderNow ? 'order-block' : ''">
+									<div class="p2" *ngIf="x.name != 'all' " align="right">
+										{{ x.itemsCount }} item<span
+											*ngIf="x.itemsCount > 1 || x.itemsCount == 0">s</span>
+									</div>
+									<div class="p2" *ngIf="cartItems==0 && x.name == 'all' " align="right">
+										{{ x.itemsCount }} item<span
+											*ngIf="x.itemsCount > 1 || x.itemsCount == 0">s</span>
+									</div>
+									<div class="p2" *ngIf="cartItems > 0 && x.name == 'all'" align="right">{{ cartItems }} item<span
+											*ngIf="cartItems > 1">s</span> in cart</div>
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div *ngIf="isDepart">
+			<div  *ngFor="let x of restaurant_details.departments; let i=index;" (click)="sectionList(x,departModal)"  class="col-md-12 no-pad"
+				[ngClass]="userService.showOrderNow ? 'order-block-point' : ''">
+				<div class="card" [ngClass]="userService.showOrderNow ? 'order-block-color' : ''">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img appMenuSectionImgBroken [src]="baseUrl+x.imageUrl"
+											[ngClass]="userService.showOrderNow ? 'order-block' : ''" class="menu_img">
+									</div>
+									<div class="col-md-10 valign-center"
+										[ngClass]="userService.showOrderNow ? 'order-block' : ''">
+										<h2>{{x.header}}</h2>
+
+										<!-- <button (click)="payUBiz()">payU</button>  -->
+										<!--  <button (click)="loadIFrame()">payU</button> -->
+									</div>
+								</div>
+								<!-- <div class="col-md-4 pull-right no-pad home-righttext "
+									[ngClass]="userService.showOrderNow ? 'order-block' : ''">
+									<div class="p2" *ngIf="x.name != 'all' " align="right">
+										{{ x.itemsCount }} item<span
+											*ngIf="x.itemsCount > 1 || x.itemsCount == 0">s</span>
+									</div>
+									<div class="p2" *ngIf="cartItems==0 && x.name == 'all' " align="right">
+										{{ x.itemsCount }} item<span
+											*ngIf="x.itemsCount > 1 || x.itemsCount == 0">s</span>
+									</div>
+									
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			<!-- # Order Food -->
+
+
+			<!-- View Bill -->
+			<!-- <div (click)="onOtherService(userModal, '/bill/view')" class="col-md-12 no-pad"> -->
+			<!-- <div class="col-md-12 no-pad tooltip-bottom" data-tooltip="I’m the tooltip text."></div> -->
+			<div class="col-md-12 no-pad tool">
+				<div class="card" (click)="onOtherService(newUserModal, '/myoder')">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img src="assets/images/view-bill.png" class="home-img">
+									</div>
+									<div class="col-md-10 valign-center">
+										<!-- <h2>View Bill</h2> -->
+										<h2>{{orderTypeFlag}}</h2>
+									</div>
+								</div>
+								<div class="col-md-4 pull-right no-pad home-righttext">
+									<div *ngIf="userService.PAYMENT_STATUS() != 'paid'" class="p2" align="right">No
+										orders placed</div>
+									<div *ngIf="userService.PAYMENT_STATUS() == 'paid'" class="p2" align="right">
+										Awaiting Settlement</div>
+									<!-- <div *ngIf="paymentStatus == 'paid'" class="p2" align="right">{{orderedItemCount}} item(s)</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div *ngIf="hideBubble" class="tooltip">Tab to see your order status <span style="padding-left: 35%;"><a>
+  <svg (click)="handleBubble()" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="#fff" class="valign-center">
+  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+  </svg></a></span></div> -->
+
+				<!--Tooltip-->
+				<!-- <div class="tooltip" *ngIf="hideBubble">
+  <div class="valign-center">
+  <p class="alignleft" style="padding:10px">View your order status here!</p>
+  <p class="alignright" style="padding:10px"><a (click)="handleBubble()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="#fff">
+  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+  </svg></a></p>
+  </div>
+  </div> -->
+				<!--#Tooltip-->
+
+				<div class="tooltip" *ngIf="hideBubble">
+					<div class="col-md-12 no-pad">
+						<div class="col-md-12">
+							<p class="alignleft p-t-5 p-b-20">View your order status here!</p>
+							<p class="alignright col-white font-14 font-bold"><a (click)="handleBubble()"
+									class="col-white">OKAY</a></p>
+						</div>
+					
+					</div>
+				</div>
+
+			</div>
+			<!-- <div>
+  <tooltip-content #myTooltip>
+      <b>Very</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span> 
+      <b><i><span style="color: #ffc520">Tooltip With</span></i></b> <small>Html support</small>.
+  </tooltip-content>
+  
+  <button [tooltip]="myTooltip">hover this button to see a tooltip</button>
+</div> -->
+			<!-- #View Bill -->
+
+			<!-- Need Assistance -->
+			<div (click)="waiterModal.show(); socialLogo=true" class="col-md-12 no-pad" *ngIf="!take_aways">
+
+				<div class="card">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img src="assets/images/waiter.png" class="home-img">
+									</div>
+									<div class="col-md-10 valign-center">
+										<h2>Need Help?</h2>
+									</div>
+								</div>
+								<div class="col-md-4 pull-right no-pad home-righttext">
+									<div class="p2" align="right">Call a Waiter</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #Need Assistance -->
+
+			<!-- Valet -->
+			<!-- *ngIf="restaurant_details.valet_service" -->
+			<div (click)="onOtherService(newUserModal, 'valet')" class="col-md-12 no-pad">
+
+				<div class="card" [ngClass]="!userService.showExit ? 'valet-block-color' : ''">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img src="assets/images/call-vehicle.png" class="home-img">
+									</div>
+									<div class="col-md-10 valign-center">
+										<h2>Call for Vehicle</h2>
+									</div>
+								</div>
+								<div class="col-md-4 pull-right no-pad home-righttext">
+									<div class="p2" align="right">Valet Parking</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #Valet -->
+
+
+			<!-- Offers -->
+			<div routerLink="/offers" class="col-md-12 no-pad" *ngIf="!take_aways">
+				<div class="card">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img src="assets/images/offer.svg">
+									</div>
+									<div class="col-md-10 valign-center">
+										<h2>View Offers</h2>
+									</div>
+								</div>
+								<div class="col-md-4 pull-right no-pad home-righttext">
+									<div class="p2" align="right" *ngIf="restaurant_details.offers.length > 0">
+										{{ restaurant_details.offers.length }} offer<span
+											*ngIf="restaurant_details.offers.length > 1">s</span></div>
+									<div class="p2" align="right" *ngIf="restaurant_details.offers.length == 0">No
+										offers available</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #Offers -->
+
+			<!-- Exit -->
+
+			<div (click)="exitConfirm(exitModal)" class="col-md-12 no-pad" *ngIf="userService.showExit">
+				<div class="card" [ngClass]="userService.placed_order_status ? 'matcard-mb80' : ''">
+					<div class="header p_tb25_lr20">
+						<div class="container-fluid no-pad">
+							<div class="col-md-12 no-pad">
+								<div class="col-md-8 no-pad valign-center pull-left">
+									<div class="col-md-2 no-pad pull-left valign-center">
+										<img src="assets/images/exit.png" class="home-img">
+									</div>
+									<div class="col-md-10 valign-center">
+										<h2>Exit</h2>
+									</div>
+								</div>
+								<div class="col-md-4 pull-right no-pad home-righttext">
+									<!-- <div class="p2" align="right" *ngIf="restaurant_details.offers.length > 0">{{ restaurant_details.offers.length }} offer<span *ngIf="restaurant_details.offers.length > 1">s</span></div> -->
+									<div class="p2" align="right" *ngIf="restaurant_details.offers.length == 0">Scan
+										again</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Exit -->
+
+			<div class='bill-foot2 valign-center row no-pad slide-in-bottom' (click)="goToOrderStatus()"
+				style="bottom:0;" *ngIf="userService.placed_order_status">
+				<div class='col-xs-6 p-r-0 p-t-5 p-b-0 pull-left font-bold'>
+					<div class="row valign-center">
+						<div class="col-xs-2" style="margin-top:-2px;">
+							<span style="padding-top:4px"><img class="valign-center"
+									src="assets/images/assignment-icon.svg"></span></div>
+						<div class="col-xs-10 p-r-0">
+							<p class="">{{userService.order_number || '12345'}}</p>
+							<p class="font-12 col-black30">{{userService.awaitingcontent}}</p>
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-6 p-b-0 btn-link text-purple font-bold pull-right' align='right'>
+					<a class="text-purple valign-center"><span><img class="valign-center"
+								src="assets/images/viewstatus-icon.svg"></span>
+						<span class="p-l-5">VIEW STATUS</span></a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="page-footer">
+	<div class="footer1 col-black30">Government taxes extra as applicable.</div> 
+	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div> 
+	<div class="col-black30 font-semibold footer"> <a href="https://dinamic.io/" target="_blank"><span>Powered by</span><img src="assets/images/footer-logo.svg" ></a></div>
+</footer>
+  <!-- Footer -->
+
+<!-- Waiter modal -->
+<div bsModal #waiterModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-waiter">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-md-12">
+					<h4 class="modal-title" id="defaultModalLabel">CALL WAITER</h4>
+				</div>
+			</div>
+			<div class="modal-body p-t-25 p-b-25 p-l-20 p-r-15">
+				<p>Do you need help with something?</p>
+			</div>
+			<div class="modal-footer p-r-10 p-t-15 p-b-10">
+				<button type="button" (click)="waiterModal.hide()"
+					class="btn btn-link btn-cancel waves-effect">NO</button>
+				<button type="button" (click)="onWaiterCall(newUserModal, waiterModal)"
+					class="btn btn-link waves-effect">YES</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- User modal -->
+<div bsModal #userModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-user">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right" class="p-r-10">
+					<a (click)="userModal.hide();clearInt(); userService.usableLink==true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+							fill="#b1b1b1">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+				<div align="center" class="login-logo">
+					<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="socialLogo">
+				</div>
+				<p align="center" class="font-16 m-t-50 col-grey font-bold">Login with</p>
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-md-12 no-pad m-t-10" id="social">
+					<div class="col-md-6 pull-left">
+						<button (click)="socialSignIn(userModal, 'facebook', askmobilemodal)"  [disabled]="!userService.usableLink"  [ngClass]="!userService.usableLink ? 'adisabled' : ''"  class="bg-transparent">
+							<img src="assets/images/social/facebook.svg" class="mat-elevation-z2 img-circle fb-icon" *ngIf="socialLogo">
+							<div class="font-16 font-bold pad10">Facebook</div>
+						</button>
+					</div>
+
+					<div class="col-md-6 pull-right">
+						<!-- <a (click)="googleSignIn(userModal, 'google')"> -->
+						<button (click)="socialSignIn(userModal, 'google', askmobilemodal)" [disabled]="!userService.usableLink"  [ngClass]="!userService.usableLink ? 'adisabled' : ''"  class="bg-transparent">
+							<img src="assets/images/social/google.svg" class="mat-elevation-z2 img-circle fb-icon " *ngIf="socialLogo">
+							<div class="font-16 font-bold pad10">Google</div>
+						</button>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer p-b-15 p-l-5 p-r-5">
+				<div class="col-md-6" align="center">
+					<div class="col-md-8 m-t-20 m-b-20 hr-or" align="center"></div>
+					<div class="col-md-6" align="center">
+						<button type="button" (click)="userModal.hide(); loginModal.show(); loginForm={}; lp_hide=true; modalLogo=true"
+							class="btn btn-link col-grey waves-effect font-16" data-dismiss="modal">USE EMAIL</button>
+					</div>
+					<!-- <div class="col-md-6 pull-right" align="center">
+<button type="button" (click)="userModal.hide(); signupModal.show(); signupForm={}; sp_hide=true;" class="btn btn-link col-grey waves-effect">SIGN UP</button>
+</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- newUserModal -->
+<div bsModal #newUserModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-user">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right" class="p-r-10">
+					<a (click)="newUserModal.hide();clearInt(); userService.usableLink==true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+							fill="#b1b1b1">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+				<div align="center" class="login-logo">
+					<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="socialLogo">
+				</div>
+				<div align="center" class="font-25 m-t-20  font-bold">Login</div>
+				<div class="col-grey font-13 font-semibold">Enter your phone number to continue</div>
+				
+				<div class="col-md-12 no-pad m-t-30">
+					<div class="form-group m-b-18">
+					<label for="mobile" class="login-label">Phone number</label>
+					<label class="login-input-label1 font-bold c-black font-14">+91</label>
+					<input type="tel" name="mobile" id="mobile"
+					[(ngModel)]="mobile_num" #mobile="ngModel" minlength="10" maxlength="10" required 
+						class="form-control p-l-45 font-bold c-black font-14" (keyup)="onKeyUp($event)" (focus)='onKeyPress($event)'  [readonly]="isReadonly" [disabled]="isReadonly" autocomplete="off" >
+				</div>
+
+				<div align="center" *ngIf="userService.error_msg" >
+					<div class="error-msg p-b-20">{{userService.error_msg}}</div>
+				</div>
+			</div>
+
+
+			<div class="col-md-12 no-pad" *ngIf="userService.continueBtn">
+				<button class="login-btn-purple text-left font-bold font-13 valign-center h-50-px justify-content-center" (click)="continueSignin(newUserModal,newOTPModal)"   >						
+				<span  class="p-l-5">CONTINUE</span>
+				</button>
+			</div>
+
+			<div class="col-md-12 no-pad " *ngIf="!userService.continueBtn">
+				<button class="login-btn-purple text-left font-bold font-13 valign-center"(click)="socialSignIn(newUserModal, 'google', newOTPModal)" [disabled]="userService.loginSocialDisable"  [ngClass]="userService.loginSocialDisable ? 'login-btn-disable' : 'login-btn-purple'">						
+				<span class="p-l-5 p-r-5 m-l-5 m-r-5 valign-center" [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable' : 'img-circle-login-white'">	
+					<span [ngClass]="userService.loginSocialDisable ? 'logo-google-gray' : 'logo-google'" *ngIf="socialLogo"></span>								
+					
+					</span> <span  class="p-l-5">CONTINUE WITH GOOGLE</span>
+				</button>
+			</div>
+			<div class="col-md-12 m-t-18 no-pad " *ngIf="!userService.continueBtn">
+				<button class="login-btn-purple text-left font-bold font-13 valign-center" (click)="socialSignIn(newUserModal, 'facebook', newOTPModal)"  [disabled]="userService.loginSocialDisable"  [ngClass]="userService.loginSocialDisable ? 'login-btn-disable' : 'login-btn-purple'">						
+				<span class="p-l-5 p-r-5 m-l-5 m-r-5 valign-center" [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable' : 'img-circle-login-white'">						
+					<span [ngClass]="userService.loginSocialDisable ? 'logo-fb-gray' : 'logo-fb'" *ngIf="socialLogo"></span>					
+					</span> <span class="p-l-5">CONTINUE WITH FACEBOOK</span>
+				</button>
+			</div>
+			<div class="col-md-12 m-t-18 no-pad " *ngIf="!userService.continueBtn">
+				<button class="text-left font-bold font-13 valign-center" (click)="newUserModal.hide(); loginModal.show(); loginForm={}; lp_hide=true; modalLogo=true; loginForm.mobile = mobile_num" [disabled]="userService.loginSocialDisable" [ngClass]="userService.loginSocialDisable ? 'login-btn-gray' : 'login-btn-white'">						
+				<span class="p-l-5 p-r-5 m-l-5 m-r-5 h-30 img-circle-login-purple valign-center "  [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable-gray' : 'img-circle-login-purple'" >	
+					<span [ngClass]="userService.loginSocialDisable ? 'logo-email-gray' : 'logo-email'" *ngIf="socialLogo"></span>				
+					
+					</span> <span class="p-l-5">CONTINUE AS GUEST</span>
+				</button>
+			</div>
+				<div class="clearfix">&nbsp;</div>			
+				
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Login modal -->
+<div bsModal #loginModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-login">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div class="row p-l-5 p-r-5">
+					<div class="col-xs-6">
+						<a (click)="goBack(loginModal,newUserModal)">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z" /></svg>
+						</a>
+					</div>
+
+					<div class="col-xs-6" align="right">
+						<a (click)="closeLogin();loginModal.hide();">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path
+									d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+							</svg>
+						</a>
+					</div>
+
+				</div>
+
+			</div>
+		
+			<form class="mat-form" autocomplete="off" (ngSubmit)="userEmailCheck(loginModal)" ngNativeValidate>
+				<div class="modal-body p-b-20 p-t-0 p-l-20 p-r-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="modalLogo">
+					</div>
+					<p align="center" class="font-16 m-t-50 c-black font-bold"  *ngIf="!enterOtpField">Continue with Email</p>
+					<div align="center" class="font-25 m-t-20  font-bold" *ngIf="enterOtpField && !pleasewait">Hi {{loginForm.name}}</div>
+				<div class="col-grey font-13 font-semibold" *ngIf="enterOtpField && !pleasewait">OTP sent to {{loginForm.mobile}}</div>
+					<div class="col-md-12 no-pad m-t-50">
+					
+						<div class="form-group pwd" *ngIf="enterEmailField">
+							<label for="email" class="login-label">Enter Email</label>
+							<input type="email" name="username" placeholder="Your email address" autofocus
+								[(ngModel)]="loginForm.username" #username="ngModel"
+								(input)="loginForm.error_msg=false;" required class="form-control" id="email">
+						</div>
+						<div *ngIf="loginForm.error_msg" class="col-md-12 no-pad" style="top: -12px">
+							<p class="error-msg">{{ loginForm.error_msg }}</p>
+						</div>
+						<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad" style="top: -12px">
+							<p class="error-msg">{{ otpForm.error_msg }}</p>
+						</div>
+
+						<div class="form-group" *ngIf="enterNameField">
+							<label for="name" class="login-label">Enter Name</label>
+							<input type="text" name="fname" placeholder="" autofocus
+								[(ngModel)]="loginForm.name" #name="ngModel"
+								(input)="loginForm.error_msg=false;" required class="form-control" id="name" autocomplete="new-name">
+
+						</div>
+
+						
+
+						<div align="center" *ngIf="userService.pass_error != ''">
+							<div class="error-msg">{{userService.pass_error}}</div>
+						</div>
+
+						<div align="center" *ngIf="mob_num_exist">
+							<div class="error-msg">{{exist_email}}</div>
+						</div>
+
+						
+
+
+						<div class="col-md-12 no-pad m-t-30" *ngIf="enterOtpField">
+							<div class="form-group">
+							<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
+							<label class="OTP-input-label1 font-bold "><img src="assets/images/pin.svg"></label>
+							<input type="tel"  pattern="[0-9]*" maxlength="6" #otp  name="otp" [(ngModel)]="otpForm.otp"
+							#otp="ngModel"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
+								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+									<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+								</div>
+						</div>
+					
+						<div align="center" *ngIf="mob_num_exist">
+							<div class="error-msg">{{exist_email}}</div>
+						</div>
+					</div>
+
+						<!-- <div align="center" *ngIf="passwordMismatch">
+							<div class="error-msg">Mismatch password</div>
+						</div> -->
+
+						<div class="col-md-12 no-pad p-t-10" *ngIf="enterPasswordField && !confirmPasswordField">
+							<p (click)="loginModal.hide(); forgotForm={}; forgotModal.show();"
+								style="font-size: 12px; font-style: italic">Forgot Password?</p>
+						</div>
+
+					</div>
+					<div class="p-l-5 p-r-5" *ngIf="!enterOtpField && !pleasewait">	
+						<div class="col-md-12" align="center">							
+							<button type="submit" class="h-50-px justify-content-center login-btn-purple text-left font-bold font-13 valign-center">PROCEED</button>
+						</div>
+					
+				</div>
+
+				<div class="p-b-15 p-l-5 p-r-5" *ngIf="pleasewait">
+					<div class="col-md-6" align="center">						
+						<div class="col-md-6" align="center">						
+							<button type="button" class="btn btn-link waves-effect font-16 loading">PLEASE WAIT</button>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="p-l-5 p-r-5" *ngIf="enterOtpField">					
+						<div class="col-md-12" align="center">						
+							<button type="button" (click)="userOtpValidate(loginModal)"
+							class="h-50-px justify-content-center login-btn-purple text-left font-bold font-13 valign-center">
+							<span class="p-r-5"><img src="assets/images/done.svg" class="img-responsive" *ngIf="socialLogo">					
+							</span>
+						<span>VERIFY</span></button>
+						</div>
+					
+				</div>
+				</div>
+				
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- newOTPModal -->
+<div style="display: none;" id="newOTPModal" (click)="OTPCloseModal(newOTPModal)">close Modal</div>
+<div bsModal #newOTPModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-user">
+	<div class="modal-dialog modal-sm" role="document">
+		<form class="mat-form" (ngSubmit)="signinVerify(newOTPModal)" ngNativeValidate>
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div class="row p-l-5 p-r-5">
+					<div class="col-xs-6">
+						<a (click)="newOTPModal.hide(); newUserModal.show();">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z" /></svg>
+						</a>
+					</div>
+
+					<div class="col-xs-6" align="right">
+						<a (click)="newOTPModal.hide();clearInt(); userService.usableLink==true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path
+									d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+							</svg>
+						</a>
+					</div>
+
+				</div>
+			
+			</div>
+			<div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+				<div align="center" class="login-logo">
+					<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="socialLogo">
+				</div>
+				<div align="center" class="font-25 m-t-20  font-bold">Hi {{ userService.loginDetails.name }}</div>
+				<div class="col-grey font-13 font-semibold">OTP sent to {{mobile_num}}</div>
+				
+				<div class="col-md-12 no-pad m-t-30">
+					<div class="form-group m-b-18">
+					<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
+					<label class="OTP-input-label1 font-bold  "><img src="assets/images/pin.svg"></label>
+					<input autocomplete="one-time-code" inputmode="numeric" type="tel"  pattern="[0-9]*"  #otp  name="otp"  id="otp" [(ngModel)]="otpForm.otp"
+					#otp="ngModel" id="otp"  maxlength="6"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
+						<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+							<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+						</div>
+				</div>
+				<div align="center" *ngIf="mob_num_exist">
+					<div class="error-msg">{{exist_email}}</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 no-pad ">
+				<button type="submit" class="login-btn-purple text-left font-bold font-13 login-btn-purple valign-center  h-50-px justify-content-center" >						
+				<span class="valign-center" >	
+					<span class="p-r-5">	
+						<img src="assets/images/done.svg" class="img-responsive" *ngIf="socialLogo">					
+					
+							</span>
+					
+					</span> <span>VERIFY</span>
+				</button>
+			</div>
+			
+				<div class="clearfix">&nbsp;</div>			
+				
+			</div>
+		
+		</div>
+		</form>
+	</div>
+</div>
+
+
+
+<!-- OTP Modal -->
+<div bsModal #otpModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<a (click)="otpModal.hide();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"
+							fill="#616161">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="userOtpValidate(otpModal)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-l-20 p-r-15" align="center">
+					<div class="login-logo">
+						<img src="assets/images/dinamic-blogo.svg" class="img-responsive" *ngIf="modalLogo">
+					</div>
+					<div class="clearfix">&nbsp;</div>
+					<p class="p-t-10 p-b-10">OTP</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput  type="tel"  pattern="[0-9]*" maxlength="6" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp"
+								#otp="ngModel"  required>
+						</mat-form-field>
+						<p class="p-t-10" style="color:white">OTP has been sent to your Email.</p>
+						<div class="modal-footer p-t-15 p-b-20">
+							<div align="center">
+								<button type="submit" class="btn log-btn waves-effect">SUBMIT</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ otpForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- OTP Modal -->
+<div bsModal #otpModal1="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-8 pull-left">
+						<P class="font-14 font-bold ">OTP</P>
+
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+					</div>
+					<div class="col-xs-4 pull-right col-white font-12" align="right">
+						<p class="link font-bold"><a data-dismiss="modal" (click)="otpModal1.hide();"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+									fill="#b1b1b1">
+									<path
+										d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+								</svg></a></p>
+					</div>
+				</div>
+			</div>
+
+			<form class="mat-form" autocomplete="off" (ngSubmit)="social_mob_otp_validate(otpModal1)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+
+					<div class="clearfix">&nbsp;</div>
+
+					<div class="col-md-12 no-pad">
+						<!-- <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+    <input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" required >
+    </mat-form-field> -->
+
+						<div class="col-md-12 no-pad" *ngIf="!mobileShow">
+							<label class="" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'input-label'" >OTP</label>
+							<input class="bg-gray text-dark w-100" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'input-rounded'"  name="otp"
+								placeholder="" [(ngModel)]="otpForm.otp" #otp="ngModel" type="tel"  pattern="[0-9]*" maxlength="6" required  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)'>
+
+								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+									<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+								</div>
+								<p class="p-t-10 col-grey" *ngIf="otpForm.error_msg != 'Invalid OTP'">Enter 6-digit PIN.</p>
+								<p *ngIf="timeLeft > 0" class="bg-purple btn text-bold">{{timeLeftString}}</p>
+						</div>
+						<div class="col-md-12 no-pad" *ngIf="mobileShow">
+							<label class="input-label">Mobile</label>
+							<label class="input-label1">+91</label>
+							<input class="bg-gray text-dark input-rounded w-100" type="tel" name="                                             "
+								 [(ngModel)]="mobile_num" #mobile="ngModel" required>
+						</div>
+						
+						<div class="modal-footer p-t-15">
+							<div align="right">	
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+								(click)="changeMobile()" *ngIf="!mobileShow">CHANGE NUMBER</button>
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+									(click)="cancelMobile()" *ngIf="mobileShow">CANCEL</button>
+								<button type="button" class="btn btn-link waves-effect font-14"
+									(click)="addUserMobile(askmobilemodal,otpModal1)" *ngIf="mobileShow">SEND OTP</button>
+						        <!-- <button type="button" class="btn btn-link waves-effect font-14" (click)="resend_otp()">RESEND OTP</button> -->
+								<button type="submit" class="btn btn-link waves-effect font-14" *ngIf="!mobileShow">CONFIRM</button>
+														
+						        
+								
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Forgot modal -->
+<div bsModal #forgotModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-fprgot">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<a (click)="forgotModal.hide();closeLogin();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"
+							fill="#616161">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="forgotRequest();" ngNativeValidate>
+				<div class="modal-body p-b-20 p-t-0 p-l-20 p-r-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/dinamic-blogo.svg" class="img-responsive" *ngIf="modalLogo">
+					</div>
+					<div class="clearfix" style="margin-top:20%">&nbsp;</div>
+					<p class="p-t-10 p-b-10">Forgot Password?</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="email" name="email" placeholder="Email"
+								(input)="forgotForm.error_msg=false;" [(ngModel)]="forgotForm.email" #email="ngModel"
+								required>
+						</mat-form-field>
+						<div class="modal-footer p-t-10 p-b-10">
+							<div *ngIf="!forgotForm.success_msg" align="center">
+								<button type="submit" [disabled]="forgotForm.submit" class="btn log-btn waves-effect">
+									SUBMIT <i [ngClass]="forgotForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+								</button>
+							</div>
+							<div *ngIf="forgotForm.success_msg" align="center">
+								<button type="button" (click)="forgotModal.hide();closeLogin();"
+									class="btn log-btn waves-effect">CLOSE</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="forgotForm.success_msg" class="col-md-12 no-pad">
+						<p class="success-msg">{{ forgotForm.success_msg }}</p>
+					</div>
+					<div *ngIf="forgotForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ forgotForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Logout modal -->
+<div bsModal #logoutModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-logout">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-20 p-r-15">
+				<p>Are you sure you want to logout?</p>
+			</div>
+			<div class="modal-footer p-r-10 p-t-15 p-b-10">
+				<button type="button" class="btn btn-link btn-cancel waves-effect"
+					(click)="logoutModal.hide()">NO</button>
+				<button type="button" class="btn btn-link waves-effect" (click)="onLogout()" [disabled]="yesBtnStatus" >YES</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Exit modal -->
+<div bsModal #exitModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-logout">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-20 p-r-15">
+				<p>Are you sure you want to Exit?</p>
+			</div>
+			<div class="modal-footer p-r-10 p-t-15 p-b-10">
+				<button type="button" class="btn btn-link btn-cancel waves-effect"
+					(click)="exitModal.hide()">NO</button>
+				<button type="button" class="btn btn-link waves-effect" (click)="exitHome(exitModal)">YES</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Ask mobile Modal -->
+<div bsModal #askmobilemodal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<!-- <a (click)="askmobilemodal.hide();">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+      <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+      </svg>
+      </a> -->
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="addUserMobile(askmobilemodal,otpModal1)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="modalLogo">
+					</div>
+					<div class="clearfix">&nbsp;</div>
+					<p class="p-t-10 p-b-10">Please enter your mobile number</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="tel" name="mobile" id="mobile" placeholder="Mobile number"
+								[(ngModel)]="mobile_num" #mobile="ngModel" minlength="10" maxlength="10" required >
+						</mat-form-field>
+
+						<div class="modal-footer p-t-15 p-b-20">
+							<div align="center">
+								<button type="submit" class="btn log-btn waves-effect">SUBMIT</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ otpForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Valet Popup-->
+<div style="display:none;" #closeValet data-dismiss="modal">Click here</div>
+<div style="display: none;" #openValet id="openValetStatusOpenModal" (click)="openValetStatusOpenModal.show();">Open Modal</div>
+<div bsModal #openValetStatusOpenModal="bs-modal" class="modal fade custom-modal" tabindex="-1" role="dialog"
+	aria-labelledby="dialog-model">
+
+	<div class="modal-dialog h-100-vh">
+		<!-- Modal content-->
+		<div class="modal-content mat-elevation-z2 h-100">
+			<div class="modal-header head-bg-purple">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-9 word-brk pull-left">
+						<h3 class="modal-title" id="defaultModalLabel">Valet Status</h3>
+						<p class="opacity5 col-white">{{resultString}}</p>
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+
+					</div>
+					<div class="col-xs-3 pull-right p-t-10 col-white font-12" align="right">
+						<p class="p-t-5 p-b-5 link font-bold"><a (click)="openValetStatusOpenModal.hide();">CLOSE</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body h-calc-75px overflow-y-scroll">
+				<!--content-->
+				<section class="animate fadeIn h-100" *ngIf="commonService.valetStatus === 'awaiting'">
+
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/valet-awaiting.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid h-100-280px">
+						<div class="row clearfix ">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-xs-9 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">AWAITING CONFIRMATION</h4>
+								</div>
+								<div class="col-xs-3 p-t-25 no-rightpad" align="right">
+									<div id="load" class="stage" align="right">
+										<div class="dot-flashing"></div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="clearfix">&nbsp;</div>
+      <div class="center-div100 m-t-70 m-b-30" align="center">
+        <h1><countdown #cd [config]="config" (event)="handleEvent($event)"></countdown></h1>
+      </div> -->
+							<div class="clearfix">&nbsp;</div>
+							<div id="vstatus" class="bottom-status-text">
+								<div class="center-div100  m-b-10" align="center">
+									<p class="font-15 col-black30">Please wait for your request to get confirmed</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<section class="animate fadeIn" *ngIf="commonService.valetStatus === 'on_hold'">
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/pickup-car.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row clearfix p-l-5 p-r-5">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-md-11 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">REQUEST ON HOLD</h4>
+								</div>
+								<div class="col-md-1 p-t-10 pull-right no-rightpad" id="bodymovin" align="right">
+									<img src="assets/images/confirmed-icon_new.svg" class="valet-i">
+								</div>
+							</div>
+							<div class="clearfix">&nbsp;</div>
+
+							<div class="col-sm-12 m-t-10 m-b-10" align="left">
+								<p class="font-15 col-black30">Congestion at parking lot</p>
+							</div>
+
+							<div class="clearfix">&nbsp;</div>
+							<div class="font-bold p-r-10" align="center">
+								<p>
+									<span class="font-bold p-r-10">
+										<countdown #cd [config]="commonService.timerConfig"
+											(event)="handleEvent($event)"></countdown>
+									</span>
+									<span class="row" align="center" class="font-15 col-black30">mins left</span>
+								</p>
+
+							</div>
+							<progress-bar [progress]="userService.progressPerc" [disable-percentage]='true'
+								[color-degraded]="{'0': '#c02020',  '20': '#4bb48c'}">
+							</progress-bar>
+
+						
+
+							<div id="vstatus" class="bottom-status-text">
+								<div class="center-div100  m-b-20" align="center">
+									<p class="font-15 col-black30">Please wait for request confirmation</p>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</section>
+
+				<section class="animate fadeIn"
+					*ngIf="commonService.valetStatus == 'confirmed' || commonService.valetStatus == 're_confirmed'">
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/valet-confirmed.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row clearfix p-l-5 p-r-5">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-md-11 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">REQUEST CONFIRMED</h4>
+								</div>
+								<div class="col-md-1 p-t-10 pull-right no-rightpad" id="bodymovin" align="right">
+									<img src="assets/images/confirmed-icon_new.svg" class="valet-i">
+								</div>
+								<!-- <div class="col-xs-2 p-t-25 no-rightpad" align="right"> 
+        <div id="load" class="stage" align="right"><div class="dot-flashing"></div></div>
+      </div> -->
+							</div>
+							<!-- <div class="clearfix">&nbsp;</div>
+    <div class="center-div100 m-t-70 m-b-30" align="center">
+      <h1><countdown #cd [config]="config" (event)="handleEvent($event)"></countdown></h1>
+    </div> -->
+							<div class="clearfix">&nbsp;</div>
+
+							<div class="col-sm-12" align="left">
+								<p class="font-15 col-black30">Driver is en route to pick up vehicle</p>
+							</div>
+
+
+
+							<div id="vstatus" class="bottom-status-text">
+								<div class="center-div100  m-b-20" align="center">
+									<p class="font-15 col-black30">Your vehicle will be ready by</p>
+									<p class="font-bold" align="center">{{ setDelivery() }}</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<section class="animate fadeIn h-100"
+					*ngIf="commonService.valetStatus == 'vehicle_ready' || commonService.valetStatus == 'vehicle_re_ready' ">
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/vehicle-ready.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid h-100-280px">
+						<div class="row clearfix h-100">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-xs-10 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">VEHICLE READY</h4>
+								</div>
+								<div class="col-md-1 p-t-10 pull-right no-rightpad" id="bodymovin" align="right">
+									<img src="assets/images/confirmed-icon_new.svg" class="valet-i">
+								</div>
+								<!-- <div class="col-xs-2 p-t-25 no-rightpad" align="right"> 
+        <div id="load" class="stage" align="right"><div class="dot-flashing"></div></div>
+      </div> -->
+							</div>
+							<div class="clearfix">&nbsp;</div>
+							<div *ngIf="vehicleReq()">
+								<div class="col-sm-12" align="left">
+									<p class="font-15 col-black30">Collect your vehicle before it is returned to the parking lot.</p>
+								</div>
+							</div>
+
+							<div *ngIf="vehicleReReq()">
+								<div class="col-sm-12 m-t-10 m-b-30" align="left">
+									<p class="font-15 col-black30">You cannot make any further requests</p>
+								</div>
+							</div>
+
+							 <div class="center-div100" align="center" *ngIf="vehicleReq()">
+								<p class="font-bold" *ngIf="!userService.vehicle.is_expired">
+									<countdown #cd [config]="commonService.timerConfig"
+										(event)="handleEventOne($event)"></countdown>
+									<span class="row" align="center" class="font-15 col-black30"> mins left</span>
+								</p>
+								<!-- <button  class="font-bold p-r-10 bg-transparent">{{ getTimer1() }} {{ userService.vehicle.time ? userService.vehicle.time: '00:00' }} </button> -->
+								
+							</div> 
+
+							
+							
+							<progress-bar *ngIf="vehicleReq()"  [progress]="userService.progressPerc"  [color-degraded]="{'0': '#c02020',  '20': '#4bb48c'}" [disable-percentage]='true'>
+							</progress-bar>
+							
+							<!-- <div class="center-div100 m-t-70 m-b-30" align="center" *ngIf="vehicleReReq()">
+      <button class="btn btn-danger" (click)="backToMenu()">BACK TO MENU</button>
+      <button class="btn btn-primary" (click)="contactManager()">CONTACT MANAGER</button>  
+    </div> -->
+
+
+							<div class="row margin-0" *ngIf="vehicleReReq()">
+								<div class="col-xs-12 " align="center">
+									<button type="button" style="width:100%"
+										class="btn bg-white text-purple mat-elevation-z2 btnstylenew"
+										(click)="backToMenu()">
+										<span class="font-bold font-16 p-l-5 text-upper">Back to Menu</span></button>
+								</div>
+
+								<div class="col-xs-12 p-t-15" align="center">
+									<button type="button" style="width:100%"
+										class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+										(click)="contactManager()">
+										<span class="font-bold font-16 p-l-5 text-upper">CONTACT MANAGER</span></button>
+								</div>
+							</div>
+
+							<div class="clearfix">&nbsp;</div>
+
+							<div class="bottom-status-text">
+								<div class="center-div100  m-b-10" align="center">
+									<p class="font-15 col-black30">Your vehicle is waiting for you at the valet counter
+									</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</section>
+
+				<section class="animate fadeIn h-100" *ngIf="commonService.valetStatus == 'vehicle_parked'">
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/car.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid h-100-280px">
+						<div class="row clearfix p-l-5 p-r-5 h-100">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-md-11 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">VEHICLE NOT COLLECTED</h4>
+								</div>
+								<div class="col-md-1 p-t-10 pull-right no-rightpad" id="bodymovin" align="right">
+									<img src="assets/images/multiply.svg" class="valet-i">
+								</div>
+							</div>
+
+
+							<div class="clearfix">&nbsp;</div>
+							<div class="col-sm-12 m-t-10 m-b-10" align="left">
+								<p class="font-15 col-black30">Send another valet request</p>
+							</div>
+							<div align="center">
+								<!-- <button class="row btn btn-danger" (click)="backToMenu()">BACK TO MENU</button>
+        <button class="row btn btn-primary" (click)="requestAgain()">REQUEST AGAIN</button>   -->
+								<div class="row margin-0">
+									<div class="col-xs-12 p-t-15" align="center">
+										<button type="button" style="width:100%"
+											class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+											(click)="requestAgain()">
+											<span class="font-bold font-15 p-l-5 text-upper">REQUEST
+												AGAIN</span></button>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="bottom-status-text">
+								<div class="center-div100  m-b-10" align="center">
+									<p class="font-15 col-black30">Your vehicle has been returned to parking</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<section class="animate fadeIn" *ngIf="commonService.valetStatus == 'delivered'">
+					<div id="screenbg" class="col-md-12">
+						<div style="position:relative;" class="pad50 m-b-30" align="center">
+							<img src="assets/images/valet-confirmed.svg" class="img-responsive img-pop-width">
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row clearfix p-l-5 p-r-5">
+							<div class="col-md-12">
+								<h2 class="subhead">Status</h2>
+								<div class="col-md-11 pull-left no-leftpad p-t-20">
+									<h4 class="font-15 col-black">Delivered</h4>
+								</div>
+								<div class="col-md-1 p-t-10 pull-right no-rightpad" id="bodymovin" align="right">
+									<img src="assets/images/confirmed-icon_new.svg" class="valet-i">
+								</div>
+								<!-- <div class="col-xs-2 p-t-25 no-rightpad" align="right"> 
+          <div id="load" class="stage" align="right"><div class="dot-flashing"></div></div>
+        </div> -->
+							</div>
+							<!-- <div class="clearfix">&nbsp;</div>
+      <div class="center-div100 m-t-70 m-b-30" align="center">
+        <h1><countdown #cd [config]="config" (event)="handleEvent($event)"></countdown></h1>
+      </div> -->
+							<div class="clearfix">&nbsp;</div>
+
+							<div class="bottom-status-text">
+								<div class="center-div100  m-b-10" align="center">
+									<p class="font-15 col-black30">Your vehicle has been delivered</p>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</section>
+
+				<!--#content-->
+			</div>
+			<!-- <div class="customize-bshadow"></div> -->
+
+		</div>
+
+	</div>
+</div>
+

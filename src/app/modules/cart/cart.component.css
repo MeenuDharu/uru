@@ -1,0 +1,39 @@
+.alignview{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center; 
+  }
+
+
+
+     #cart-summary .mat-card {
+      padding: 20px 16px!important;
+  }
+
+
+
+ .item-count2{
+  font-family: MetropolisBold,sans-serif;
+  border-radius: 8px;
+  color: #fff;
+  padding: 3px 18px 3px 18px;
+  font-size: 14px;
+  text-align: center;
+  min-width: 40px;
+ }
+
+  .orderBtn{
+    box-shadow: none !important;
+  }
+
+  .orderBtn:active{
+    background: linear-gradient(45deg,rgba(168,120,109,1) 0,rgba(168,120,109,1) 30%,rgba(255,195,51,1) 70%,rgba(255,195,51,1) 100%);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+  .orderBtn:focus, 
+  .orderBtn:hover{
+    color: white !important;
+  }
+
+

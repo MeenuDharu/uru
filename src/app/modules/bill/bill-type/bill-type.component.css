@@ -1,0 +1,6 @@
+.cart-overflow {
+    min-height: 200px;
+    height: calc(100vh - 140px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

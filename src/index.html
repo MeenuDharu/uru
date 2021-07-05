@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/">
+    <title>DiNAMIC</title>
+    <meta charset="utf-8">
+    <meta name="author" content="">
+    <meta name="description" content="">    
+    <meta name="theme-color" content="#212121">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="DiNAMIC">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="manifest" href="manifest.json">
+    <!-- <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/userweb-style.css" type="text/css">
+    <link rel='stylesheet' href="assets/css/animate.css" type="text/css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180934160-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-180934160-1');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics -->
+  </head>
+
+  <body>
+    <app-root>
+      <!-- <div class="loadscreen">
+        <img src="assets/images/Dinamic_logo.svg" class="logo" style="display: none" alt="">
+      </div> -->
+      <div id="loaderDisp"></div>
+
+    </app-root>
+    <noscript><p>Please enable JavaScript to continue using this application.</p></noscript>
+  </body>
+
+  <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="assets/js/jquery.slimscroll.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
+  
+  <!-- For Razor Pay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+  
+ 
+  <script>
+    var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    if(isChrome)
+    {
+    $("#loaderDisp").html('<div id="loader" class="preloader-webp pr__dark"><span class="progress"><div class="mobile-preloader"><div class="pre-container"><div class="logo-circle"><div class="center"><img src="assets/images/Dinamic_Logo.svg"></div></div></div></div></span></div>')
+    console.log("chrome status..........", isChrome)
+    }
+    else
+    {
+      $("#loaderDisp").html('<div id="loader" class="preloader pr__dark"><span class="progress"><div class="mobile-preloader"><div class="pre-container"><div class="logo-circle"><div class="center"><img src="assets/images/Dinamic_Logo.svg"></div></div></div></div></span></div>')
+      console.log("chrome status..........", isChrome)
+
+    }
+    wow = new WOW(
+    {
+    animateClass: 'animated',
+    offset: 100
+    }
+    );
+    wow.init();    
+    </script>
+    
+</html>

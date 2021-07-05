@@ -1,0 +1,77 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+			<span class="svg-icon p-l-20">
+				<a routerLink="/myorder" class="p-r-10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
+				<h3 class="h3-style">Order Details</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+<div *ngIf="loaderStatus" id="loader" class="pr__dark" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+	<span class="progress">
+		<div class="mobile-preloader">
+				<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+</div>
+
+<section *ngIf="!loaderStatus" class="content">
+	<div class="row clearfix">
+		<div class="col-md-12 p-r-20 p-l-20 p-t-20">
+			<mat-card class="radius4 mat-elevation-z2">
+				<div *ngFor="let x of item_list; let i = index" class="col-xs-12 no-pad m-b-30 ">
+					<div class="col-xs-8 no-pad m-t-0">
+						<span style="position:relative; top:3px">
+							<img *ngIf="x.food_type=='Veg'" class="icon-width" src="assets/images/Veg.svg" />
+							<img *ngIf="x.food_type=='Non Veg'" class="icon-width" src="assets/images/NonVeg.svg" />
+						</span>
+						<span class="p-l-10 font-13 font-bold">{{ x.name }}</span>
+					</div>
+					<div class="col-xs-4 no-pad" align="right">
+						<div class="col-md-12 no-pad">
+							<div class="col-md-4 pull-left no-rightpad"><span
+									class="item-btnbggrey item-count">{{ x.quantity }}</span></div>
+							<div class="col-md-8 pull-right no-pad"><span
+									class="font-15 font-bold500 opacity8">{{ (x.sold_price * x.quantity) }}</span></div>
+						</div>
+					</div>
+					<div *ngFor="let y of x.applied_addons;" class="col-xs-12">
+						<span class="p-l-15 font-12">{{ y.heading }} ({{ y.name }})</span>
+					</div>
+				</div>
+
+				<div class="col-xs-12 no-pad opacity6 m-t-0" *ngIf="order_status != 'placed'">
+					<hr>
+				</div>
+				<div class="col-xs-12 no-pad p-t-10" *ngIf="order_status != 'placed'">
+					<div class="col-xs-8">
+						<span class="font-15 font-bold500">Total </span>
+						<span class="font-12">(Inclusive of taxes)</span>
+					</div>
+					<div class="col-xs-4 no-pad" align="right"><span
+							class="font-15 font-bold500">{{ grand_total | currency:"INR"  }}</span>
+					</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</mat-card>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</section>

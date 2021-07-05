@@ -1,0 +1,270 @@
+<!-- <app-ios-notify></app-ios-notify> -->
+
+<div style="position:fixed; width: 100%; height: 100vh;align-items: center;justify-content: center;">
+	<!--Topbar-->
+	<!-- <nav class="wow fadeIn">
+<div style="width: 100%;height:60px" class="shadow-header">
+<div class="row m-0 wow fadeIn d-flex align-items-center h-100">
+<div class="col-8"><a href="#"><img src="assets/images/dinamic-logo.svg" class="img-responsive"></a></div>
+<div class="col-4"><p class="mb-0">
+<a class="btn help-btn bg-yellow btn-success font-16 font-weight-bold mat-elevation-z2 w-100">HELP</a></p></div>
+</div>
+</div>
+</nav> -->
+	<nav class="wow fadeIn" id="nav-fade">
+		<div style="width: 100%;" class="shadow-header nav-height">
+			<div class="col-12 p-0 d-flex wow fadeIn align-items-center h-100">
+				<div class="col-8 float-left"><a href="#"><img src="assets/images/dinamic-logo.svg"
+							class="img-responsive"></a></div>
+				<div class="col-4 float-right">
+					<p class="mb-0">
+						<a
+							class="btn help-btn bg-yellow btn-success font-16 font-weight-bold mat-elevation-z2 w-100">HELP</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!--#Topbar-->
+
+
+	<div *ngIf="loaderStatus" id="loader" class="pr__dark  preloader"  style="z-index: 9999;" >
+		<span class="progress">
+			<div class="mobile-preloader">
+				<div class="pre-container">
+					<div class="logo-circle">
+						<div class="center">
+							<img src="assets/images/Dinamic_Logo.svg">
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+	</div>
+
+	<!--Center-->
+	<div style="width: 100%;height:calc(100% - 270px);background-color:#ccc">
+		<section [hidden]="!hasDevices" style="width: 100%; height: 100%">
+			<div class="row m-0 w-100 h-100" style="position:relative" id="landscape">
+				<zxing-scanner style="height:100%" #scanner start="true" [device]="currentDevice"
+					(scanSuccess)="handleQrCodeResult($event)" [formats]="['CODE_39', 'CODE_128', 'QR_CODE']">
+				</zxing-scanner>
+				<!-- <div><img src="images/scanner-bg.jpg"></div> -->
+				<div
+					style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items: center;justify-content: center;width:100%">
+					<div class="w-100" style="color:#fff">
+						<p align="center"><img src="assets/images/qr-code.svg" class="img-responsive" *ngIf="hasDevices" ></p>
+						<div class="stage p-r-15 p-t-10"><span class="p-r-30 col-white opacity8">Scanning code</span>
+							<div class="dot-flashing"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- <section [hidden]="!hasDevices" style="width: 100%; height: 100%">
+<div class="col-md-12 no-pad" style="height:100%">
+<zxing-scanner style="height:100%" #scanner start="true" [device]="currentDevice" (scanSuccess)="handleQrCodeResult($event)" [formats]="['CODE_39', 'CODE_128', 'QR_CODE']"></zxing-scanner>
+<div class="scan-center" style="position: absolute; top: 29%; margin: 0 auto; width: 100%;">
+<div align="center" id="landscape">
+<img src="assets/images/qr-code.svg" class="img-responsive">
+</div>
+<div class="stage p-r-20 p-t-10">
+<span class="p-r-30 col-white opacity8">Scanning code</span>
+<div class="dot-flashing"></div>
+</div>
+</div>
+</div>
+</section> -->
+
+		<!-- <div class="row h-100 d-flex align-items-center justify-content-center">
+<div class="col-xs-10 pull-left no-leftpad p-t-20">
+<div id="load" class="stage" align="right">
+<h4 class="font-15 text-black font-weight-bold pr-5 mb-0">Fetching Details</h4> <div class="dot-flashing"></div></div>
+</div>
+</div> -->
+	</div>
+	<!--#Center-->
+
+	<!--Bottom footer-->
+	<div style="width: 100%;height:160px;position:fixed;bottom:0">
+		<div class="bg-purple h-100" align="center">
+			<div class="center-div100 valign-center" align="center">
+				<div class="center-div15 p-t-10" align="center">
+					<p class="scanner-bottom1" align="center"></p>
+				</div>
+			</div>
+			<div class="col-xs-12 d-flex align-items-center h-100 p-l-5 p-r-5">
+				<div class="col-xs-2 valign-center"><img src="assets/images/qr.svg"></div>
+				<div class="col-xs-10">
+					<p class="col-white p-l-10 font-20 font-bold" align="left">Start</p>
+					<p class="font-14 p-l-10 col-white opacity5 p-t-10 p-b-10" align="left">Point your camera at the QR
+						Code<br /> on your valet card</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#Bottom footer-->
+</div>
+
+<!-- Alert Modal -->
+<div #openModal style="display: none;" (click)="alertModal.show()">Open Modal</div>
+<div bsModal #alertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-cart-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+				<p class="col-hgrey">Invalid Code</p>
+			</div>
+			<div class="modal-footer p-r-10">
+				<button type="button" class="btn btn-link waves-effect" (click)="alertModal.hide();">CLOSE</button>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Vale modal -->
+<div #openValetModal (click)="valetModal.show()" style="display: none" align="center">Open Modal</div>
+
+<div bsModal #valetModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-cart-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+				<p class="col-hgrey"></p>
+			</div>
+			<div class="modal-footer p-r-10">
+				<button type="button" class="btn btn-link waves-effect" (click)="valetModal.hide();">CLOSE</button>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</div>
+
+<!-- valet popup -->
+
+<div #openValetOpenModal style="display: none;" (click)="valetOpenModal.show()">Open Modal</div>
+
+<div style="display:none;" #closeValett data-dismiss="modal">Click here</div>
+
+
+<div bsModal #valetOpenModal="bs-modal" class="modal fade custom-modal" id="water" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header head-bg-purple">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-9 word-brk pull-left">
+						<h3 class="modal-title" id="defaultModalLabel">Valet</h3>
+						<p class="opacity5 col-white">Please check your serial number</p>
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+
+					</div>
+					<div class="col-xs-3 pull-right p-t-10 col-white font-12" align="right">
+						<p class="p-t-5 p-b-5 link font-bold"><a
+								(click)="valetOpenModal.hide();cancelValet();">CANCEL</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body p-l-20 p-r-20 p-b-15 p-t-15 modal-overflow">
+				<!--content-->
+				<section>
+					<div class="container-fluid">
+
+						<div class="row clearfix">
+							<div class="col-md-12 no-pad">
+
+								<h2 class="font-18 font-bold" style="line-height:50px">Your Serial Number is</h2>
+								<h2 class="font-18 font-bold p-t-10 p-b-20">
+									<span class="mandatory-span">
+										<span> {{resultString}} </span>
+									</span>
+								</h2>
+
+								<h2 class="font-18 font-bold" style="line-height:50px">Choose Delivery Time</h2>
+
+								<h2 class="font-18 font-bold p-t-10 p-b-20">
+									<span class="mandatory-span">
+										<span> Required </span>
+									</span>
+								</h2>
+
+								<!-- RADIO -->
+								<div>
+									<span>
+										<div class="md-radio col-xs-12 no-pad">
+											<input id="fivemins" type="radio" (ngModelChange)="radioChange($event)"
+												[(ngModel)]="delayTime" name="timeInterval" value="5">
+											<label for="fivemins" class="col-xs-6">5 minutes</label><span
+												class="col-xs-6 text-right no-pad col-hgrey pull-right">Delivered by
+												{{setPlusFive()}}</span>
+										</div>
+									</span>
+
+									<span>
+										<div class="md-radio col-xs-12 no-pad">
+											<input id="tenmins" type="radio" (ngModelChange)="radioChange($event)"
+												[(ngModel)]="delayTime" name="timeInterval" value="10">
+											<label for="tenmins" class="col-xs-6">10 minutes</label><span
+												class="col-xs-6 text-right no-pad col-hgrey pull-right">Delivered by
+												{{setPlusTen()}}</span>
+										</div>
+									</span>
+
+									<span>
+										<div class="md-radio col-xs-12 no-pad">
+											<input id="fifteenmins" type="radio" (ngModelChange)="radioChange($event)"
+												[(ngModel)]="delayTime" name="timeInterval" value="15">
+											<label for="fifteenmins" class="col-xs-6">15 minutes</label><span
+												class="col-xs-6 text-right no-pad col-hgrey pull-right">Delivered by
+												{{setPlusFifteen()}}</span>
+										</div>
+									</span>
+
+									<span>
+										<div class="md-radio col-xs-12 no-pad">
+											<input id="twentymins" type="radio" (ngModelChange)="radioChange($event)"
+												[(ngModel)]="delayTime" name="timeInterval" value="20">
+											<label for="twentymins" class="col-xs-6">20 minutes</label><span
+												class="col-xs-6 text-right no-pad col-hgrey pull-right">Delivered by
+												{{setPlusTwenty()}}</span>
+										</div>
+									</span>
+								</div>
+								<!-- #RADIO -->
+
+							</div>
+						</div>
+
+					</div>
+				</section>
+				<!--#content-->
+			</div>
+			<div class="customize-bshadow"></div>
+			<div class="modal-footer p-t-15 p-b-15">
+				<div class="col-md-12 p-l-20 p-r-20" data-dismiss="modal" align="center" *ngIf="confirm_click"
+					(click)="onConfirm()">
+					<!-- *ngIf="!showAddToOrder" -->
+					<a class="vieworder-foot-btn mat-elevation-z2 btn valign-center"
+						style="border:none;justify-content:center;">
+						<span class="p-r-5 p-t-2">
+							<!-- <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+  <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg> -->
+							<i class="material-icons">check</i></span> CONFIRM </a></div>
+
+				<div class="col-md-12 p-l-20 p-r-20" data-dismiss="modal" *ngIf="!confirm_click" align="center">
+					<!-- *ngIf="!showAddToOrder" -->
+					<a class="vieworder-foot-btn mat-elevation-z2 btn valign-center"
+						style="border:none;justify-content:center;">
+						<span class="p-r-5 p-t-2">
+
+							<i class="material-icons">check</i></span> CONFIRM </a></div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

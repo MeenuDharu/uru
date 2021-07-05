@@ -1,0 +1,44 @@
+/* @import "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"; */
+.row{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-15px;margin-left:-15px}
+.m-0{margin:0!important}.d-flex{display:-webkit-box!important;display:-ms-flexbox!important;display:flex!important}
+.align-items-center{-webkit-box-align:center!important;-ms-flex-align:center!important;align-items:center!important}
+.justify-content-center{-webkit-box-pack:center!important;-ms-flex-pack:center!important;justify-content:center!important}
+.col-4,.col-8,.col-5,.col-7,.col-12{position:relative;width:100%;min-height:1px;padding-right:15px;padding-left:15px}
+.col-12{-webkit-box-flex:0;-ms-flex:0 0 100%;flex:0 0 100%;max-width:100%}
+.col-4{-webkit-box-flex:0;-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}
+.col-5{-webkit-box-flex:0;-ms-flex:0 0 41.666667%;flex:0 0 41.666667%;max-width:41.666667%}
+.col-7{-webkit-box-flex:0;-ms-flex:0 0 58.333333%;flex:0 0 58.333333%;max-width:58.333333%}
+.col-8{-webkit-box-flex:0;-ms-flex:0 0 66.666667%;flex:0 0 66.666667%;max-width:66.666667%}
+.justify-content-start{-webkit-box-pack:start!important;-ms-flex-pack:start!important;justify-content:flex-start!important}
+.justify-content-end{-webkit-box-pack:end!important;-ms-flex-pack:end!important;justify-content:flex-end!important}
+.justify-content-center{-webkit-box-pack:center!important;-ms-flex-pack:center!important;justify-content:center!important}
+.justify-content-between{-webkit-box-pack:justify!important;-ms-flex-pack:justify!important;justify-content:space-between!important}
+.float-left{float:left!important}.float-right{float:right!important}
+.pr-5,.px-5{padding-right:3rem!important}.p-0{padding:0!important}
+.h-100{height:100%}.w-100{width: 100%;}
+.alignnav{
+    width:100%;
+    display: flex;    
+}
+.aligncontainer{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.help-btn
+{
+    padding: 5px 25px!important;
+    font-weight:bold;
+    line-height: 1.42857143;
+}
+
+.shadow-header
+{
+    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 1px 5px rgba(0,0,0,.3);
+    -ms-box-shadow: 0 1px 5px rgba(0,0,0,.3);
+    box-shadow: 0 1px 5px rgba(0,0,0,.3);
+}

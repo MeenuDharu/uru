@@ -1,0 +1,121 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+			<span class="svg-icon p-l-20">
+				<a (click)="goBack()" class="p-r-10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
+				<h3 class="h3-style">Order Details</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+<!-- 
+<div *ngIf="loaderStatus" class="spin-center">
+  <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+</div> -->
+
+
+<div *ngIf="loaderStatus" style="z-index: 9999;" id="loader" class="pr__dark" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+
+	<span class="progress">
+		<div class="mobile-preloader">
+				<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+</div>
+
+
+<section *ngIf="!loaderStatus" class="content wrapper">
+	<div class="row clearfix page-body">
+		<div class="col-md-12 p-r-20 p-l-20 p-t-20 animate fadeIn">
+
+			<mat-card class="radius4 mat-elevation-z4 mat-card">
+
+				<div class="col-md-12 no-pad">
+					<div class="row margin-0 cart-overflow">
+						<div *ngFor="let order of userService.user_placed_orders.order_list" class="col-xs-12 no-pad">
+							<p class="font-12 p-t-15 font-bold500 col-black64">{{order.user_name}}</p>
+							<div *ngFor="let x of order.item_list; let i = index"
+								class="col-xs-12 no-pad p-t-10 m-b-20">
+
+								<div class="col-xs-8 no-pad" style="padding:2px 0">
+									<div class="col-xs-12 no-pad">
+										<span class="font-13 font-bold text-upper word-brk">{{ x.item_name }}</span>
+									</div>
+								</div>
+
+
+
+
+								<div class="col-xs-4 no-pad" align="right">
+									<div class="col-md-12 no-pad">
+										<div class="col-md-4 p-r-0 pull-left">
+											<div class="item-btnbggrey item-count2">{{ x.quantity }}</div>
+										</div>
+										<div class="col-md-8 pull-right no-pad">
+											<div class="font-15 font-bold" style="padding-top:2px;">
+												{{ x.sold_price * x.quantity }}</div>
+										</div>
+										<!-- <div class="col-md-4 pull-left no-rightpad"><span class="item-btnbggrey item-count">{{ x.quantity }}</span></div> -->
+										<!-- <div class="col-md-8 pull-right no-pad"><span class="font-15 font-bold">{{ x.sold_price * x.quantity }}</span></div> -->
+
+									</div>
+								</div>
+
+								<div *ngFor="let y of x.addons;" class="col-xs-12 no-pad">
+									<span class="font-12 col-hgrey">{{ y.addon_heading }} ({{ y.addon_name }})</span>
+								</div>
+
+
+							</div>
+						</div>
+
+
+					</div>
+
+					<div class="col-xs-12 no-pad opacity6 m-t-0">
+						<hr>
+					</div>
+					<div class="col-xs-12 no-pad p-t-10">
+						<div class="col-xs-8 no-pad">
+							<span class="font-16 font-bold">Items </span>
+							<!-- <span class="font-16 font-bold">Total </span>
+<span class="font-12 font-bold">(Exclusive of taxes)</span> -->
+						</div>
+						<div class="col-xs-4 no-rightpad" align="right"><span
+								class="font-16 font-bold">{{ userService.total_items_count }}</span></div>
+						<!-- <div class="col-xs-4 no-rightpad" align="right"><span class="font-16 font-bold">{{ orderTotal }}</span></div> -->
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+			</mat-card>
+			<!-- <div class="vieworder-bshadow"></div> -->
+			<div class="clearfix">&nbsp;</div>
+
+		</div>
+	</div>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer ">
+	<div class="footer1 col-black30">Government taxes extra as applicable.</div> 
+	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div> 
+	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered by</span><img src="assets/images/footer-logo.svg" ></a></div>
+</footer>
+  <!-- Footer -->

@@ -1,0 +1,365 @@
+<app-ios-notify></app-ios-notify>
+
+<div class="search-bar">
+  <div class="search-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ccc">
+      <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+    </svg>
+  </div>
+  <input type="text" class="search-input" placeholder="Search..." [(ngModel)]="item_search" />
+  <div class="close-search" (click)="item_search=null;"><i class="material-icons font-20">close</i></div>
+</div>
+
+<nav class="navbar head-bg-purple wow fadeIn">
+  <div class="container-fluid">
+    <div class="navbar-header col-md-12 no-pad">
+      <div class="pull-left col-md-2 no-pad">
+        <h3 class="p-t-10 p-b-5 p-r-10 text-limit">
+          <a routerLink="/menu/categories" class="p-r-15">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+              <path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+            </svg>
+          </a>{{ category.name }}
+        </h3>
+      </div>
+      <div class="col-md-10 pull-right no-pad" align="right">
+        <span class="veg-size col-white font-bold500 p-r-10">VEG ONLY</span>
+        <span class="p-r-10">
+          <label class="switch switch-label switch-pill switch-primary">
+            <input type="checkbox" class="switch-input" [(ngModel)]="vegCheck" (change)="vegFilter(vegCheck)" />
+            <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+          </label>
+        </span>
+        <span>
+          <a href="javascript:void(0);" class="js-search" data-close="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section id="menu" class="wow fadeIn" data-wow-delay="400ms">
+
+  <!-- Item List -->
+  <div [hidden]="shimmerList.length" class="container-fluid">
+  
+    <ng-container *ngFor="let x of menu_items | myFilter:'food_type':categoryFilter | orderBy:'tags' | searchFilter:'name':item_search; let i=index;">
+     
+      <div class="row clearfix p-l-5 p-r-5" [ngClass]="((x.item_status == 'hidden') || (x.item_status == 'unavailable')) ? 'hideItemDiv' : ''">
+
+            <div *ngIf="!x.notFound" class="card-padding" [ngStyle]="{'margin-top.px': i===0 ? '70' : '0'}">
+              <div *ngIf="x.tags=='recommended'" class="col-md-12 no-pad p-t-20">
+                <div class="col-md-1 no-pad pull-left">
+                  <img src="assets/images/recommended.svg">
+                </div>
+                <div class="col-md-11 no-pad pull-left p-l-5 p-t-5 col-hgrey font-13 font-italic">Recommended</div>
+                <div class="clearfix">&nbsp;</div>
+              </div>
+
+              <div *ngIf="x.tags=='featured' && (x.item_status == 'active')" class="col-md-12 no-pad p-t-20">
+                  <div class="col-md-1 no-pad pull-left">
+                    <img src="assets/images/feature.svg" width="25px" height="25px">
+                  </div>
+                  <div class="col-md-11 no-pad pull-left p-l-5 p-t-5 col-hgrey font-13 font-italic">Featured</div>
+                  <div class="clearfix">&nbsp;</div>
+                </div>
+              
+              <!--card-->
+              <div class="col-md-12 no-pad p-t-15 wow fadeIn">
+                <!-- Available Items -->
+                <mat-card class="radius4 mat-elevation-z2">
+                    <!-- <span *ngIf="x.imageUrl" id="img-width"> -->
+                    <span *ngIf="x.imageUrl">
+                      <div class="itemStatusDiv" *ngIf="x.item_status == 'hidden' || x.item_status == 'unavailable'">
+                        <p class="itemStatusDivText" *ngIf="x.item_status == 'hidden'">UNAVAILABLE</p>
+                        <p class="itemStatusDivText" *ngIf="x.item_status == 'unavailable'">NEXT AVAILABLE AT <span style="text-transform: uppercase"> {{ x.next_availability.split(" ")[0] +" "+ (x.next_availability.split(" ")[1] | railwayToLocal)}}</span></p>
+                      </div>
+                      <!-- <img #lazyImg appTulsiImg [tulsi_img_url]="baseUrl+x.imageUrl" [img_base_url]="baseUrl" class="img-responsive anim" style="object-fit: cover;"> -->
+                      <img data-src="{{baseUrl+x.imageUrl}}" class="img-responsive anim item-img">
+                    </span>
+                    <mat-card-header>
+                      <div class="col-xs-12 no-pad">
+                        <mat-card-title>              
+                          <div class="col-xs-10 no-rightpad pull-left">
+                            <span *ngIf="x.food_type=='Veg'" class="p-t-10"><img src="assets/images/Veg.svg" class="valign-center" /></span>
+                            <span *ngIf="x.food_type=='Non Veg'" class="p-t-5 p-l-5"><img src="assets/images/NonVeg.svg" class="valign-center"/></span>
+                            <span class="md-headline p-l-10 valign-center item-limit">{{ x.name }}</span>
+                          </div>
+                          <div class="col-xs-2 pull-right" align="right"><span class="p-t-7 opacity7 font-15 p-r-5">{{ x.selling_price }}</span></div>
+                        </mat-card-title>
+                    </div>
+                    </mat-card-header>
+                    <mat-card-content> 
+                      <div class="row no-margin p-b-20 aligncardfoot">
+                        <div class="col-xs-7 valign-center">
+                          <span class="font-10">&nbsp;</span>
+                        <p class="font-12 col-hgrey">{{ x.item_description }}</p>
+                      </div>
+                      <div class="col-xs-5" align="center">
+                          <span class="font-10 col-hgrey p-t-10" *ngIf="x.ordered_qty == 0 && x.addons.length > 0">Customizable</span>
+                          <p *ngIf="x.ordered_qty==0" (click)="addItemToCart(x)" data-toggle="modal" data-target="#water">
+                              <button type="button" class="btn item-btnbg add-btn mat-elevation-z2 btnstylenew">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#fff" stroke-width="2" stroke="#ffffff">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                              </svg>
+                              <span class="font-bold font-16 p-l-5">ADD</span>
+                            </button>
+                          </p>
+  
+                          <p *ngIf="x.ordered_qty > 0">
+                            <span (click)="removeItemFromCart(x._id)">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#cacaca" stroke-width="2" stroke="#cacaca">
+                                <path d="M19 13H5v-2h14v2z"/></svg>
+                            </span>
+                            <span class="mat-elevation-z2 item-btnbg item-count m-l-10 m-r-10">{{ x.ordered_qty }}</span>
+                            <span (click)="addItemToCart(x)">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000" stroke-width="1" stroke="#000000">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            </span>
+                          </p>
+  
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+              </div>
+              <!-- #card -->
+            </div>
+            
+            <div *ngIf="x.notFound" class="wow fadeIn">
+              <div id="screenbg" class="col-md-12">
+                <div style="position:relative;" class="pad50 m-t-50 m-b-30" align="center">
+                  <img src="assets/images/emptyitem-icon.svg" class="img-responsive p-t-10">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-12">
+                <div class="col-md-12 no-leftpad p-t-20" align="center">
+                  <h4 *ngIf="item_search" class="col-black">No results for "{{item_search}}"</h4>
+                  <h4 *ngIf="!item_search" class="col-black">NO ITEMS FOUND</h4>
+                </div>
+              </div>
+              <div class="clearfix">&nbsp;</div>
+              <div *ngIf="item_search" class="bottom-text">
+                <div class="center-div80 m-t-70 m-b-70" align="center">
+                  <p class="font-15 col-grey">No results found, Please check the spelling or try another search.</p>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+    </ng-container>
+    
+    <div *ngIf="itemRepeatFooter" class="p-b-70">&nbsp;</div>
+    <div *ngIf="!itemRepeatFooter && cartItems > 0" class="p-b-40">&nbsp;</div>
+  </div>
+  <!-- #Item List -->
+
+  <!-- Shimmer -->
+  <div [hidden]="!shimmerList.length" class="container-fluid" style="padding-right: 0px !important; padding-left: 0px !important;">
+    <div *ngFor="let x of shimmerList; let i=index;">
+      <!--card-->
+      <div class="col-md-12 no-pad p-t-5 card-padding" [ngStyle]="{'margin-top.px': i===0 ? '70' : '0'}">
+        <mat-card class="radius4 mat-elevation-z2">
+          <div class="row margin-0 pad10">
+            <div class="box shine"></div>
+            <div class="shimmer-div">
+              <div class="lines shine"></div>
+              <div class="lines shine"></div>
+              <div class="lines shine"></div>
+            </div>                       
+          </div>
+          <div class="clearfix"></div>
+        </mat-card>
+      </div>
+      <!-- #card -->
+    </div>
+  </div>
+  <!-- #Shimmer -->
+
+  <!-- No Items... -->
+
+  <div class="container-fluid no-items wow fadeIn">
+    <div class="row">
+        {{no_items_message}}
+    </div>   
+  </div>
+
+    <!-- No Items... -->
+
+</section>
+
+
+
+<!--Footer-->
+<!-- <div *ngIf="itemRepeatFooter" class="vieworder-foot-white mat-elevation-z4 col-md-12 no-pad">
+  <div class="row margin-0 pad10" style="background-color:#f6f7f8; color:#000">
+    <div class="col-md-11 no-leftpad pull-left font-bold">
+        <span class="p-t-5 p-l-5" *ngIf="cartItemDetails.food_type == 'Veg'"><img src="assets/images/Veg.svg" class="valign-center" /></span>
+      <span class="p-t-5 p-l-5" *ngIf="cartItemDetails.food_type == 'Non Veg'"><img src="assets/images/NonVeg.svg" class="valign-center" /></span>
+      <span class="p-l-5">{{cartItemDetails.name }}</span>
+    </div>
+    <div class="col-md-1 no-rightpad pull-right font-bold" align="right">
+      <a (click)="itemRepeatFooter=false;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
+        </svg>
+      </a>
+    </div>
+  </div>  -->
+
+  <div *ngIf="itemRepeatFooter" class="vieworder-foot-white mat-elevation-z4 col-md-12 no-pad wow fadeIn">
+      <div class="row margin-0 pad15" style="background-color:#000; color:#fff">
+        <div class="col-md-11 no-leftpad pull-left font-bold">
+            <span class="p-l-5 valign-center" *ngIf="cartItemDetails.food_type == 'Veg'"><img src="assets/images/Veg.svg" class="valign-center" /></span>
+          <span class="p-l-5 valign-center" *ngIf="cartItemDetails.food_type == 'Non Veg'"><img src="assets/images/NonVeg.svg" class="valign-center" /></span>
+          <span class="p-l-10 text-upper">{{cartItemDetails.name }}</span>
+        </div>
+        <div class="col-md-1 no-rightpad pull-right font-bold" align="right">
+          <a (click)="itemRepeatFooter=false;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#fff" class="valign-center">
+             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
+            </svg>
+          </a>
+        </div>
+      </div> 
+
+  <!-- <div class="col-md-12 p-t-20 p-b-20">
+    <p>Your previous customization</p>
+    <p *ngFor="let x of cartItemDetails.applied_addons; let i=index;" style="font-size:10px">{{ x.heading }} ({{ x.name }})</p>
+  </div>
+  <div class="row margin-0">
+    <div class="col-md-6 pull-left" style="width:50%">
+        <div class="repeat-item text-purple" (click)="iwillchoose()" data-toggle="modal" data-target="#water">CHOOSE AGAIN</div>
+    </div>
+    <div class="col-md-6 pull-right" style="width:50%">
+      <div class="repeat-item text-white head-bg-purple" (click)="onRepeatLastItem();">REPEAT LAST</div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="col-md-12 p-t-10 p-b-10 p-l-20 p-r-20 wow fadeIn">
+    <p class="font-12">Previous customization</p>
+    <p *ngFor="let x of cartItemDetails.applied_addons; let i=index;" class="font-12 col-grey p-t-10">{{ x.heading }} ({{ x.name }})</p>
+  </div>
+  <div class="col-md-12 pad5">
+    <div class="col-md-6 pull-left" style="width:50%">
+      <!-- (click)="onChooseCutomize(); -->
+      <div class="repeat-item text-purple" (click)="iwillchoose()" data-toggle="modal" data-target="#water">CHOOSE AGAIN</div>
+    </div>
+    <div class="col-md-6 pull-right" style="width:50%">
+      <div class="repeat-item text-white head-bg-purple" (click)="onRepeatLastItem();">REPEAT LAST</div>
+    </div>
+  </div>
+</div>
+   
+
+<div *ngIf="!itemRepeatFooter && cartItems > 0" routerLink="/cart/list" class='bill-foot col-md-12 no-pad wow fadeIn'>
+<div class='col-md-6 p-t-5 p-b-5 pull-left font-bold'>
+<span class="p-r-5">{{ cartItems }} item<span *ngIf="cartItems > 1">s</span></span> - <span class="p-l-5">{{ cartTotal }}</span>
+</div>
+<div class='col-md-6 p-t-5 p-b-5 link font-bold pull-right' align='right'>
+<a><span class="p-r-5" style="margin-bottom: 1px;">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+<path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+</span> <span>VIEW ORDER</span> </a>
+</div>
+</div>
+
+<!--#Footer-->
+
+<!--popup1-->
+<div style="display:none;" #opencust data-dismiss="modal">Click here</div>
+
+<div class="modal fade custom-modal" style="z-index: 100000;" *ngIf="show_cust_popup" id="water" tabindex="-1"  role="dialog">
+  <div class="modal-dialog">
+  
+  <!-- Modal content-->
+  <div class="modal-content mat-elevation-z2">
+  <div class="modal-header head-bg-purple" style="padding:15px 5px!important">
+  <div class="container-fluid addnote-top">
+  <div class="col-md-10 pull-left">
+  <h3 class="p-t-10 p-b-15 p-r-10 font-bold">Customization</h3>
+  <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p>
+  </div>
+  <div class="col-md-2 pull-right p-t-20 col-white font-14" align="right">
+  <p class="p-t-5 p-b-10 link font-bold"><a data-dismiss="modal">CANCEL</a></p>
+  </div>
+  </div> 
+  </div>
+  <div class="modal-body p-l-20 p-r-20 p-b-15 p-t-15 modal-overflow"> 
+  <!--content-->
+  <section>
+  <div class="container-fluid">
+  
+    <div *ngFor="let x of item.addons; let i = index" class="row clearfix">
+  <div class="col-md-12 no-pad">
+  
+  <h2 class="font-18 font-bold" style="line-height:50px">{{ x.heading }}</h2>
+  
+  <!-- RADIO -->
+  <div *ngIf="x.type=='either_or'">
+      <span *ngFor="let y of x.options; let j = index">
+        <div class="md-radio col-xs-12 no-pad">
+          <input id="{{i}}{{j}}" type="radio" name="{{x.heading}}" [checked]="j===0" (click)="onSelectOption(x, y)" value="{{y.name}}">
+          <label for="{{i}}{{j}}" class="col-xs-10">{{ y.name }}</label><span *ngIf="y.price > 0" class="col-xs-2 text-right no-rightpad col-hgrey pull-right">{{ y.price }}</span>
+        </div>
+       </span>
+    </div>
+    <!-- #RADIO -->
+
+    <!-- CHECKBOX -->
+    <div *ngIf="x.type=='multiple'">
+      <span *ngFor="let y of x.options; let j = index">
+        <div class="md-checkbox col-xs-12 no-pad margin-0">
+          <input id="{{i}}{{j}}" type="checkbox" name="{{y.answer}}" (click)="onSelectOption(x, y)">
+          <label for="{{i}}{{j}}" class="col-xs-10">{{ y.name }}</label> <span *ngIf="y.price > 0" class="col-xs-2 text-right no-rightpad col-hgrey pull-right">{{ y.price }}</span>
+        </div>
+       </span>
+    </div>
+    <!-- #CHECKBOX -->
+
+ </div>
+</div>
+
+<!-- Special Request -->
+<div class="row clearfix">
+  <div class="col-md-12 no-pad p-t-30">
+    <h2 class="font-18 font-bold" style="line-height:40px">Special requests?</h2>
+    <mat-form-field class="mat-full-width">
+      <input matInput name="special_request" [(ngModel)]="special_request" >
+    </mat-form-field>
+  </div>
+  <div class="clearfix">&nbsp;</div>
+</div>
+<!-- #Special Request -->
+
+  </div>
+  </section>
+  <!--#content-->
+  </div>
+  <div class="modal-footer p-t-15 p-b-15 foot-grad-bg">
+  <div class="col-md-12 p-l-20 p-r-20" (click)="onConfirm()" data-dismiss="modal" align="center">
+    <a class="vieworder-foot-btn mat-elevation-z2 btn" style="border:none">
+<span class="p-r-5">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+<path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+</span> ADD TO ORDER</a></div>
+  </div>
+  </div>
+  
+  </div>
+  </div>
+<!--#popup1-->
+
+<!-- <div class="anim"> -->
+    <!-- <img src="assets/images/feature.svg" class="lazyimage"> -->
+<!-- </div> -->
+<!-- <div>
+  <button (click)="testClick()">Click</button>
+</div> -->

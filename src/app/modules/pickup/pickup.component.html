@@ -1,0 +1,138 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+
+			<span class="headtext p-l-20">
+				<h3 class="h3-style">{{ restaurant_details.branch_name }}</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+<div *ngIf="loaderStatus" class="spin-center">
+	<mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+</div>
+
+<!-- #Top Bar -->
+<section *ngIf="!loaderStatus" class="content">
+	<div class="container-fluid">
+		<div class="row clearfix" id="welcome-content">
+			<div class="col-md-12 p-t-10 no-pad">
+				<h1 class="font-bold font-18">Thank you {{ user_details.name }}</h1>
+			</div>
+
+			<!--card1-->
+			<div class="col-md-12 no-pad m-t-20">
+				<div class="finaldiv">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="finalbg" align="center">
+								<div class="center-div50 pad20 font-18 p-t-40">
+									<!-- <span *ngIf="bill_details.bill_type=='total'">Total Payment</span>
+                  <span *ngIf="bill_details.bill_type!='total'">Your share payable is</span> -->
+									<span>Your order is ready for pickup!.</span>
+								</div>
+							</div>
+							<!-- <div class="finalbg2" align="center"><div class="center-div50 pad20 font-25 p-b-40">{{ bill_details.bill_amount_gst }}</div></div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+			<!--#Card1-->
+
+			<!--card2-->
+			<div *ngIf="restaurant_details.valet_service" (click)="onValet()" class="col-md-12 no-pad">
+				<div class="card">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="col-md-3 pull-left" style="vertical-align:middle;"><img
+									src="assets/images/call-vehicle.svg"></div>
+							<div class="col-md-9">
+								<h2 class="pad-left20" style="line-height:40px">Call for Vehicle</h2>
+							</div>
+							<div class="p2" align="right">Valet Parking</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--#Card2-->
+
+			<!--card3-->
+			<div routerLink="/feedback" class="col-md-12 no-pad">
+				<div class="card">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="col-md-3 pull-left" style="vertical-align:middle;"><img
+									src="assets/images/feedback.svg"></div>
+							<div class="col-md-9">
+								<h2 class="pad-left20" style="line-height:40px">Give Feedback</h2>
+							</div>
+							<div class="p2" align="right">Help Us Improve</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--#Card3-->
+
+			<!--card4-->
+			<div (click)="onHome()" class="col-md-12 no-pad">
+				<div class="card">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="col-md-3 pull-left" style="vertical-align:middle;"><img
+									src="assets/images/order-food.svg"></div>
+							<div class="col-md-9">
+								<h2 class="pad-left20" style="line-height:40px">Order Again</h2>
+							</div>
+							<div class="p2" align="right">Start Over</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--#Card4-->
+
+			<!--card4-->
+			<div routerLink="/myorder" class="col-md-12 no-pad">
+				<div class="card">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="col-md-3 pull-left" style="vertical-align:middle;"><img
+									src="assets/images/view-bill.svg"></div>
+							<div class="col-md-9">
+								<h2 class="pad-left20" style="line-height:40px">My Orders</h2>
+							</div>
+							<div class="p2" align="right">Awaiting Settlement</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--#Card4-->
+
+			<!--card4-->
+			<div (click)="onExit()" class="col-md-12 no-pad">
+				<div class="card">
+					<div class="header">
+						<div class="container-fluid no-pad">
+							<div class="col-md-3 pull-left" style="vertical-align:middle;">
+								<div class="power_btn">
+									<img src="assets/images/power.svg">
+								</div>
+
+							</div>
+							<div class="col-md-9">
+								<h2 class="pad-left20" style="line-height:40px">Exit</h2>
+							</div>
+							<div class="p2" align="right">Scan again</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--#Card4-->
+
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</section>

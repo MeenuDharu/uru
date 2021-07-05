@@ -1,0 +1,17 @@
+.cart-overflow {
+  /* min-height: 200px; */
+  /* height: calc(100vh - 280px); */
+  
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2)
+{
+  .cart-overflow {
+    min-height: 200px;
+    height: calc(100vh - 300px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+} */

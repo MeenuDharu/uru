@@ -1,0 +1,24 @@
+<div *ngFor="let x of socket.NotificationList(); let i=index">
+	<div *ngIf="i<3" class="Notif_Outer" [ngStyle]="{'top.px': i*10, 'z-index': 5000-i}">
+		<div class="col-center" [ngStyle]="{'width.%': 98-(i*3)}">
+			<div class="Notif_Container col-sm-12 no-pad" [ngStyle]="{'opacity': 1-((i*2)/10)}">
+				<div class="col-sm-2 no-pad">
+					<p class="Notif_img" style="margin-bottom:0;"><img class="Notif_image"
+							src="assets/images/notifications_icon.svg" alt="" title=""></p>
+				</div>
+				<div class="col-sm-8" style="float:none">
+					<div class="Notif_text">
+						<h3 class="Notif_title">DiNAMIC</h3>
+						<p class="Notif_title Notif_subtitle">{{ x.name }}</p>
+					</div>
+				</div>
+				<div *ngIf="i===0" class="col-sm-2 no-pad pull-right">
+					<div class="Notif_buttons">
+						<a (click)="socket.closeNotify(x, i);" class="Notif_button">Close</a>
+						<a (click)="socket.showNotify(x, i);" class="Notif_button">Show</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

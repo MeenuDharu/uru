@@ -1,0 +1,450 @@
+/* 
+.tool .tooltip {
+  background: #1a73e9;
+  top: 100%;
+  color: #fff;
+  display: block;
+  left:50px;
+  opacity: 1;
+  pointer-events: auto;
+  position: absolute;
+  width: auto;
+  border-radius:4px;
+  font-size: 12px;
+  line-height: 1.2;
+  -webkit-transform: translateY(10px);
+  -moz-transform: translateY(10px);
+  -ms-transform: translateY(10px);
+  -o-transform: translateY(10px);
+  transform: translateY(10px);
+  -webkit-transition: all .25s ease-out;
+  -moz-transition: all .25s ease-out;
+  -ms-transition: all .25s ease-out;
+  -o-transition: all .25s ease-out;
+  transition: all .25s ease-out;
+  }
+  
+  
+  .tool .tooltip:before {
+    bottom: -20px;
+    content: " ";
+    display: block;
+    padding: 8px;
+    right: 0;
+    position: absolute;
+    width: 100%;
+    margin-right: 20px;
+  }  
+  
+
+  .tool .tooltip:after {
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #1a73e9 7px;
+    content: " ";
+    height: 0;
+    position: absolute;
+    width: 0;
+    margin-top: -6px;
+    margin-right:20px;
+    left:15px;
+  }
+    
+  .tool:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    -webkit-transform: translateY(10px);
+       -moz-transform: translateY(10px);
+        -ms-transform: translateY(10px);
+         -o-transform: translateY(10px);
+            transform: translateY(10px);
+  }
+  
+
+  .lte8 .tool .tooltip {
+    display: none;
+  }
+  
+  .lte8 .tool:hover .tooltip {
+    display: block;
+  }
+   */
+
+   
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+   .home-img
+   {
+     width:50px;
+     height: 50px;
+   }
+
+   .logo-style
+   {
+     border-radius: 50%;
+     background-color: #FFF;
+     padding: 5px;
+   }
+   
+   .menu_img
+   {
+     width: 50px;
+     height: auto;
+   }
+  
+   .alignleft {
+    float: left;
+  }
+  .alignright {
+    float: right;
+  }
+  .h-30
+  {
+    height: 30px;
+  }
+
+  .h-25
+  {
+    height: 25px;
+  }
+  .h-20
+  {
+    height: 20px;
+  }
+  
+   /*New Tooltip*/
+  .p-60
+  {
+  padding-bottom: 60px !important;
+  }
+  .swiper-container
+  {
+    height: auto!important;
+  }
+  .tool .tooltip {
+    background: #17aeeb;
+    top: 100%;
+    color: #fff;
+    display: block;
+    left:80px;
+    /* right: 0; */
+    /*margin-bottom: 15px;
+    padding: 10px;
+    */
+    opacity: 1;
+    pointer-events: auto;
+    position: absolute;
+    min-width: auto;
+    width:65%;
+    padding:10px 0px;
+    border-radius:6px;
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-transform: translateY(10px);
+    -moz-transform: translateY(10px);
+    -ms-transform: translateY(10px);
+    -o-transform: translateY(10px);
+    transform: translateY(10px);
+    -webkit-transition: all .25s ease-out;
+    -moz-transition: all .25s ease-out;
+    -ms-transition: all .25s ease-out;
+    -o-transition: all .25s ease-out;
+    transition: all .25s ease-out;
+    }
+    
+    /* This bridges the gap so you can mouse into the tooltip without it disappearing */
+    .tool .tooltip:before {
+      bottom: -20px;
+      content: " ";
+      display: block;
+      padding: 8px;
+      right: 0;
+      position: absolute;
+      width: 100%;
+      margin-right: 20px;
+    }  
+    
+    /* CSS Triangles - see Trevor's post */
+    .tool .tooltip:after {
+      border-left: solid transparent 8px;
+      border-right: solid transparent 8px;
+      border-bottom: solid #17aeeb 18px;
+      /*top: -8px;*/
+      content: " ";
+      height: 0;
+      /*left: 50%;
+      margin-left: -10px;*/
+      position: absolute;
+      width: 0;
+      margin-top: -26px;
+      margin-right:20px;
+      /* right:0 */
+      left:15px;
+    }
+      
+    .tool:hover .tooltip {
+      opacity: 1;
+      pointer-events: auto;
+      -webkit-transform: translateY(10px);
+         -moz-transform: translateY(10px);
+          -ms-transform: translateY(10px);
+           -o-transform: translateY(10px);
+              transform: translateY(10px);
+    }
+    
+    /* IE can just show/hide with no transition */
+    .lte8 .tool .tooltip {
+      display: none;
+    }
+    
+    .lte8 .tool:hover .tooltip {
+      display: block;
+    }
+
+textarea:focus, input:focus
+{
+  outline: 0;
+}
+
+*:focus 
+{
+  outline: 0;
+}
+
+@media only screen and (min-width: 360px) and (max-width: 640px) and (orientation: landscape){
+  .tool .tooltip {
+    width:45%!important;
+  }
+}
+
+.order-block{
+  opacity: 0.5;  
+}
+.order-block-color{
+  background-color: rgba(0,0,0,0.2);
+}
+.order-block-point{
+  pointer-events: none;
+}
+.valet-block-color{
+  background-color: rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
+.progress-outer
+{
+  color: transparent !important;
+}
+  .spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+  
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+  
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% { 
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
+
+  .h-100-vh
+  {
+      height: calc(100vh - 50px)!important
+  }
+  .h-100
+  {
+      height: 100% !important
+  }
+  .h-calc-75px
+  {
+      height: calc(100% - 75px) !important 
+  }
+  .overflow-y-scroll
+  {overflow-y:scroll}
+  .h-100-280px
+  {
+      height: calc(100% - 280px) !important   
+  }
+.bottom-status-text
+{
+  width:100%;
+  position: absolute;
+  bottom: 0;
+  left:0
+}
+  .h-85
+  {
+height:85% !important
+  }
+  .h-90
+  {
+height:90% !important
+  }
+
+  #rect {
+    position:relative;
+      background: #ccc;
+       width: 100%;
+      height: 260px; 
+       border-radius: 0;
+    } 
+    
+    #rcorner {
+        position: absolute;
+        bottom: -80px;
+        border-radius: 0 0 90% 90%;
+        background: #ccc;
+        width: 100%;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        height: 150px;
+        border-bottom: 12px solid #666;
+    } 
+
+    .progress__svg {
+      transform: rotate(-90deg);
+    }
+    
+    .progress__meter,
+    .progress__value {
+      fill: none;
+    }
+    
+    .progress__meter {
+      stroke: #ccc;
+    }
+    
+    .progress__value {
+      stroke: #4caf50;
+      transition: all;
+    }
+
+
+    
+    /* Show submenu */
+    
+    .submenu {
+      height: 0;
+      overflow: hidden;
+      background: #444359;
+      font-size: 14px;
+      transition: height 0.4s ease;
+    }
+    
+    .submenu li {
+      border-bottom: 1px solid #4b4a5e;
+    }
+    
+    .accordion li:last-child .submenu {
+      border-radius: 0 0 4px 4px;
+    }
+    
+    .accordion li:last-child .submenu li:last-child {
+      border-bottom: 0;
+    }
+    .img-responsive
+    {
+      width: 100%;
+      height: 100%;
+    }
+    .m-t-160
+    {
+      margin-top: 160px;
+    }
+    .submenu a {
+      display: block;
+      text-decoration: none;
+      color: #d9d9d9;
+      padding: 12px;
+      padding-left: 42px;
+      transition: all 0.25s ease-in-out;
+    }
+    
+    .submenu a:hover {
+      background: #b63b4d;
+      color: #fff;
+    }
+
+    
+    @media only screen and (max-device-width:399px)
+    {    
+      .img-pop-width
+      {
+        width: 120px!important;
+      }
+      .center-div100 {
+        width:80%;
+      }
+    
+      .subhead {
+        color: rgba(0,0,0,0.64);
+        font-weight: 700;
+        font-size: 18px;
+    }
+    .pad50 {
+      padding: 20px !important;
+  }
+    .font-15 {
+      font-size: 13px;
+  }
+  .h-100-280px
+  {
+      height: calc(100% - 230px) !important   
+  }
+    }
+
+    @media only screen and (min-device-width:400px) and (max-device-width:568px)
+    {    
+      .img-pop-width
+      {
+        width: 180px!important;
+      }
+      .center-div100 {
+        width:70%;
+      }
+    
+      .h-100-280px
+      {
+          height: calc(100% - 280px) !important   
+      }
+      .subhead {
+        color: rgba(0,0,0,0.64);
+        font-weight: 700;
+        font-size: 18px;
+    }
+    .font-15 {
+      font-size: 13px;
+  }
+      
+
+    }

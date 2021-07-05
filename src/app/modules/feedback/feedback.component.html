@@ -1,0 +1,323 @@
+<app-ios-notify></app-ios-notify>
+
+<!-- <nav class="navbar head-bg-purple">
+<div class="container-fluid">
+<div class="navbar-header">
+<h3 class="p-t-10 p-b-5 p-r-10">
+<a (click)="clickBack()" class="p-r-15">
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+</svg>
+</a>Feedback
+</h3>
+</div>
+</div>
+</nav> -->
+
+
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+			<span class="svg-icon p-l-20">
+				<a (click)="clickBack()" class="p-r-15">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18"
+						fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
+				<h3 class="h3-style">Feedback</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+
+
+
+
+<!-- #Top Bar -->
+<section class="content">
+	<div class="container-fluid">
+		<div class="row clearfix p-l-5 p-r-5" id="vieworder">
+			<div class="col-md-12 no-pad">
+				<mat-card class="radius4 mat-elevation-z2">
+					<form id="smileys" name="feedback" ng-if="feedback_status_form">
+						<div class="col-xs-12 p-t-15 p-b-5 no-pad">
+							<h4>Food Quality</h4>
+						</div>
+						<div class="col-xs-12 no-pad ptb15">
+							
+							<div class="hr-theme-slash-2">
+								<div class="radio-item">
+									<input type="radio" id="ritema1" name="quality" value="1" [(ngModel)]="feedForm.quality">
+									<label for="ritema1"></label>
+									<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.quality == '1' ? 'label-bold class1-b' : 'class1'">Very Poor</div>									
+								</div>
+								
+								<div class="hr-line"></div>
+								<div class="radio-item">
+									<input type="radio" id="ritemb2" name="quality" value="2" [(ngModel)]="feedForm.quality">
+									<label for="ritemb2"></label>
+									<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.quality == '2' ? 'label-bold class2-b' : 'class2'">Poor</div>
+								</div>
+								<div class="hr-line"></div>
+								<div class="radio-item">
+									<input type="radio" id="ritemb3" name="quality" value="3" [(ngModel)]="feedForm.quality">
+									<label for="ritemb3"></label>
+									<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.quality == '3' ? 'label-bold class3-b' : 'class3'">Average</div>
+								</div>
+								<div class="hr-line"></div>
+								<div class="radio-item">
+									<input type="radio" id="ritemb4" name="quality" value="4" [(ngModel)]="feedForm.quality">
+									<label for="ritemb4"></label>
+									<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.quality == '4' ? 'label-bold class4-b' : 'class4'">Satisfactory</div>
+								</div>
+								<div class="hr-line"></div>
+								<div class="radio-item">
+									<input type="radio" id="ritemb5" name="quality" value="5" [(ngModel)]="feedForm.quality">
+									<label for="ritemb5"></label>
+									<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.quality == '5' ? 'label-bold class1-b' : 'class5'"	>Very Good</div>
+								</div>
+							</div>
+
+							<!-- <div class="hr-theme-slash-2">
+								<div class="hr-icon">
+									<div class="width-38px font-italic">Very Poor</div>
+								</div>
+								<div class="hr-line1"></div>
+								<div class="hr-icon">
+									<div class="width-38px font-italic">Poor</div>
+								</div>
+								<div class="hr-line1"></div>
+								<div class="hr-icon">
+									<div class="width-38px font-italic">Average</div>
+								</div>
+								<div class="hr-line1"></div>
+								<div class="hr-icon">
+									<div class="width-38px font-italic">Satisfactory</div>
+								</div>
+								<div class="hr-line1"></div>
+								<div class="hr-icon">
+									<div class="width-38px font-italic">Very Good</div>
+								</div>
+							</div> -->
+							
+						</div>
+						
+			
+						<!--#1-->
+
+						<!--2-->
+						<div class="col-xs-12 no-pad m-t-20">
+							<div class="col-xs-12 p-t-30 p-b-5 no-pad">
+								<h4>Service</h4>
+							</div>
+							<div class="col-xs-12 no-pad ptb15">							
+								<div class="hr-theme-slash-2">
+									<div class="radio-item">
+										<input type="radio" id="service1" name="service" value="1" [(ngModel)]="feedForm.service">
+										<label for="service1"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.service == '1' ? 'label-bold class1-b' : 'class1'">Very Poor</div>	
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="service2" name="service" value="2" [(ngModel)]="feedForm.service">
+										<label for="service2"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.service == '2' ? 'label-bold class2-b' : 'class2'">Poor</div>
+
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="service3" name="service" value="3" [(ngModel)]="feedForm.service">
+										<label for="service3"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.service == '3' ? 'label-bold class3-b' : 'class3'">Average</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="service4" name="service" value="4" [(ngModel)]="feedForm.service">
+										<label for="service4"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.service == '4' ? 'label-bold class4-b' : 'class4'">Satisfactory</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="service5" name="service" value="5" [(ngModel)]="feedForm.service">
+										<label for="service5"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.service == '5' ? 'label-bold class1-b' : 'class5'"	>Very Good</div>
+									</div>
+								</div>
+	
+						
+								
+							</div>
+						</div>
+						<!--#2-->
+
+						<!--3-->
+						<div class="col-xs-12 no-pad m-t-20">
+							<div class="col-xs-12 p-t-30 p-b-5 no-pad">
+								<h4>Pricing</h4>
+							</div>
+							<div class="col-xs-12 no-pad ptb15">
+							
+								<div class="hr-theme-slash-2">
+									<div class="radio-item">
+										<input type="radio" id="pricing1" name="pricing" value="1" [(ngModel)]="feedForm.pricing">
+										<label for="pricing1"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.pricing == '1' ? 'label-bold class1-b' : 'class1'">Very Poor</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="pricing2" name="pricing" value="2" [(ngModel)]="feedForm.pricing">
+										<label for="pricing2"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.pricing == '2' ? 'label-bold class2-b' : 'class2'">Poor</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="pricing3" name="pricing" value="3" [(ngModel)]="feedForm.pricing">
+										<label for="pricing3"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.pricing == '3' ? 'label-bold class3-b' : 'class3'">Average</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="pricing4" name="pricing" value="4" [(ngModel)]="feedForm.pricing">
+										<label for="pricing4"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.pricing == '4' ? 'label-bold class4-b' : 'class4'">Satisfactory</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="pricing5" name="pricing" value="5" [(ngModel)]="feedForm.pricing">
+										<label for="pricing5"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.pricing == '5' ? 'label-bold class1-b' : 'class5'"	>Very Good</div>
+									</div>
+								</div>
+	
+						
+								
+							</div>
+						</div>
+						<!--#3-->
+
+					
+
+
+						<!--4-->
+						<div class="col-xs-12 no-pad m-t-20">
+							<div class="col-xs-12 p-t-30 p-b-5 no-pad">
+								<h4>Safety</h4>
+							</div>
+							<div class="col-xs-12 no-pad ptb15">
+							
+								<div class="hr-theme-slash-2">
+									<div class="radio-item">
+										<input type="radio" id="safety1" name="safety" value="1" [(ngModel)]="feedForm.safety">
+										<label for="safety1"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.safety == '1' ? 'label-bold class1-b' : 'class1'">Very Poor</div>	
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="safety2" name="safety" value="2" [(ngModel)]="feedForm.safety">
+										<label for="safety2"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.safety == '2' ? 'label-bold class2-b' : 'class2'">Poor</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="safety3" name="safety" value="3" [(ngModel)]="feedForm.safety">
+										<label for="safety3"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.safety == '3' ? 'label-bold class3-b' : 'class3'">Average</div>
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="safety4" name="safety" value="4" [(ngModel)]="feedForm.safety">
+										<label for="safety4"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.safety == '4' ? 'label-bold class4-b' : 'class4'">Satisfactory</div>
+
+									</div>
+									<div class="hr-line"></div>
+									<div class="radio-item">
+										<input type="radio" id="safety5" name="safety" value="5" [(ngModel)]="feedForm.safety">
+										<label for="safety5"></label>
+										<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.safety == '5' ? 'label-bold class1-b' : 'class5'"	>Very Good</div>
+									</div>
+								</div>
+	
+								
+							</div>
+						</div>
+						<!--#4-->
+
+							<!--5-->
+							<div class="col-xs-12 no-pad m-t-20">
+								<div class="col-xs-12 p-t-30 p-b-5 no-pad">
+									<h4>Sanitation</h4>
+								</div>
+								<div class="col-xs-12 no-pad ptb15">
+								
+									<div class="hr-theme-slash-2">
+										<div class="radio-item">
+											<input type="radio" id="sanitation1" name="sanitation" value="1" [(ngModel)]="feedForm.sanitation">
+											<label for="sanitation1"></label>
+											<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.sanitation == '1' ? 'label-bold class1-b' : 'class1'">Very Poor</div>	
+										</div>
+										<div class="hr-line"></div>
+										<div class="radio-item">
+											<input type="radio" id="sanitation2" name="sanitation" value="2" [(ngModel)]="feedForm.sanitation">
+											<label for="sanitation2"></label>
+											<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.sanitation == '2' ? 'label-bold class2-b' : 'class2'">Poor</div>
+										</div>
+										<div class="hr-line"></div>
+										<div class="radio-item">
+											<input type="radio" id="sanitation3" name="sanitation" value="3" [(ngModel)]="feedForm.sanitation">
+											<label for="sanitation3"></label>
+											<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.sanitation == '3' ? 'label-bold class3-b' : 'class3'">Average</div>
+										</div>
+										<div class="hr-line"></div>
+										<div class="radio-item">
+											<input type="radio" id="sanitation4" name="sanitation" value="4" [(ngModel)]="feedForm.sanitation">
+											<label for="sanitation4"></label>
+											<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.sanitation == '4' ? 'label-bold class4-b' : 'class4'">Satisfactory</div>
+										</div>
+										<div class="hr-line"></div>
+										<div class="radio-item">
+											<input type="radio" id="sanitation5" name="sanitation" value="5" [(ngModel)]="feedForm.sanitation">
+											<label for="sanitation5"></label>
+											<div  class="width-38px font-italic label-text"  [ngClass]="feedForm.sanitation == '5' ? 'label-bold class1-b' : 'class5'"	>Very Good</div>
+										</div>
+									</div>
+		
+					
+									
+								</div>
+							</div>
+							<!--#5-->
+							<div class="col-xs-12 no-pad m-t-20">
+								<div class="col-xs-12 p-t-30 p-b-5 no-pad">
+									<h4>Suggestions</h4>
+								</div>
+								<div class="col-xs-12 p-t-15 p-b-15 no-pad">
+									
+									<div class="form-group">
+										<label for="name" class="login-label">Your comments</label>
+										<input type="text" name="suggestion" placeholder="" autofocus
+											[(ngModel)]="feedForm.suggestion" #suggestion="ngModel"
+											(input)="feedForm.error_msg=false;" required class="form-control height-3" id="suggestion" >
+			
+									</div>
+								
+								</div>
+
+								</div>
+						<div class="clearfix">&nbsp;</div>
+						<div class="col-xs-12 no-rightpad p-t-15" align="right">
+							<button type="button" (click)="onSubmit()" class="btn btn-link waves-effect">SUBMIT</button>
+						</div>
+
+					</form>
+					<div class="clearfix">&nbsp;</div>
+				</mat-card>
+			</div>
+		</div>
+	</div>
+</section>

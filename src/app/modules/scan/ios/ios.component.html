@@ -1,0 +1,49 @@
+<nav class="navbar head-bg-purple">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<h3 class="p-t-10 p-b-5 p-r-10">Capture Code</h3>
+		</div>
+	</div>
+</nav>
+
+<section>
+	<div  [ngClass]="isChrome ? 'scanbg-webp' : 'scanbg'"class="col-md-12">
+		<div style="position:relative;" class="pad50 m-t-50 m-b-30" align="center">
+			<img src="assets/images/scanbg-icon.svg" class="img-responsive p-t-10">
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="col-md-12">
+		<div class="col-md-12 p-t-20" align="center">
+			<h4 class="col-black">
+				<label class="btn bg-yellow mat-elevation-z2"
+					style="width:100%; color:#000; font-weight:600; font-size:14px">
+					GO TO CAMERA<input type="file" capture="camera" (change)="onFileChange($event)" accept="image/*" />
+				</label>
+			</h4>
+		</div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+	<div class="bottom-text">
+		<div class="center-div80 m-t-70 m-b-30" align="center">
+			<p class="font-15 col-grey">Make sure the captured image contains only the DiNAMIC QR Code</p>
+		</div>
+	</div>
+</section>
+
+<!-- Alert Modal -->
+<div id="openModal" style="display: none;" (click)="alertModal.show();">Open Modal</div>
+<div bsModal #alertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-cart-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+				<p class="col-hgrey">Invalid image</p>
+			</div>
+			<div class="modal-footer p-r-10">
+				<button type="button" class="btn btn-link waves-effect" (click)="alertModal.hide();">TRY AGAIN</button>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</div>

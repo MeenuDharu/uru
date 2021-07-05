@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAC;EACJ,OAAO,EAAE,KAAK;CACf;;AAED,AAAA,KAAK,CAAC;EACJ,KAAK,EAAE,IAAI;EACX,MAAM,EAAC,IAAI;EACX,UAAU,EAAE,OAAO;CACpB",
+    "sources": [
+        "zxing-scanner.component.scss"
+    ],
+    "names": [],
+    "file": "zxing-scanner.component.css"
+}

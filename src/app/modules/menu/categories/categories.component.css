@@ -1,0 +1,23 @@
+.quick-img
+{
+    width:50px
+}
+
+.nonsticky {
+    position: relative;
+    
+  }
+  
+  .sticky {
+    position: fixed;
+    top: 50px; 
+    padding:20px 10px 10px 10px;
+    -webkit-box-shadow:0 10px 45px 5px rgba(0,0,0,.1);box-shadow:0 10px 45px 5px rgba(0,0,0,.1);
+    background-color: #FFF;
+    left:0
+  }
+  .m-b-50
+  {
+    margin-bottom: 50px;
+  }
+

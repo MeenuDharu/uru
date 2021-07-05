@@ -1,0 +1,412 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple">
+  <div class="container-fluid col-md-12" align="center">
+    <div class="navbar-header col-md-11">
+      <img src="assets/images/Dinamic_Logo.png" style="height:60px; width:auto;">
+      <h3>{{ restaurant_details.branch_name }}</h3>
+    </div>
+    <div (click)="userIconClick(userModal, logoutModal)" class="col-md-1 no-pad pull-right">
+      <svg *ngIf="!photo_url" class="acc-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 18 18" fill="#ffffff">
+        <path d="M9 1C4.58 1 1 4.58 1 9s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 2.75c1.24 0 2.25 1.01 2.25 2.25S10.24 8.25 9 8.25 6.75 7.24 6.75 6 7.76 3.75 9 3.75zM9 14.5c-1.86 0-3.49-.92-4.49-2.33C4.62 10.72 7.53 10 9 10c1.47 0 4.38.72 4.49 2.17-1 1.41-2.63 2.33-4.49 2.33z"/>
+      </svg>
+      <img *ngIf="photo_url" style="border:2px solid #ccc;" class="acc-icon" [src]="photo_url" width="30" height="30" />
+    </div>
+  </div> 
+</nav>
+
+<!-- #Top Bar -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row clearfix" id="welcome-content">
+      <div class="col-md-12 p-t-60 no-pad">
+        <h1 class="font-bold">
+          <a>Welcome <span *ngIf="user_name">{{ user_name }}</span></a>
+        </h1>
+        <div class="p1">Start by selecting your desired option</div>
+      </div>
+
+      <!-- Order Food -->
+      <div routerLink="/menu/categories" class="col-md-12 no-pad">
+        <div class="card">
+          <div class="header pad20">
+            <div class="container-fluid no-pad">
+              <div class="col-md-12 no-pad">
+                <div class="col-md-8 no-pad valign-center pull-left">
+                  <div class="col-md-2 no-pad pull-left valign-center">
+                    <img src="assets/images/order-food.svg">
+                  </div>
+                  <div class="col-md-10 valign-center">
+                    <h2>Order Food</h2>
+                  </div>
+                </div>
+                <div class="col-md-4 pull-right no-pad home-righttext">
+                  <div class="p2" *ngIf="cartItems==0" align="right">{{ restaurant_details.total_items }} item<span *ngIf="restaurant_details.total_items > 1">s</span></div>
+                  <div class="p2" *ngIf="cartItems > 0" align="right">{{ cartItems }} item<span *ngIf="cartItems > 1">s</span> in cart</div>
+                </div>
+              </div>                               
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- # Order Food -->
+
+      <!-- Offers -->
+      <div routerLink="/offers" class="col-md-12 no-pad">
+        <div class="card">
+          <div class="header pad20">
+            <div class="container-fluid no-pad">
+              <div class="col-md-12 no-pad">
+                <div class="col-md-8 no-pad valign-center pull-left">
+                  <div class="col-md-2 no-pad pull-left valign-center">
+                    <img src="assets/images/offer.svg">
+                  </div>
+                  <div class="col-md-10 valign-center">
+                    <h2>View Offers</h2>
+                  </div>
+                </div>
+                <div class="col-md-4 pull-right no-pad home-righttext">
+                  <div class="p2" align="right">{{ restaurant_details.offers.length }} offer<span *ngIf="restaurant_details.offers.length > 1">s</span></div>
+                </div>
+             </div>                               
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #Offers -->
+
+      <!-- View Bill -->
+      <div (click)="onOtherService(userModal, '/bill/view')" class="col-md-12 no-pad">
+        <div class="card">
+          <div class="header pad20">
+            <div class="container-fluid no-pad">
+              <div class="col-md-12 no-pad">
+                <div class="col-md-8 no-pad valign-center pull-left">
+                  <div class="col-md-2 no-pad pull-left valign-center">
+                    <img src="assets/images/view-bill.svg">
+                  </div>
+                  <div class="col-md-10 valign-center">
+                    <h2>View Bill</h2>
+                  </div>
+                </div>
+                <div class="col-md-4 pull-right no-pad home-righttext">
+                  <div *ngIf="!billStatus" class="p2" align="right">No order placed</div>
+                  <div *ngIf="billStatus" class="p2" align="right">Awaiting Settlement</div>
+                </div>
+             </div>                               
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #View Bill -->
+
+      <!-- Need Assistance -->
+      <div (click)="waiterModal.show()" class="col-md-12 no-pad">
+        <div class="card">
+          <div class="header pad20">
+            <div class="container-fluid no-pad">
+              <div class="col-md-12 no-pad">
+                <div class="col-md-8 no-pad valign-center pull-left">
+                  <div class="col-md-2 no-pad pull-left valign-center">
+                    <img src="assets/images/waiter.svg">
+                  </div>
+                  <div class="col-md-10 valign-center">
+                    <h2>Need Assistance?</h2>
+                  </div>
+                </div>
+                <div class="col-md-4 pull-right no-pad home-righttext">
+                  <div class="p2" align="right">Call a Waiter</div>
+                </div>
+             </div>                               
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #Need Assistance -->
+
+      <!-- Valet -->
+      <div *ngIf="restaurant_details.valet_service" (click)="onOtherService(userModal, 'valet')" class="col-md-12 no-pad">
+        <div class="card">
+          <div class="header pad20">
+            <div class="container-fluid no-pad">
+              <div class="col-md-12 no-pad">
+                <div class="col-md-8 no-pad valign-center pull-left">
+                  <div class="col-md-2 no-pad pull-left valign-center">
+                    <img src="assets/images/call-vehicle.svg">
+                  </div>
+                  <div class="col-md-10 valign-center">
+                    <h2>Call for Vehicle</h2>
+                  </div>
+                </div>
+                <div class="col-md-4 pull-right no-pad home-righttext">
+                  <div class="p2" align="right">Valet Parking</div>
+                </div>
+              </div>                               
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #Valet -->
+      
+    </div>
+  </div>
+</section>
+
+<!-- Waiter modal -->
+<div bsModal #waiterModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-waiter">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-header bg-purple">
+				<div class="col-md-12">
+          <h4 class="modal-title" id="defaultModalLabel">CALL WAITER</h4>
+				</div>
+      </div>
+      <div class="modal-body p-t-25 p-b-25 p-l-30 p-r-15"><p>Require assistance?</p></div>
+      <div class="modal-footer p-r-15 p-t-15 p-b-10">
+        <button type="button" (click)="waiterModal.hide()" class="btn btn-link btn-cancel waves-effect">NO</button>
+        <button type="button" (click)="onWaiterCall(userModal, waiterModal)" class="btn btn-link waves-effect">YES</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User modal -->
+<div bsModal #userModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-user">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-header">
+				<div align="right">
+          <a (click)="userModal.hide()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+              <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+        <div align="center" class="login-logo">
+          <img src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+        </div>
+        <p align="center" class="font-15 m-t-10">Confirm With</p>
+        <div class="clearfix">&nbsp;</div>
+        <div class="col-md-12 no-pad m-t-10" id="social">
+          <div class="col-md-6 pull-left">
+            <a (click)="socialSignIn(userModal, 'facebook')">
+              <img src="assets/images/new/facebook.svg" class="mat-elevation-z2 img-circle fb-icon">
+              <div class="font-15 font-bold pad10">Facebook</div>
+            </a>
+          </div>
+         
+          <div class="col-md-6 pull-right">
+            <a (click)="socialSignIn(userModal, 'google')">
+              <img src="assets/images/new/google.svg" class="mat-elevation-z2 img-circle fb-icon">
+              <div class="font-15 font-bold pad10">Google</div>
+            </a>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12 m-t-20 m-b-20 hr-or"></div>
+      </div>
+      <div class="modal-footer p-b-15 p-l-5 p-r-5">
+        <div class="col-md-12 no-pad">
+          <div class="col-md-6 pull-left" align="center">
+            <button type="button" (click)="userModal.hide(); loginModal.show(); loginForm={}; lp_hide=true;" class="btn btn-link col-grey waves-effect" data-dismiss="modal">LOGIN</button>
+          </div>
+          <div class="col-md-6 pull-right" align="center">
+            <button type="button" (click)="userModal.hide(); signupModal.show(); signupForm={}; sp_hide=true;" class="btn btn-link col-grey waves-effect">SIGN UP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Signup modal -->
+<div bsModal #signupModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-signup">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-header">
+				<div align="right">
+          <a (click)="signupModal.hide()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+              <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <form class="mat-form" autocomplete="off" (ngSubmit)="userRegister(signupModal, otpModal)" ngNativeValidate>
+        <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+          <div class="login-logo">
+            <img src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+          </div>
+          <div class="clearfix">&nbsp;</div>
+          <div class="col-md-12 no-pad">
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput name="name" placeholder="Name" [(ngModel)]="signupForm.name" #name="ngModel" (input)="signupForm.error_msg=false;" required >
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput type="tel" name="mobile" placeholder="Mobile" [(ngModel)]="signupForm.mobile" #mobile="ngModel" (input)="signupForm.error_msg=false;" pattern=".{10,10}" title="Invalid mobile number" maxlength="10" appNumberOnly required >
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput type="email" name="email" placeholder="Email" [(ngModel)]="signupForm.email" #email="ngModel" (input)="signupForm.error_msg=false;" required >
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput name="password" placeholder="Password" [(ngModel)]="signupForm.password" #password="ngModel" (input)="signupForm.error_msg=false;" [type]="sp_hide? 'password': 'text'" pattern=".{6,}" title="Six or more characters" required >
+              <mat-icon matSuffix (click)="sp_hide = !sp_hide">{{sp_hide? 'visibility_off': 'visibility'}}</mat-icon>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput type="password" name="confirm_password" placeholder="Confirm Password" [(ngModel)]="signupForm.confirm_password" #confirm_password="ngModel" (input)="signupForm.error_msg=false;" pattern=".{6,}" title="Six or more characters" required >
+              <mat-icon matSuffix><i style="color: #32CD32;" *ngIf="signupForm.confirm_password && signupForm.password==signupForm.confirm_password" class="material-icons">check_circle</i></mat-icon>
+            </mat-form-field>
+            <div align="left" *ngIf="signupForm.confirm_password && signupForm.password!=signupForm.confirm_password">
+              <div class="error-msg">Mismatch password</div>
+            </div>
+          </div>
+          <div *ngIf="signupForm.error_msg" class="col-md-12 no-pad"><p class="error-msg">{{ signupForm.error_msg }}</p></div>
+        </div>
+        <div class="modal-footer p-t-15 p-b-20">
+          <div align="center">
+            <button type="submit" [disabled]="signupForm.password!=signupForm.confirm_password || signupForm.submit" class="btn log-btn waves-effect">
+              SIGN UP <i [ngClass]="signupForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+  <!-- OTP Modal -->
+  <div bsModal #otpModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-otp">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+    <div class="modal-header">
+    <div align="right">
+    <a (click)="otpModal.hide(); showLabel();">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+    </svg>
+    </a>
+    </div>
+    </div>
+    <form class="mat-form" autocomplete="off" (ngSubmit)="userOtpValidate(otpModal)" ngNativeValidate>
+    <div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+    <div class="login-logo">
+    <img src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+    </div>
+    <div class="clearfix">&nbsp;</div>
+    <p class="p-t-10 p-b-10">OTP</p>
+    <div class="col-md-12 no-pad mat-elevation-z2 login-page">
+    <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+    <input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" appNumberOnly required >
+    </mat-form-field>
+    <p class="p-t-10" style="color:white">OTP has been sent to your mail Id.</p>
+    <div class="modal-footer p-t-15 p-b-20">
+      <div align="center">
+      <button type="submit" class="btn log-btn waves-effect">SUBMIT</button>
+      </div></div>
+  
+    </div>
+    <div *ngIf="otpForm.error_msg" class="col-md-12 no-pad"><p class="error-msg">{{ otpForm.error_msg }}</p></div>
+    </div>
+    
+    </form>
+    </div></div></div>
+
+<!-- Login modal -->
+<div bsModal #loginModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-login">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-header">
+				<div align="right">
+          <a (click)="loginModal.hide()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+              <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <form class="mat-form" autocomplete="off" (ngSubmit)="userLogin(loginModal)" ngNativeValidate>
+        <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+          <div class="login-logo">
+            <img src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+          </div>
+          <div class="clearfix">&nbsp;</div>
+          <div class="col-md-12 no-pad p-t-10">
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput type="text" name="username" placeholder="E-mail / Mobile Number" [(ngModel)]="loginForm.username" #username="ngModel" (input)="loginForm.error_msg=false;" required >
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput name="password" placeholder="Password" [(ngModel)]="loginForm.password" #password="ngModel" (input)="loginForm.error_msg=false;" [type]="lp_hide? 'password': 'text'" required >
+              <mat-icon matSuffix (click)="lp_hide = !lp_hide">{{lp_hide? 'visibility_off': 'visibility'}}</mat-icon>
+            </mat-form-field>
+          </div>
+          <div *ngIf="loginForm.error_msg" class="col-md-12 no-pad"><p class="error-msg">{{ loginForm.error_msg }}</p></div>
+          <div class="col-md-12 no-pad p-t-10">
+            <p (click)="loginModal.hide(); forgotForm={}; forgotModal.show();">Forgot Password?</p>
+          </div>
+        </div>
+        <div class="modal-footer p-t-15 p-b-20">
+          <div align="center">
+            <button type="submit" class="btn log-btn waves-effect">LOGIN</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot modal -->
+<div bsModal #forgotModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-fprgot">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-header">
+				<div align="right">
+          <a (click)="forgotModal.hide();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+              <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <form class="mat-form" autocomplete="off" (ngSubmit)="forgotRequest();" ngNativeValidate>
+        <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+          <div class="login-logo">
+            <img src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+          </div>
+          <div class="clearfix">&nbsp;</div>
+          <div class="col-md-12 no-pad p-t-0">
+            <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+              <input matInput type="email" name="email" placeholder="Email" (input)="forgotForm.error_msg=false;" [(ngModel)]="forgotForm.email" #email="ngModel" required >
+            </mat-form-field>
+          </div>
+          <div *ngIf="forgotForm.success_msg" class="col-md-12 no-pad"><p class="success-msg">{{ forgotForm.success_msg }}</p></div>
+          <div *ngIf="forgotForm.error_msg" class="col-md-12 no-pad"><p class="error-msg">{{ forgotForm.error_msg }}</p></div>
+        </div>
+        <div class="modal-footer p-t-15 p-b-20">
+          <div *ngIf="!forgotForm.success_msg" align="center">
+            <button type="submit" [disabled]="forgotForm.submit" class="btn log-btn waves-effect">
+              SUBMIT <i [ngClass]="forgotForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+            </button>
+          </div>
+          <div *ngIf="forgotForm.success_msg" align="center">
+            <button type="button" (click)="forgotModal.hide();" class="btn log-btn waves-effect">CLOSE</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Logout modal -->
+<div bsModal #logoutModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-logout">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-body p-t-25 p-b-25 p-l-30 p-r-15"><p>Are you sure to logout?</p></div>
+      <div class="modal-footer p-r-15 p-t-15 p-b-10">
+        <button type="button" class="btn btn-link btn-cancel waves-effect" (click)="logoutModal.hide()">NO</button>
+        <button type="button" class="btn btn-link waves-effect" (click)="onLogout()">YES</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<router-outlet>
+
+	<!-- Alert Modal -->
+	<div style="display: none;" id="sessionAlertModal" (click)="sessionAlertModal.show();">Open Modal</div>
+	<div bsModal #sessionAlertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}"
+		tabindex="-1" role="dialog" aria-labelledby="dialog-cart-confirm">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content mat-elevation-z2">
+				<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+					<p class="col-hgrey">Your last session expired.</p>
+				</div>
+				<div class="modal-footer p-r-10">
+					<button type="button" class="btn btn-link waves-effect"
+						(click)="closeModal(sessionAlertModal);">CLOSE</button>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div style="display: none;" id="networkAlertModal" (click)="networkAlertModal.show();">Open Modal</div>
+	<div bsModal #networkAlertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}"
+		tabindex="-1" role="dialog" aria-labelledby="dialog-cart-confirm">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content mat-elevation-z2">
+				<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+					<p class="col-hgrey">Network Error.</p>
+				</div>
+				<div class="modal-footer p-r-10">
+					<button type="button" class="btn btn-link waves-effect"
+						(click)="closeModalNetwork(networkAlertModal);">CLOSE</button>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div style="display: none;" id="alertDetailsModal" (click)="alertDetailsModal.show();">Open Modal</div>
+	<div bsModal #alertDetailsModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}"
+		tabindex="-1" role="dialog" aria-labelledby="dialog-model">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content mat-elevation-z2">
+				<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+					<!-- <p class="col-hgrey">You are already logged into Table {{ apiService.tableName ? apiService.tableName  : 'ttt' }}.</p> -->
+
+					<p class="col-hgrey">You are already logged into
+						{{userService.tableName ? userService.tableName  : ''}}.</p>
+				</div>
+				<div class="modal-footer p-r-10">
+					<button type="button" class="btn btn-link waves-effect"
+						(click)="closeModal(alertDetailsModal);">Exit</button>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+
+</router-outlet>

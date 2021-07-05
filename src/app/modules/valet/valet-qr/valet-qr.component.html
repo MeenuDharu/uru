@@ -1,0 +1,37 @@
+<!-- <div class="splash-bg2"></div>
+<div class="center-div100 splash-logo m-t-100" align="center">
+  <div class="splash-logo-img"></div>
+</div> -->
+
+<div id="loader" class="pr__dark" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+
+	<span class="progress">
+		<div class="mobile-preloader">
+				<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+</div>
+
+<!-- Alert Modal -->
+<div #openModal style="display: none;" (click)="alertModal.show()">Open Modal</div>
+<div bsModal #alertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-cart-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+				<p class="col-hgrey">Temporarily service unavailable.</p>
+			</div>
+			<div class="modal-footer p-r-10">
+				<button type="button" class="btn btn-link waves-effect" (click)="closeModal(alertModal);">CLOSE</button>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+</div>

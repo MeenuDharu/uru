@@ -1,0 +1,75 @@
+<div *ngIf="!loaderStatus">
+	<form *ngIf="recoveryStatus" class="mat-form" autocomplete="off" (ngSubmit)="onPwdUpdate(confirmModal);"
+		ngNativeValidate>
+		<h4 class="p-t-50" align="center">Password Recovery</h4>
+		<div class="p-t-30 p-l-20 p-r-20" align="center">
+			<div class="login-logo">
+				<img *ngIf="isChrome" src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+				<img *ngIf="!isChrome" src="assets/images/dinamic-blogo.jpg" class="img-responsive">
+			</div>
+			<div class="clearfix">&nbsp;</div>
+			<div class="col-md-12 no-pad login-page">
+				<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+					<input matInput name="password" placeholder="New Password" [(ngModel)]="pwdForm.password"
+						#password="ngModel" (input)="pwdForm.error_msg=null;" [type]="p_hide? 'password': 'text'"
+						title="Six or more characters" required>
+					<!-- pattern=".{6,}" -->
+					<mat-icon matSuffix (click)="p_hide = !p_hide">{{p_hide? 'visibility_off': 'visibility'}}</mat-icon>
+				</mat-form-field>
+
+				<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+					<input matInput name="confirm_password" placeholder="Confirm New Password"
+						[(ngModel)]="pwdForm.confirm_password" #confirm_password="ngModel"
+						(input)="pwdForm.error_msg=null;" [type]="cp_hide? 'password': 'text'"
+						title="Six or more characters" required>
+					<mat-icon matSuffix><i style="color: #32CD32;"
+							*ngIf="pwdForm.confirm_password && pwdForm.password==pwdForm.confirm_password"
+							class="material-icons">check_circle</i></mat-icon>
+				</mat-form-field>
+				<div align="left" *ngIf="pwdForm.confirm_password && pwdForm.password!=pwdForm.confirm_password">
+					<div class="error-msg"> &#x25B9; Mismatch password</div>
+				</div>
+				<div align="left" *ngIf="showLengthValidationMsg">
+					<div class="error-msg"> &#x25B9; Password length should be greater than 6.</div>
+				</div>
+				<div class="p-t-30" align="center">
+					<button [disabled]="pwdForm.password!=pwdForm.confirm_password || pwdForm.submit" type="submit"
+						class="btn log-btn waves-effect">
+						SUBMIT <i [ngClass]="pwdForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+					</button>
+				</div>
+			</div>
+			<div *ngIf="pwdForm.error_msg" class="col-md-12 no-pad">
+				<p class="error-msg">{{ pwdForm.error_msg }}</p>
+			</div>
+		</div>
+	</form>
+
+	<div *ngIf="!recoveryStatus" class="row">
+		<div align="center" class="col-md-12 p-t-50">
+			<img src="assets/images/link_expired.webp" *ngIf="isChrome" class="img-responsive" />
+			<img src="assets/images/link_expired.png" *ngIf="!isChrome" class="img-responsive" />
+			<h5 class="p-t-30">{{ responseData }}</h5>
+		</div>
+	</div>
+</div>
+
+<div bsModal #confirmModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+				<div class="col-md-12 no-pad p-t-30">
+					<br>
+					<h5>Password updated successfully</h5><br>
+				</div>
+			</div>
+			<div class="modal-footer p-t-30 p-b-20">
+				<div align="center">
+					<button type="button" (click)="closeModal(confirmModal);"
+						class="btn log-btn waves-effect">CLOSE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

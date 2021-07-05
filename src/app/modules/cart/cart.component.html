@@ -1,0 +1,1531 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+			<span class="svg-icon p-l-20">
+				<a routerLink="/menu/items" class="p-r-10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
+				<h3 class="h3-style">Order</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+
+
+<!-- Pre loader -->
+
+<div *ngIf="loaderStatus" id="loader" class="pr__dark" style="z-index: 9999;" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+	<span class="progress">
+		<div class="mobile-preloader">
+				<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+</div>
+
+<!-- Pre loader End -->
+
+<section id="customoverlay">
+
+</section>
+<section *ngIf="!cart.length" class="animate fadeIn wrapper" data-wow-delay="400ms">
+	<div id="screenbg" class="col-md-12">
+		<div style="position:relative;" class="pad50 m-t-50 m-b-30" align="center">
+			<img src="assets/images/Emptylist-icon_new.svg" class="img-responsive">
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="row" style="margin:0">
+
+		<div class="col-xs-12 pull-left">
+			<h2 class="subhead">Status</h2>
+			<h4 class="font-15 p-t-20 col-black">NO ITEMS FOUND</h4>
+
+		</div>
+		<!-- <div class="col-md-8 pull-right no-rightpad" align="right">
+        <button type="button" class="btn bg-purple text-white mat-elevation-z2 btnstylenew"><span class="font-bold font-16 p-l-5 text-upper">Start ordering</span>
+          </button>
+    </div> -->
+	</div>
+	<div class="col-xs-12 p-t-70" align="center">
+		<button type="button" style="width:100%" routerLink="/menu/categories"
+			class="btn bg-purple text-white mat-elevation-z2 btnstylenew"><span
+				class="font-bold font-16 p-l-5 text-upper">Start ordering</span>
+		</button>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+	<div class="bottom-text">
+		<div class="center-div100 m-t-70 m-b-30" align="center">
+			<p class="font-15 col-hgrey">We're still waiting for your order</p>
+		</div>
+	</div>
+</section>
+
+<section *ngIf="paymentFailed && cart.length" class="animate  fadeIn wrapper">
+	<div id="screenbg" class="col-md-12">
+		<div style="position:relative;" class="pad50 m-t-50 m-b-30" align="center">
+			<img src="assets/images/Emptylist-icon_new.svg" class="img-responsive">
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="col-md-12">
+		<h2 class="subhead">Status</h2>
+		<div class="col-md-11 pull-left no-leftpad p-t-20">
+			<h4 class="font-15 col-black">Payment Failed</h4>
+		</div>
+		<div class="col-md-1 pull-right p-t-10 no-rightpad" align="right"><img src="assets/images/assignment1.svg">
+		</div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+	<div class="bottom-text">
+		<div class="center-div100 m-t-70 m-b-30" align="center">
+			<p class="font-15 col-black30">We're still waiting for your order</p>
+		</div>
+	</div>
+</section>
+
+<section id="cartarea" class="content animate matcard-mb120 fadeIn wrapper" data-wow-delay="400ms"
+	*ngIf="cart.length && !paymentFailed">
+	<div class="row clearfix" id="cart-summary">
+		<div class="col-md-12 p-r-20 p-l-20 p-t-20 animate fadeIn">
+			<mat-card class="radius4 mat-elevation-z4">
+				<h3 class="font-20 col-black m-0">Summary</h3>
+				<div class="row cart-overflow"
+					[ngClass]="userService.placed_order_status && cart.length ? 'cart-viewstatus': ''" id="main-cart">
+					<div *ngFor="let x of cart; let i = index" class="col-xs-12 no-pad p-t-10">
+
+						<div class="col-xs-6 no-pad" style="padding:2px 0">
+							<div class="col-md-12 no-pad">
+								<div class="col-xs-12 p-r-0 pull-right">
+									<span class="font-13 font-bold text-upper word-brk">{{ x.name }}</span>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<div class="col-xs-6 no-pad" align="right">
+							<div class="col-md-12 valign-center no-pad">
+								<div class="col-md-2 pull-left no-pad">
+									<!-- <div (click)="onRemoveItem(i);"> -->
+									<div (click)="removeItemFromCart(x,x.cart_id);">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+											viewBox="0 0 24 24" fill="#cacaca" stroke-width="2" stroke="#cacaca">
+											<path d="M19 13H5v-2h14v2z"></path>
+										</svg>
+									</div>
+								</div>
+								<div class="col-md-4 pull-left">
+									<div class="item-btnbggrey item-count2">{{ x.quantity }}</div>
+								</div>
+								<div class="col-md-2 no-pad pull-left">
+									<!-- <div (click)="onAddItem(i);"> -->
+									<div (click)="addItemToCart(x,x.cart_id);">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+											viewBox="0 0 24 24" fill="#212121" stroke-width="1" stroke="#212121">
+											<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+										</svg>
+									</div>
+								</div>
+								<div class="col-md-4 p-l-10 pull-right">
+									<div class="font-14 font-bold col-hgrey" style="width:30px">
+										{{ x.sold_price * x.quantity }}</div>
+								</div>
+							</div>
+							<!-- <div *ngIf="cart.length == i+1"><span *ngIf="loaderFalseStatus(cart.length,i)">{{cart.length}}-------------{{i}}</span></div> -->
+						</div>
+
+						
+						<div *ngFor="let y of x.applied_addons;" class="col-xs-12">
+							<span class="font-12 col-hgrey" >{{ y.heading }} ({{ y.name }})</span>
+						</div>
+
+
+						<div class="col-xs-12 p-l-5 p-r-5" *ngIf="x.applied_addons.length">
+							<a (click)="viewCustomizations(x,customizationmodal,x.cart_id)"
+								class="view-customlink btn btn-link font-bold waves-effect font-12"
+								style="letter-spacing: normal!important">VIEW CUSTOMIZATIONS</a>
+						</div>
+						<div class="col-xs-12 p-l-5 p-r-5" *ngIf="x.applied_addons.length == 0 && x.requests == ''">
+							<a (click)="viewCustomizations(x,customizationmodal,x.cart_id)"
+								class="view-customlink btn btn-link font-bold waves-effect font-12"
+								style="letter-spacing: normal!important">ADD CUSTOMIZATIONS</a>
+						</div>
+						<div class="col-xs-12 p-l-5 p-r-5" *ngIf="x.applied_addons.length == 0 && x.requests != ''">
+							<a (click)="viewCustomizations(x,customizationmodal,x.cart_id)"
+								class="view-customlink btn btn-link font-bold waves-effect font-12"
+								style="letter-spacing: normal!important">VIEW CUSTOMIZATIONS</a>
+						</div>
+
+						
+
+					</div>
+
+
+				</div>
+				<!--foot-->
+				<div class="row no-pad hr-border2 p-t-0" ></div>    
+				<div class="col-xs-12 no-pad col-black" >
+
+  <div class="col-xs-6 px-0 font-12 font-bold500 col-grey p-b-5" align="left" >
+    <p class="font-black font-bold c">Item Total</p>
+    </div>
+    <div class="col-xs-6 no-rightpad font-12 col-grey font-bold500 p-b-5" align="right">
+      <p class="font-black font-bold"><span>{{ cartTotal | currency:"INR" }}</span></p>
+      </div>
+      <div class="col-xs-6 px-0 font-12 font-bold500 col-grey p-b-5" align="left" >
+        <p class="font-black font-bold">Taxes</p>
+        </div>
+        <div class="col-xs-6 no-rightpad font-12 font-bold500 col-grey p-b-5" align="right">
+          <p class="font-black font-bold"><span>{{ cartTax | currency:"INR" }}</span></p>
+		  </div>
+		  <div class="col-xs-6 px-0 font-12 font-bold500 col-grey p-b-5" align="left" *ngIf="!this.take_aways">
+			<p class="font-black font-bold"><span> <span style="display:none;"  *ngIf="customer_editable_sc"><input type="checkbox"   name="serviceStatus" [(ngModel)]="serviceStatus" (change)="checkValue($event)"> </span>Service charge ({{restaurantDetails.service_charge}}%)</span></p>
+			</div>
+			<div class="col-xs-6 no-rightpad font-12 font-bold500 col-grey p-b-5" align="right" *ngIf="!this.take_aways" >				
+			  <p class="font-black font-bold"><span>{{ userService.service_charge | currency:"INR" }}</span></p>
+			  </div>
+			<div class="col-xs-8 px-0  font-bold500" align="left" >
+			<p class="font-black font-bold"> <span class="font-14">Pay</span><span class="font-12"> (Inclusive of taxes)</span> </p>
+			</div>
+			<div class="col-xs-4 px-0 font-15 font-bold500 " align="right">
+				<p class="font-black font-bold"><span>{{ cartIncTax+userService.service_charge | currency:"INR": true : '1.0-0' }}</span></p>
+				</div>
+			</div>
+				<div class="clearfix"></div>
+
+
+
+				<!-- <div class="row no-pad opacity6 m-t-0"><hr></div> -->
+				<!--Item Total-->
+				<!-- <div class="col-xs-12 no-pad p-t-10">
+<div class="col-xs-8 no-pad"><span class="font-12 font-bold col-hgrey">Item Total</span></div>
+<div class="col-xs-4 no-rightpad" align="right"><span class="font-12 font-bold col-hgrey">{{ cartTotal }}</span></div>
+</div> -->
+				<!--Tax-->
+				<!-- <div class="col-xs-12 no-pad p-t-10">
+<div class="col-xs-8 no-pad"><span class="font-12 font-bold col-hgrey">Taxes</span></div>
+<div class="col-xs-4 no-rightpad" align="right"><span class="font-12 font-bold col-hgrey">{{ tax }}</span></div>
+</div> -->
+				<!--Pay-->
+				<!-- <div class="col-xs-12 no-pad p-t-10">
+<div class="col-xs-8 no-pad"><span class="font-16 font-bold">Pay</span> <span class="font-12 font-bold"> (Inclusive of taxes) </span></div>
+<div class="col-xs-4 no-rightpad" align="right"><span class="font-16 font-bold col-black">{{ cartIncTax }}</span></div>
+</div> -->
+
+				<div class="clearfix"></div>
+				<!--#foot-->
+			</mat-card>
+			<!-- <div class="cart-bshadow"></div> -->
+			<!-- <div class="p-b-30">&nbsp;</div> -->
+
+		</div>
+	</div>
+</section>
+
+<div class="clearfix">&nbsp;</div>
+<!-- Footer -->
+<footer class="page-footer ">
+	<div class="footer1 col-black30">Government taxes extra as applicable.</div> 
+	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div> 
+	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered by</span><img src="assets/images/footer-logo.svg" ></a></div>
+</footer>
+  <!-- Footer -->
+<!--Footer-->
+<div *ngIf="cart.length && userDetails && !hideConfirmOrder && !take_aways" (click)="confirmModal.show();"
+	class="bill-foot slide-in-bottom text-right p-r-20 ">
+	<!-- <div class="col-md-6 p-t-5 p-b-5 no-leftpad pull-left font-bold500">
+        <span class="p-r-5">{{ cartItems }} item<span *ngIf="cartItems > 1">s</span></span>
+		</div> -->
+			
+				<a class="font-bold col-white font-14" >
+				<span class="p-r-5" style="margin-bottom: 1px;">						
+				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+					</span> <span>CONFIRM ORDER</span></a>
+			
+		
+	
+</div>
+
+<div *ngIf="cart.length && userDetails && !hideConfirmOrder && take_aways" (click)="paymentModal.show();"
+	class="bill-foot slide-in-bottom text-right p-r-20">
+	<!-- <div class="col-md-6 p-t-5 p-b-5 no-leftpad pull-left font-bold500">
+      <span class="p-r-5">{{ cartItems }} item<span *ngIf="cartItems > 1">s</span></span>
+      </div> -->
+
+		
+		<a class="font-bold col-white font-14">
+			<span class="p-r-5" style="margin-bottom: 1px;">
+				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+			</span> <span>CONFIRM ORDER</span></a>
+			
+	
+</div>
+
+<div *ngIf="cart.length && !userDetails && !hideConfirmOrder" (click)="socialLogo=true;newUserModal.show(); hideLabel();this.mobile_num = '';
+			this.userService.continueBtn = false;
+			this.userService.loginSocialDisable = true;"
+	class="bill-foot slide-in-bottom  text-right p-r-20">
+	<!-- <div class="col-md-6 p-t-5 p-b-5 no-leftpad pull-left font-bold500">
+      <span class="p-r-5">LOGIN</span> | <span class="p-l-5">SIGNUP</span>
+      </div> -->
+
+	
+		<a class="font-bold col-white font-14 valign-center">
+			<span class="p-r-5">
+				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+			</span> <span>CONFIRM ORDER</span></a>
+		
+
+</div>
+
+<!-- 
+      Meenu
+      <div *ngIf="cart.length && hideConfirmOrder" style="opacity: 0.6;" class="bill-foot col-md-12 no-pad">
+      
+      <div class='col-md-6 p-t-5 p-b-0 link pull-right font-bold loading' align='right'>
+      <a class="font-bold col-white font-14">
+      <span class="p-r-5" style="margin-bottom: 1px;"> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg> 
+      </span> <span class="">CONFIRM ORDER</span></a>
+      </div>
+  </div>  -->
+
+
+<div *ngIf="hideConfirmOrder" style="z-index: 9999;" id="loader" class="pr__dark"  [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+
+	<span class="progress">
+		<div class="mobile-preloader">
+				<div class="pre-container w-100">
+				<div class="logo-circle">
+					<div class="center">
+						<img src="assets/images/Dinamic_Logo.svg">
+					</div>					
+				</div>
+				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
+			</div>
+		</div>
+	</span>
+</div>
+
+
+
+
+
+<div class='bill-foot2 valign-center row no-pad slide-in-bottom' (click)="goToOrderStatus()"
+	*ngIf="userService.placed_order_status && cart.length && userDetails">
+	<div class='col-xs-6 p-r-0 p-t-5 p-b-0 pull-left font-bold'>
+		<div class="row valign-center">
+			<div class="col-xs-2" style="margin-top:-2px;">
+				<span style="padding-top:4px"><img class="valign-center" src="assets/images/assignment-icon.svg"></span>
+			</div>
+			<div class="col-xs-10 p-r-0">
+				<p class="">{{userService.order_number}}</p>
+				<p class="font-12 col-black30">{{userService.awaitingcontent}}</p>
+			</div>
+		</div>
+	</div>
+	<div class='col-xs-6 p-b-0 btn-link text-purple font-bold pull-right' align='right'>
+		<a class="text-purple valign-center"><span><img class="valign-center"
+					src="assets/images/viewstatus-icon.svg"></span>
+			<span class="p-l-5 p-t-2">VIEW STATUS</span></a>
+	</div>
+</div>
+
+<div class='bill-foot2 valign-center row no-pad slide-in-bottom' (click)="goToOrderStatus()" style="bottom:0;"
+	*ngIf="userService.placed_order_status && cart.length == 0 && userDetails">
+	<div class='col-xs-6 p-r-0 p-t-5 p-b-0 pull-left font-bold'>
+		<div class="row valign-center">
+			<div class="col-xs-2" style="margin-top:-2px;">
+				<span style="padding-top:4px"><img class="valign-center" src="assets/images/assignment-icon.svg"></span>
+			</div>
+			<div class="col-xs-10 p-r-0">
+				<p class="">{{userService.order_number}}</p>
+				<p class="font-12 col-black30">{{userService.awaitingcontent}}</p>
+			</div>
+		</div>
+	</div>
+	<div class='col-xs-6 p-b-0 btn-link text-purple font-bold pull-right' align='right'>
+		<a class="text-purple valign-center"><span><img class="valign-center"
+					src="assets/images/viewstatus-icon.svg"></span>
+			<span class="p-l-5 p-t-2">VIEW STATUS</span></a>
+	</div>
+</div>
+<!--#Footer-->
+
+<!-- Confirm Modal -->
+<div bsModal #confirmModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-md-12">
+					<h4 class="modal-title" id="defaultModalLabel">CONFIRM ORDER</h4>
+				</div>
+			</div>
+			<div class="modal-body p-t-25 p-b-25 p-l-20 p-r-15">
+				<p class="col-hgrey">Are you sure you want to place this order?</p>
+			</div>
+			<div class="modal-footer p-r-10 p-t-15 p-b-10">
+				<button type="button" class="btn btn-link btn-cancel waves-effect"
+					(click)="confirmModal.hide();">NO</button>
+				<button [disabled]="!showYesBtn" type="button" class="btn btn-bg"
+					(click)="onConfirmInsta(confirmModal,paymentFailedModal);">YES</button>
+				
+				<!-- <a [href]="REQUEST_URL" rel="im-checkout" data-behaviour="remote" data-style="light" data-text="Checkout With Instamojo">Checkout</a> -->
+				<!-- <button type="button" class="btn btn-link waves-effect" (click)="onConfirm();">YES</button> -->
+				<!-- <button type="button" class="btn btn-link waves-effect" (click)="paywithrazor($event)" id="rzp-button2">fetch</button> -->
+				<!-- <button type="button" class="btn btn-link waves-effect" (click)="razor_submit_standard_checkout($event, confirmModal, paymentFailedModal)" id="rzp-button3">YES</button> -->
+				<!-- <button type="button" class="btn btn-link waves-effect" (click)="razor_submit_custom_checkout($event)" id="rzp-button1">custom</button>        -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Bill Alert Modal -->
+<div #openModal style="display: none;" (click)="billAlertModal.show()">Open Modal</div>
+<div bsModal #billAlertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-cart-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-body p-t-25 p-b-25 p-l-20 p-r-15">
+				<p class="col-hgrey">Place order or clear your cart before viewing the bill.</p>
+			</div>
+			<div class="modal-footer p-r-15 p-t-15 p-b-10">
+				<button type="button" class="btn btn-link waves-effect" (click)="billAlertModal.hide()">OKAY</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- payment modal -->
+<div style="display: none;" id="paymentModal" (click)="paymentModal.show();">Open Modal</div>
+<div bsModal #paymentModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-model">
+
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right" class="p-r-10">
+					<a (click)="paymentModal.hide()">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+							fill="#b1b1b1">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+				<div align="center" class="login-logo">
+					<img src="assets/images/login-logo.jpg" *ngIf="!isChrome" class="img-responsive">
+					<img src="assets/images/login-logo.webp" *ngIf="isChrome" class="img-responsive">
+				</div>
+				<p align="center" class="font-16 m-t-50 font-bold m-b-10">How would you like to pay?</p>
+				<p align="center" class="col-grey">Select a payment method</p>
+				<div class="clearfix">&nbsp;</div>
+
+				<div class="col-md-12 p-l-20 p-r-20 m-b-20" (click)="payOnline()" align="center" >
+					<a class="vieworder-foot-btn mat-elevation-z2 btn" style="border:none">PAY ONLINE </a></div>
+				<div class="col-md-12 p-l-20 p-r-20" (click)="payWithCash(cashPaymentmodal,paymentModal)"
+					align="center">
+					<a class="vieworder-foot-btn1 mat-elevation-z2 btn" style="border:none">PAY WITH CASH </a></div>
+
+
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer p-b-15 p-l-5 p-r-5">
+				<div class="col-md-6" align="center">
+					<div class="col-md-8 m-t-20 m-b-20 hr-or" align="center"></div>
+					<div class="col-md-8 no-pad" align="center">
+						<button type="button" (click)="newUserModal.hide(); loginModal.show(); loginForm={}; lp_hide=true;"
+							class="btn btn-link col-grey waves-effect font-16" data-dismiss="modal">Pay online for
+							faster checkout</button>
+					</div>
+					<!-- <div class="col-md-6 pull-right" align="center">
+  <button type="button" (click)="userModal.hide(); signupModal.show(); signupForm={}; sp_hide=true;" class="btn btn-link col-grey waves-effect">SIGN UP</button>
+  </div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Send OTP -->
+
+
+
+<div bsModal #cashPaymentmodal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-8 pull-left">
+						<P class="font-14 font-bold ">CASH PAYMENT</P>
+
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+					</div>
+					<div class="col-xs-4 pull-right col-white font-12" align="right">
+						<p class="link font-bold"><a data-dismiss="modal" (click)="cashPaymentmodal.hide()"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+									fill="#b1b1b1">
+									<path
+										d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+								</svg></a></p>
+					</div>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+
+					<div class="clearfix">&nbsp;</div>
+					<p class="text-left col-grey">An OTP will be sent to this </p>
+					<p class="text-left col-grey  p-b-20 ">number for verification</p>
+					<p class="font-15 font-bold text-left" *ngIf="!mobileShow">{{ otpMobile }}</p>
+					<div class="col-md-12 no-pad ">
+						<!-- <mat-form-field [hideRequiredMarker]=true class="mat-full-width" *ngIf="otpShow">
+  <input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" required >
+  </mat-form-field>
+  -->
+
+						<div class="col-md-12 no-pad" *ngIf="mobileShow">
+							<label class="input-label">Mobile</label>
+							<label class="input-label1">+91</label>
+							<input class="bg-gray text-dark input-rounded w-100" type="tel" name="                                             "
+								 [(ngModel)]="mobile_num" #mobile="ngModel" required>
+						</div>
+						<!-- <mat-form-field [hideRequiredMarker]=true class="mat-full-width" *ngIf="mobileShow">
+    <input matInput type="tel" name="mobile" placeholder="Mobile number" [(ngModel)]="mobile_num" #mobile="ngModel" required >
+    </mat-form-field> -->
+
+						<div class="modal-footer p-t-15">
+							<div align="right">
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+									(click)="changeMobile()" *ngIf="!mobileShow">CHANGE</button>
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+									(click)="cancelMobile()" *ngIf="mobileShow">CANCEL</button>
+								<button type="submit" class="btn btn-link waves-effect font-14"
+									(click)="send_otp(cashPaymentmodal,otpModal2)">SEND OTP</button>
+							</div>
+						</div>
+					</div>
+					<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ otpForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- OTP Modal -->
+<div bsModal #otpModal2="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-8 pull-left">
+						<P class="font-14 font-bold ">CASH PAYMENT</P>
+
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+					</div>
+					<div class="col-xs-4 pull-right col-white font-12" align="right">
+						<p class="link font-bold"><a data-dismiss="modal" (click)="otpModal2.hide();"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+									fill="#b1b1b1">
+									<path
+										d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+								</svg></a></p>
+					</div>
+				</div>
+			</div>
+
+			<form class="mat-form" autocomplete="off" (ngSubmit)="mob_otp_validate(otpModal)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+
+					<div class="clearfix">&nbsp;</div>
+
+					<div class="col-md-12 no-pad">
+						<!-- <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+    <input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" required >
+    </mat-form-field> -->
+
+						<div class="col-md-12 no-pad" *ngIf="!mobileShow">
+							<label class="" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'input-label'" >OTP</label>
+							<input class="bg-gray text-dark w-100" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'input-rounded'"  name="otp"
+								placeholder="" [(ngModel)]="otpForm.otp" #otp="ngModel" type="tel" maxlength="6"  required (keypress)="onKeyPress($event)" (focus)="onKeyPress($event)">
+						</div>
+						
+						<div class="col-md-12 no-pad" *ngIf="mobileShow">
+							<label class="input-label">Mobile</label>
+							<label class="input-label1">+91</label>
+							<input class="bg-gray text-dark input-rounded w-100" type="tel" name="                                             "
+								 [(ngModel)]="mobile_num" #mobile="ngModel" required>
+						</div>
+						
+						<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+							<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+						</div>
+						
+						<p class="p-t-10 col-grey" *ngIf="otpForm.error_msg != 'Invalid OTP'">Enter 6-digit PIN.</p>
+						<p *ngIf="timeLeft > 0" class="bg-purple btn text-bold">{{timeLeftString}}</p>
+						<div class="modal-footer p-t-15">
+							<div align="right">
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+								(click)="changeMobile()" *ngIf="!mobileShow">CHANGE NUMBER</button>
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+									(click)="cancelMobile()" *ngIf="mobileShow">CANCEL</button>
+								<button type="button" class="btn btn-link waves-effect font-14"
+									(click)="send_otp(cashPaymentmodal,otpModal2)" *ngIf="mobileShow">SEND OTP</button>
+						        <!-- <button type="button" class="btn btn-link waves-effect font-14" (click)="resend_otp()">RESEND OTP</button> -->
+								<button type="submit" class="btn btn-link waves-effect font-14" *ngIf="!mobileShow">CONFIRM</button>
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- Signup modal -->
+<div bsModal #signupModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-signup">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<a (click)="signupModal.hide(); showLabel();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"
+							fill="#616161">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="userRegister(signupModal, otpModal)" ngNativeValidate>
+				<div class="modal-body p-b-20 p-t-0 p-l-20 p-r-20" align="center">
+					<div class="login-logo">					
+				    <img src="assets/images/dinamic-blogo.jpg" *ngIf="!isChrome" class="img-responsive">
+					<img src="assets/images/dinamic-blogo.webp" *ngIf="isChrome" class="img-responsive">
+					</div>
+					<div class="clearfix" style="margin-top:20%">&nbsp;</div>
+					<p class="p-t-10 p-b-10">Create your account</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput name="name" placeholder="Name" [(ngModel)]="signupForm.name" #name="ngModel"
+								(input)="signupForm.error_msg=false;" required>
+						</mat-form-field>
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="email" name="email" placeholder="Email" [(ngModel)]="signupForm.email"
+								#email="ngModel" (input)="signupForm.error_msg=false;" required>
+						</mat-form-field>
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="tel" name="mobile" placeholder="Mobile"
+								[(ngModel)]="signupForm.mobile" #mobile="ngModel" (input)="signupForm.error_msg=false;"
+								pattern=".{10,10}" title="Invalid mobile number" maxlength="10" appNumberOnly required>
+						</mat-form-field>
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput name="password" placeholder="Password" [(ngModel)]="signupForm.password"
+								#password="ngModel" (input)="signupForm.error_msg=false;"
+								[type]="sp_hide? 'password': 'text'" pattern=".{6,}" title="Six or more characters"
+								required>
+							<mat-icon matSuffix (click)="sp_hide = !sp_hide">{{sp_hide? 'visibility_off': 'visibility'}}
+							</mat-icon>
+						</mat-form-field>
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="password" name="confirm_password" placeholder="Confirm Password"
+								[(ngModel)]="signupForm.confirm_password" #confirm_password="ngModel"
+								(input)="signupForm.error_msg=false;" pattern=".{6,}" title="Six or more characters"
+								required>
+							<mat-icon matSuffix><i style="color: #32CD32;"
+									*ngIf="signupForm.confirm_password && signupForm.password==signupForm.confirm_password"
+									class="material-icons">check_circle</i></mat-icon>
+						</mat-form-field>
+						<div align="left"
+							*ngIf="signupForm.confirm_password && signupForm.password!=signupForm.confirm_password">
+							<div class="error-msg">Mismatch password</div>
+						</div>
+						<div class="modal-footer p-t-10 p-b-10">
+							<div align="center">
+								<button type="submit"
+									[disabled]="signupForm.password!=signupForm.confirm_password || signupForm.submit"
+									class="btn log-btn waves-effect">
+									Register <i [ngClass]="signupForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+								</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="signupForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ signupForm.error_msg }}</p>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- OTP Modal -->
+<div bsModal #otpModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<a (click)="otpModal.hide(); showLabel();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"
+							fill="#616161">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="userOtpValidate(otpModal,confirmModal)"
+				ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/dinamic-blogo.jpg" *ngIf="!isChrome" class="img-responsive">
+						<img src="assets/images/dinamic-blogo.webp" *ngIf="isChrome" class="img-responsive">
+					</div>
+					<div class="clearfix">&nbsp;</div>
+					<p class="p-t-10 p-b-10">OTP</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp"
+								#otp="ngModel" maxlength="6" required>
+						</mat-form-field>
+						<p class="p-t-10" style="color:white">OTP has been sent to your mail Id.</p>
+						<div class="modal-footer p-t-15 p-b-20">
+							<div align="center">
+								<button type="submit" class="btn log-btn waves-effect">SUBMIT</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ otpForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- Forgot modal -->
+<div bsModal #forgotModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-fprgot">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<a (click)="forgotModal.hide(); showLabel();closeLogin();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"
+							fill="#616161">
+							<path
+								d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="forgotRequest();" ngNativeValidate>
+				<div class="modal-body p-b-20 p-t-0 p-l-20 p-r-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/login-logo.svg" class="img-responsive">
+					  </div>
+					<div class="clearfix" style="margin-top:20%">&nbsp;</div>
+					<p class="p-t-10 p-b-10">Forgot Password?</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="email" name="email" placeholder="Email"
+								(input)="forgotForm.error_msg=false;" [(ngModel)]="forgotForm.email" #email="ngModel"
+								required>
+						</mat-form-field>
+						<div class="modal-footer p-t-10 p-b-10">
+							<div *ngIf="!forgotForm.success_msg" align="center">
+								<button type="submit" [disabled]="forgotForm.submit" class="btn log-btn waves-effect">
+									SUBMIT <i [ngClass]="forgotForm.submit ? 'fa fa-circle-o-notch fa-spin' : ''"></i>
+								</button>
+							</div>
+							<div *ngIf="forgotForm.success_msg" align="center">
+								<button type="button" (click)="forgotModal.hide(); showLabel();closeLogin();"
+									class="btn log-btn waves-effect">CLOSE</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="forgotForm.success_msg" class="col-md-12 no-pad">
+						<p class="success-msg">{{ forgotForm.success_msg }}</p>
+					</div>
+					<div *ngIf="forgotForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ forgotForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- payment failure model -->
+<!-- <a (click)="paymentFailedModal.show();" #triggerModal></a> -->
+<div #triggerModal style="display: none;" (click)="paymentFailedModal.show()">Open Modal</div>
+
+<div bsModal #paymentFailedModal="bs-modal" class="modal fade custom-modal" tabindex="-1" role="dialog"
+	aria-labelledby="dialog-confirm">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-md-12">
+					<h4 class="modal-title" id="defaultModalLabel">PAYMENT FAILED</h4>
+				</div>
+			</div>
+			<div class="modal-body p-t-25 p-b-25 p-l-30 p-r-15">
+				<p class="col-hgrey">Your payment has been failed.</p>
+			</div>
+			<div class="modal-footer p-r-15 p-t-15 p-b-10">
+				<!-- <button type="button" class="btn btn-link btn-cancel waves-effect" (click)="confirmModal.hide();">NO</button> -->
+				<button type="button" class="btn btn-link waves-effect"
+					(click)="resetRazor(); paymentFailedModal.hide();">CLOSE</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!--popup1-->
+<!-- <div style="display:none;" #opencust data-dismiss="modal">Click here</div> -->
+<div #triggerCustomization style="display: none;" (click)="customizationmodal.show()">Open Modal</div>
+
+<div #closeCustomization style="display: none;" (click)="customizationmodal.hide()">Close Modal</div>
+
+<div class="modal fade custom-modal" bsModal #customizationmodal="bs-modal" style="z-index: 100000;" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-confirm">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content mat-elevation-z2">
+
+			<div class="modal-header head-bg-purple" style="padding:15px 5px!important">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-8 word-brk pull-left">
+						<h3 class="modal-title" id="defaultModalLabel">Customization</h3>
+						<p class="opacity5 col-white">{{ item.name }}</p>
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+					</div>
+					<div class="col-xs-4 pull-right p-t-10 col-white font-12" align="right">
+						<p class="p-t-5 p-b-5 link font-bold"><a data-dismiss="modal"
+								(click)="cancelCust(customizationmodal)">CANCEL</a></p>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="modal-body p-l-20 p-r-20 p-b-15 p-t-15 modal-overflow">
+				<!--content-->
+				<section>
+					<div class="container-fluid">
+
+						<div *ngFor="let x of item.addons; let i = index" class="row clearfix">
+							<div class="col-md-12 no-pad">
+
+								<h2 class="font-18 font-bold" style="line-height:50px">{{ x.heading }}</h2>
+
+								<h2 class="font-18 font-bold p-t-10 p-b-20" *ngIf=" x.type == 'exclusive'">
+									<span class="mandatory-span">
+										<span> Required. </span>
+									</span>
+								</h2>
+
+								<h2 class="font-18 font-bold p-t-10 p-b-20" *ngIf=" x.type == 'multiple'">
+									<span class="mandatory-span">
+										<span> Pick desired options </span>
+									</span>
+								</h2>
+
+								<h2 class="font-18 font-bold p-t-10 p-b-20" *ngIf=" x.type == 'mandatory'">
+									<span *ngIf="x.limit == 1" class="mandatory-span">
+										<span>Required. Pick at least 1. </span>
+									</span>
+
+									<span *ngIf="x.limit > 1" class="mandatory-span">
+										<span> Required. Pick at least {{x.limit}}. </span>
+									</span>
+								</h2>
+
+
+
+								<h2 class="font-18 font-bold p-t-10 p-b-20" *ngIf=" x.type == 'limited'">
+									<span *ngIf="x.limit == 1" class="mandatory-span">
+										<span> Pick upto 1. </span>
+									</span>
+
+									<span *ngIf="x.limit > 1" class="mandatory-span">
+										<span> Pick upto {{x.limit}}. </span>
+									</span>
+								</h2>
+
+								<!-- RADIO -->
+								<div *ngIf="x.type=='exclusive'">
+									<span *ngFor="let y of x.options; let j = index">
+										<div class="md-radio col-xs-12 no-pad">
+											<input id="exclusive_{{i}}_{{j}}" type="radio" name="{{x.heading+i}}"
+												[checked]="y.selected" (click)="onSelectOption(x, y, i)"
+												value="{{y.name}}">
+											<label for="exclusive_{{i}}_{{j}}"
+												class="col-xs-10">{{ y.name }}</label><span *ngIf="y.price > 0"
+												class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+										</div>
+									</span>
+								</div>
+								<!-- #RADIO -->
+
+								<!-- CHECKBOX -->
+								<div *ngIf="x.type=='multiple'">
+									<span *ngFor="let y of x.options; let j = index">
+										<div class="md-checkbox col-xs-12 no-pad margin-0">
+											<input id="multiple_{{i}}_{{j}}" type="checkbox" name="{{y.answer}}"
+												[checked]="y.selected" (click)="onSelectOption(x, y, i)">
+											<label for="multiple_{{i}}_{{j}}" class="col-xs-10">{{ y.name }}</label>
+											<span *ngIf="y.price > 0"
+												class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+										</div>
+									</span>
+								</div>
+								<!-- #CHECKBOX -->
+
+								<!-- CHECKBOX -->
+								<div *ngIf="x.type=='mandatory'">
+									<!-- <ng-container *ngIf="x.limit > 1"> -->
+									<span *ngFor="let y of x.options; let j = index">
+										<div class="md-checkbox col-xs-12 no-pad margin-0" id="check_{{i}}_{{j}}">
+											<input id="mandatory_{{i}}_{{j}}" type="checkbox" name="{{y.heading_id}}"
+												[checked]="y.selected" (click)="onSelectOption(x, y, i)">
+											<label for="mandatory_{{i}}_{{j}}" class="col-xs-10">{{ y.name }}</label>
+											<span *ngIf="y.price > 0"
+												class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+										</div>
+									</span>
+									<!-- </ng-container> -->
+
+									<!-- <ng-container *ngIf="x.limit == 1">
+          <span *ngFor="let y of x.options; let j = index">
+              <div class="md-radio col-xs-12 no-pad" id="check_{{i}}_{{j}}">
+                <input id="mandatory_{{i}}_{{j}}" type="radio" name="{{x.heading+i}}" [checked]="y.selected" (click)="onSelectOption(x, y, i)" value="{{y.name}}">
+                <label for="mandatory_{{i}}_{{j}}" class="col-xs-10">{{ y.name }}</label><span *ngIf="y.price > 0" class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+              </div>
+              </span>
+      </ng-container> -->
+
+								</div>
+								<!-- #CHECKBOX -->
+
+								<!-- CHECKBOX -->
+								<div *ngIf="x.type=='limited'">
+									<ng-container *ngIf="x.limit > 1">
+										<span *ngFor="let y of x.options; let j = index">
+											<div class="md-checkbox col-xs-12 no-pad margin-0" id="limit_{{i}}_{{j}}">
+												<input id="limited_{{i}}_{{j}}" type="checkbox" name="{{y.answer}}"
+													[checked]="y.selected" (click)="onSelectOption(x, y, i)">
+												<label for="limited_{{i}}_{{j}}" class="col-xs-10">{{ y.name }}</label>
+												<span *ngIf="y.price > 0"
+													class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+											</div>
+										</span>
+									</ng-container>
+
+									<ng-container *ngIf="x.limit == 1">
+										<span *ngFor="let y of x.options; let j = index">
+											<div class="md-radio col-xs-12 no-pad" id="limit_{{i}}_{{j}}">
+												<input id="limited_{{i}}_{{j}}" type="radio" name="{{x.heading+i}}"
+													[checked]="y.selected" (click)="onSelectOption(x, y, i)"
+													value="{{y.name}}">
+												<label for="limited_{{i}}_{{j}}"
+													class="col-xs-10">{{ y.name }}</label><span *ngIf="y.price > 0"
+													class="col-xs-2 text-right no-rightpad col-hgrey pull-right">+{{ y.price }}</span>
+											</div>
+										</span>
+									</ng-container>
+								</div>
+								<!-- #CHECKBOX -->
+
+							</div>
+						</div>
+
+						<!-- Special Request -->
+						<div class="row clearfix">
+							<div class="col-md-12 no-pad p-t-15">
+								<h2 class="font-18 font-bold" style="line-height:40px">Special requests?</h2>
+								<mat-form-field class="mat-full-width">
+									<input matInput name="special_request" [(ngModel)]="special_request" minlength="50" maxlength="50">
+								</mat-form-field>
+							</div>
+							<div class="clearfix">&nbsp;</div>
+						</div>
+						<!-- #Special Request -->
+
+					</div>
+				</section>
+				<!--#content-->
+			</div>
+			<div class="customize-bshadow"></div>
+			<div class="modal-footer p-t-15 p-b-15">
+				<!-- update customization -->
+				<div class="col-md-12 p-l-20 p-r-20" *ngIf="!illchoose && showAddToOrder"
+					(click)="updateItemCustomization()" data-dismiss="modal" align="center">
+					<a class="vieworder-foot-btn mat-elevation-z2 btn" style="border:none">
+						<span class="p-r-5">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+								fill="#fff">
+								<path
+									d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" />
+								</svg>
+						</span> UPDATE </a></div>
+
+				<div class="col-md-12 p-l-20 p-r-20" *ngIf="!illchoose && !showAddToOrder" align="center">
+					<a class="vieworder-foot-btn bgbtn-grey mat-elevation-z2 btn orderBtn" style="border:none">
+						<span class="p-r-5">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+								fill="#fff">
+								<path
+									d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" />
+								</svg>
+						</span> UPDATE </a></div>
+
+				<!-- update customization -->
+
+				<!-- i will choose add new item -->
+
+				<div class="col-md-12 p-l-20 p-r-20" *ngIf="illchoose && showAddToOrder"
+					(click)="addNewItemCustomization()" data-dismiss="modal" align="center">
+					<a class="vieworder-foot-btn mat-elevation-z2 btn" style="border:none">
+						<span class="p-r-5">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+								fill="#fff">
+								<path
+									d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" />
+								</svg>
+						</span> ADD TO ORDER </a></div>
+
+				<div class="col-md-12 p-l-20 p-r-20" *ngIf="illchoose && !showAddToOrder" align="center">
+					<a class="vieworder-foot-btn bgbtn-grey mat-elevation-z2 btn orderBtn" style="border:none">
+						<span class="p-r-5">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+								fill="#fff">
+								<path
+									d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" />
+								</svg>
+						</span> ADD TO ORDER </a></div>
+
+				<!-- i will choose add new item -->
+
+
+			</div>
+		</div>
+
+	</div>
+</div>
+<!--#popup1-->
+
+
+<div *ngIf="itemRepeatFooter" id="slide-bot"
+	class="vieworder-foot-white mat-elevation-z4 col-md-12 no-pad slide-in-bottom">
+	<div class="row margin-0 pad15 valign-center head-bg-purple text-white" style="width:100%;">
+		<!-- <div class="col-md-11 no-leftpad pull-left font-bold">
+          <div class="pull-left">
+            <span class="p-l-5 valign-center" *ngIf="cartItemDetails.food_type == 'Veg'"><img src="assets/images/veg_new.svg" class="valign-center icon-width" /></span>
+          <span class="p-l-5 valign-center" *ngIf="cartItemDetails.food_type == 'Non Veg'"><img src="assets/images/Non_veg.svg" class="valign-center icon-width" /></span>
+          </div>
+          <div class="pull-right" style="padding-top:1px;"><span class="p-l-20 text-upper font-15">{{cartItemDetails.name }}</span></div>
+        </div>
+        <div class="col-md-1 no-rightpad pull-right font-bold" align="right">
+          <a (click)="itemRepeatFooter=false;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#fff" class="valign-center">
+             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
+            </svg>
+          </a>
+        </div> -->
+		<div class="col-xs-10 no-pad pull-left valign-center" align="left">
+			<div class="row margin-0 valign-center">
+				<div class="col-md-2 no-pad" style="margin-top:-2px;" align="center">
+					<p *ngIf="cartItemDetails.food_type == 'Veg'" align="center"><img src="assets/images/veg_new.svg"
+							class="valign-center icon-width" /></p>
+					<p *ngIf="cartItemDetails.food_type == 'Non Veg'" align="center"><img
+							src="assets/images/Non_veg.svg" class="valign-center icon-width" /></p>
+				</div>
+				<div class="col-md-10 p-r-0"> <span
+						class="md-headline valign-center word-brk">{{cartItemDetails.name }}</span></div>
+
+			</div>
+		</div>
+		<div class="col-xs-2 pull-right no-rightpad font-bold" align="right">
+			<a (click)="itemRepeatFooter=false; closeitemreapter();">
+				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#fff"
+					class="valign-center">
+					<path
+						d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+				</svg>
+			</a>
+		</div>
+
+	</div>
+
+	<div class="col-md-12 p-t-10 p-b-15 p-l-15 p-r-15 animate fadeIn">
+		<p class="font-14 font-bold p-t-10">Previous customization</p>
+		<p *ngFor="let x of cartItemDetails.applied_addons; let i=index;" class="font-12 col-hgrey p-t-5">
+			{{ x.heading }} ({{ x.name }})</p>
+		<p *ngIf="cartItemDetails.requests">{{cartItemDetails.requests}}</p>
+	</div>
+	<div class="col-md-12 no-pad">
+		<div class="col-md-6 p-r-6 pull-left" style="width:50%">
+			<!-- (click)="onChooseCutomize(); -->
+			<div class="repeat-item text-purple" (click)="iwillchoose()" data-toggle="modal" data-target="#water">CHOOSE
+				AGAIN</div>
+		</div>
+		<div class="col-md-6 p-l-6 pull-right" style="width:50%">
+			<div class="repeat-item text-white head-bg-purple" (click)="onRepeatLastItem(cartItemDetails.cart_id);">
+				REPEAT LAST</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Ask mobile Modal -->
+<div bsModal #askmobilemodal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div align="right">
+					<!-- <a (click)="askmobilemodal.hide();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#616161">
+        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+        </svg>
+        </a> -->
+				</div>
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="addUserMobile(askmobilemodal,otpModal1)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/login-logo.svg" class="img-responsive">
+					</div>
+					<div class="clearfix">&nbsp;</div>
+					<p class="p-t-10 p-b-10">Please enter your mobile number</p>
+					<div class="col-md-12 no-pad mat-elevation-z2 login-page">
+						<mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+							<input matInput type="tel" name="mobile" placeholder="Mobile number"
+								[(ngModel)]="mobile_num" #mobile="ngModel" required>
+						</mat-form-field>
+
+						<div class="modal-footer p-t-15 p-b-20">
+							<div align="center">
+								<button type="submit" class="btn log-btn waves-effect">SUBMIT</button>
+							</div>
+						</div>
+
+					</div>
+					<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad">
+						<p class="error-msg">{{ otpForm.error_msg }}</p>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- social login otp -->
+<div bsModal #otpModal1="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-otp">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header bg-purple">
+				<div class="col-xs-12 no-pad">
+					<div class="col-xs-8 pull-left">
+						<P class="font-14 font-bold ">OTP</P>
+
+						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
+					</div>
+					<div class="col-xs-4 pull-right col-white font-12" align="right">
+						<p class="link font-bold"><a data-dismiss="modal" (click)="otpModal1.hide();"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+									fill="#b1b1b1">
+									<path
+										d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+								</svg></a></p>
+					</div>
+					
+				</div>
+			</div>
+
+			<form class="mat-form" autocomplete="off" (ngSubmit)="social_mob_otp_validate(otpModal1, confirmModal)" ngNativeValidate>
+				<div class="modal-body p-t-0 p-l-20 p-r-20 p-b-20" align="center">
+
+					<div class="clearfix">&nbsp;</div>
+
+					<div class="col-md-12 no-pad">
+						<!-- <mat-form-field [hideRequiredMarker]=true class="mat-full-width">
+    <input matInput type="tel" name="otp" placeholder="OTP" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" required >
+    </mat-form-field> -->
+
+						<div class="col-md-12 no-pad" *ngIf="!mobileShow">
+							<label class="" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'input-label'" >OTP</label>
+							<input class="bg-gray text-dark w-100" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'input-rounded'" type="tel" name="otp"
+								placeholder="" [(ngModel)]="otpForm.otp" #otp="ngModel" maxlength="6" required (keypress)="onKeyPress($event)">
+
+								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+							<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+						</div>
+						<p class="p-t-10 col-grey" *ngIf="otpForm.error_msg != 'Invalid OTP'">Enter 6-digit PIN.</p>
+						<p *ngIf="timeLeft > 0" class="bg-purple btn text-bold">{{timeLeftString}}</p>
+						</div>
+						
+						<div class="col-md-12 no-pad" *ngIf="mobileShow">
+							<label class="input-label">Mobile</label>
+							<label class="input-label1">+91</label>
+							<input class="bg-gray text-dark input-rounded w-100" type="tel" name="                                             "
+								 [(ngModel)]="mobile_num" #mobile="ngModel" required>
+						</div>
+						
+						<div class="modal-footer p-t-15">
+							<div align="right">	
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+								(click)="changeMobile()" *ngIf="!mobileShow">CHANGE NUMBER</button>
+								<button type="button" class="btn btn-link col-grey waves-effect font-14"
+									(click)="cancelMobile()" *ngIf="mobileShow">CANCEL</button>
+								<button type="button" class="btn btn-link waves-effect font-14"
+									(click)="addUserMobile(askmobilemodal,otpModal1)" *ngIf="mobileShow">SEND OTP</button>
+						        <!-- <button type="button" class="btn btn-link waves-effect font-14" (click)="resend_otp()">RESEND OTP</button> -->
+								<button type="submit" class="btn btn-link waves-effect font-14" *ngIf="!mobileShow">CONFIRM</button>
+
+								<!-- <button type="button" class="btn btn-link waves-effect font-14" (click)="changeMobile(askmobilemodal,otpModal1)" >CHANGE NUMBER</button> -->
+						        <!-- <button type="button" class="btn btn-link waves-effect font-14" (click)="social_resend_otp()" *ngIf="resendOTP">RESEND OTP</button> -->
+								
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+     
+<!-- newUserModal -->
+<div bsModal #newUserModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+role="dialog" aria-labelledby="dialog-user">
+<div class="modal-dialog modal-sm" role="document">
+  <div class="modal-content mat-elevation-z2">
+    <div class="modal-header">
+      <div align="right" class="p-r-10">
+        <a (click)="newUserModal.hide(); userService.usableLink==true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+            fill="#b1b1b1">
+            <path
+              d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+      <div align="center" class="login-logo">
+        <img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="socialLogo">
+      </div>
+      <div align="center" class="font-25 m-t-20  font-bold">Login</div>
+      <div class="col-grey font-13 font-semibold">Enter your phone number to continue</div>
+      
+      <div class="col-md-12 no-pad m-t-30">
+        <div class="form-group">
+        <label for="mobile" class="login-label">Phone number</label>
+        <label class="login-input-label1 font-bold c-black font-14">+91</label>
+        <input type="tel" name="mobile" id="mobile"
+        [(ngModel)]="mobile_num" #mobile="ngModel" minlength="10" maxlength="10" required 
+          class="form-control p-l-45 font-bold c-black font-14" (keyup)="onKeyUp($event)" (focus)='onKeyPress($event)'  [readonly]="isReadonly" [disabled]="isReadonly" >
+      </div>
+
+      <div align="center" *ngIf="userService.error_msg" >
+        <div class="error-msg p-b-20">{{userService.error_msg}}</div>
+      </div>
+    </div>
+
+
+    <div class="col-md-12 no-pad p-t-10 p-b-20" *ngIf="userService.continueBtn">
+      <button class="login-btn-purple text-left font-bold font-13 valign-center h-50-px justify-content-center" (click)="continueSignin(newUserModal,newOTPModal)"   >						
+      <span  class="p-l-5">CONTINUE</span>
+      </button>
+    </div>
+
+    <div class="col-md-12 no-pad " *ngIf="!userService.continueBtn">
+      <button class="login-btn-purple text-left font-bold font-13 valign-center"(click)="socialSignIn(newUserModal, 'google', newOTPModal)" [disabled]="userService.loginSocialDisable"  [ngClass]="userService.loginSocialDisable ? 'login-btn-disable' : 'login-btn-purple'">						
+      <span class="p-l-5 p-r-5 m-l-5 m-r-5 valign-center" [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable' : 'img-circle-login-white'">	
+        <span [ngClass]="userService.loginSocialDisable ? 'logo-google-gray' : 'logo-google'" *ngIf="socialLogo"></span>								
+        
+        </span> <span  class="p-l-5">CONTINUE WITH GOOGLE</span>
+      </button>
+    </div>
+    <div class="col-md-12 m-t-10 no-pad " *ngIf="!userService.continueBtn">
+      <button class="login-btn-purple text-left font-bold font-13 valign-center" (click)="socialSignIn(newUserModal, 'facebook', newOTPModal)"  [disabled]="userService.loginSocialDisable"  [ngClass]="userService.loginSocialDisable ? 'login-btn-disable' : 'login-btn-purple'">						
+      <span class="p-l-5 p-r-5 m-l-5 m-r-5 valign-center" [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable' : 'img-circle-login-white'">						
+        <span [ngClass]="userService.loginSocialDisable ? 'logo-fb-gray' : 'logo-fb'" *ngIf="socialLogo"></span>					
+        </span> <span class="p-l-5">CONTINUE WITH FACEBOOK</span>
+      </button>
+    </div>
+    <div class="col-md-12 m-t-10 no-pad " *ngIf="!userService.continueBtn">
+      <button class="text-left font-bold font-13 valign-center" (click)="newUserModal.hide(); loginModal.show(); loginForm={}; lp_hide=true; modalLogo=true; loginForm.mobile = mobile_num" [disabled]="userService.loginSocialDisable" [ngClass]="userService.loginSocialDisable ? 'login-btn-gray' : 'login-btn-white'">						
+      <span class="p-l-5 p-r-5 m-l-5 m-r-5 h-30 img-circle-login-purple valign-center"  [ngClass]="userService.loginSocialDisable ? 'img-circle-login-disable-gray' : 'img-circle-login-purple'" >	
+        <span [ngClass]="userService.loginSocialDisable ? 'logo-email-gray' : 'logo-email'" *ngIf="socialLogo"></span>				
+        
+        </span> <span class="p-l-5">CONTINUE AS GUEST</span>
+      </button>
+    </div>
+      <div class="clearfix">&nbsp;</div>			
+      
+    </div>
+  
+  </div>
+</div>
+</div>
+
+
+
+<!-- Login modal -->
+<div bsModal #loginModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-login">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header">
+				<div class="row p-l-5 p-r-5">
+					<div class="col-xs-6">
+						<a (click)="goBack(loginModal,newUserModal)">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z" /></svg>
+						</a>
+					</div>
+
+					<div class="col-xs-6" align="right">
+						<a (click)="closeLogin();loginModal.hide();">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+								fill="#b1b1b1">
+								<path
+									d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+							</svg>
+						</a>
+					</div>
+
+				</div>
+
+			</div>
+			<form class="mat-form" autocomplete="off" (ngSubmit)="userEmailCheck(loginModal)" ngNativeValidate>
+				<div class="modal-body p-b-20 p-t-0 p-l-20 p-r-20" align="center">
+					<div class="login-logo">
+						<img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="modalLogo">
+					</div>
+					<p align="center" class="font-16 m-t-50 c-black font-bold"  *ngIf="!enterOtpField">Continue with Email</p>
+					<div align="center" class="font-25 m-t-20  font-bold" *ngIf="enterOtpField && !pleasewait">Hi {{loginForm.name}}</div>
+				<div class="col-grey font-13 font-semibold" *ngIf="enterOtpField && !pleasewait">OTP sent to {{loginForm.mobile}}</div>
+					<div class="col-md-12 no-pad m-t-50">
+					
+						<div class="form-group pwd" *ngIf="enterEmailField">
+							<label for="email" class="login-label">Enter Email</label>
+							<input type="email" name="username" placeholder="Your email address" autofocus
+								[(ngModel)]="loginForm.username" #username="ngModel"
+								(input)="loginForm.error_msg=false;" required class="form-control" id="email">
+						</div>
+						<div *ngIf="loginForm.error_msg" class="col-md-12 no-pad" style="top: -12px">
+							<p class="error-msg">{{ loginForm.error_msg }}</p>
+						</div>
+						<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad" style="top: -12px">
+							<p class="error-msg">{{ otpForm.error_msg }}</p>
+						</div>
+
+						<div class="form-group" *ngIf="enterNameField">
+							<label for="name" class="login-label">Enter Name</label>
+							<input type="text" name="fname" placeholder="" autofocus
+								[(ngModel)]="loginForm.name" #name="ngModel"
+								(input)="loginForm.error_msg=false;" required class="form-control" id="name" autocomplete="new-name">
+
+						</div>
+
+						<div align="center" *ngIf="userService.pass_error != ''">
+							<div class="error-msg">{{userService.pass_error}}</div>
+						</div>
+
+						<div align="center" *ngIf="mob_num_exist">
+							<div class="error-msg">{{exist_email}}</div>
+						</div>
+
+						
+
+
+						<div class="col-md-12 no-pad m-t-30" *ngIf="enterOtpField">
+							<div class="form-group">
+							<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
+							<label class="OTP-input-label1 font-bold "><img src="assets/images/pin.svg"></label>
+							<input type="tel"  pattern="[0-9]*" maxlength="6" #otp  name="otp" [(ngModel)]="otpForm.otp"
+							#otp="ngModel"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
+								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+									<p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+								</div>
+						</div>
+					
+						<div align="center" *ngIf="mob_num_exist">
+							<div class="error-msg">{{exist_email}}</div>
+						</div>
+					</div>
+
+						<!-- <div align="center" *ngIf="passwordMismatch">
+							<div class="error-msg">Mismatch password</div>
+						</div> -->
+
+						<div class="col-md-12 no-pad p-t-10" *ngIf="enterPasswordField && !confirmPasswordField">
+							<p (click)="loginModal.hide(); forgotForm={}; forgotModal.show();"
+								style="font-size: 12px; font-style: italic">Forgot Password?</p>
+						</div>
+
+					</div>
+				</div>
+				<div class="p-b-30 p-l-5 p-r-5" *ngIf="!enterOtpField && !pleasewait">	
+						<div class="col-md-12" align="center">							
+							<button type="submit" class="h-50-px justify-content-center login-btn-purple text-left font-bold font-13 valign-center">PROCEED</button>
+						</div>
+					
+				</div>
+
+				<div class="p-b-15 p-l-5 p-r-5" *ngIf="pleasewait">
+					<div class="col-md-6" align="center">						
+						<div class="col-md-6" align="center">						
+							<button type="button" class="btn btn-link waves-effect font-16 loading">PLEASE WAIT</button>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="p-b-50 p-l-5 p-r-5" *ngIf="enterOtpField">					
+						<div class="col-md-12" align="center">						
+							<button type="button" (click)="userOtpValidate(loginModal)"
+							class="h-50-px justify-content-center login-btn-purple text-left font-bold font-13 valign-center">
+							<span class="p-r-5"><img src="assets/images/done.svg" class="img-responsive" *ngIf="socialLogo">					
+							</span>
+						<span>VERIFY</span></button>
+						</div>
+					
+				</div>
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- newOTPModal -->
+<div style="display: none;" id="newOTPModal" (click)="OTPCloseModal(newOTPModal)">close Modal</div>
+<div bsModal #newOTPModal="bs-modal" class="modal fade custom-modal-yellow" [config]="{backdrop: 'static'}" tabindex="-1"
+role="dialog" aria-labelledby="dialog-user">
+<div class="modal-dialog modal-sm" role="document">
+  <div class="modal-content mat-elevation-z2">
+    <div class="modal-header">
+
+
+      <div class="row p-l-5 p-r-5">
+        <div class="col-xs-6">
+          <a (click)="newOTPModal.hide(); newUserModal.show();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18"
+              fill="#b1b1b1">
+              <path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z" /></svg>
+          </a>
+        </div>
+
+        <div class="col-xs-6" align="right">
+          <a (click)="newOTPModal.hide(); userService.usableLink==true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
+              fill="#b1b1b1">
+              <path
+                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    
+    </div>
+    <div class="modal-body p-t-0 p-l-20 p-r-20" align="center">
+      <div align="center" class="login-logo">
+        <img src="assets/images/login-logo.svg" class="img-responsive" *ngIf="socialLogo">
+      </div>
+      <div align="center" class="font-25 m-t-20  font-bold">Hi {{ userService.loginDetails.name }}</div>
+      <div class="col-grey font-13 font-semibold">OTP sent to {{mobile_num}}</div>
+      
+      <div class="col-md-12 no-pad m-t-30">
+        <div class="form-group">
+        <label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
+        <label class="OTP-input-label1 font-bold  "><img src="assets/images/pin.svg"></label>
+        <input type="tel"  pattern="[0-9]*"  #otp  name="otp" [(ngModel)]="otpForm.otp"
+        #otp="ngModel" id="otp"  maxlength="6"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
+          <div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
+            <p class="error-msg"><svg aria-hidden="true" fill="#d93025" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg> {{ otpForm.error_msg }}</p>
+          </div>
+      </div>
+      <div align="center" *ngIf="mob_num_exist">
+        <div class="error-msg">{{exist_email}}</div>
+      </div>
+    </div>
+
+    <div class="col-md-12 no-pad p-t-20 p-b-40">
+      <button class="login-btn-purple text-left font-bold font-13 login-btn-purple valign-center  h-50-px justify-content-center"(click)="signinVerify(newOTPModal)">						
+      <span class="valign-center" >	
+        <span class="p-r-5">	
+          <img src="assets/images/done.svg" class="img-responsive" *ngIf="socialLogo">					
+        
+            </span>
+        
+        </span> <span>VERIFY</span>
+      </button>
+    </div>
+    
+      <div class="clearfix">&nbsp;</div>			
+      
+    </div>
+  
+  </div>
+</div>
+</div>

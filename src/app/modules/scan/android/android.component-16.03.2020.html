@@ -1,0 +1,109 @@
+<!-- has devices -->
+<div [hidden]="!hasPermission || hasPermission===undefined" style="position:fixed; width: 100%; height: 100%; overflow: hidden">
+  <!-- <div> -->
+
+  <nav class="navbar alignnav" style="height:10%">
+    <div class="aligncontainer">
+      <div class="">
+        <a><img src="assets/images/dinamic-logo.svg" class="img-responsive"></a>
+      </div>
+      <div>
+        <p>
+          <a class="btn bg-yellow btn-success font-16 font-bold mat-elevation-z2">HELP</a>
+        </p>
+      </div>
+    </div> 
+  </nav> 
+
+  <!-- <nav class="navbar" style="height:10%">
+    <div class="container-fluid addnote-top">
+      <div class="col-md-10 pull-left">
+        <a><img src="assets/images/dinamic-logo.jpg" class="img-responsive"></a>
+      </div>
+      <div class="col-md-2 pull-right col-white font-12" align="right">
+        <p class="p-t-5">
+          <a class="btn bg-yellow btn-success font-bold500 mat-elevation-z2">HELP</a>
+        </p>
+      </div>
+    </div> 
+  </nav> -->
+
+  <section [hidden]="!hasDevices" style="width: 100%; height: 100%">
+    <div class="col-md-12 no-pad" style="height:100%">
+      <zxing-scanner style="height:100%" #scanner start="true" [device]="currentDevice" (scanSuccess)="handleQrCodeResult($event)" [formats]="['CODE_39', 'CODE_128', 'QR_CODE']"></zxing-scanner>
+      <div class="scan-center" style="position: absolute; top: 29%; margin: 0 auto; width: 100%;">
+        <div align="center" id="landscape">
+          <img src="assets/images/qr-code.svg" class="img-responsive">
+        </div>
+        <div class="stage p-r-20 p-t-10">
+          <span class="p-r-30 col-white font-bold opacity8 text-upper">Align with code</span>
+          <div class="dot-flashing"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="scanner-bottom-text bg-purple radius10" style="height:19%" align="center">
+    <div class="center-div100 valign-center" align="center">
+      <div class="center-div15" align="center">
+        <p class="scanner-bottom1" align="center"></p>
+      </div>
+    </div>
+    <div class="col-xs-12 valign-center p-l-5 p-r-5">
+        <div class="col-xs-2 valign-center">
+            <img src="assets/images/qr.svg">
+      </div>
+      <div class="col-xs-10">
+        <p class="col-white p-l-10 p-t-10 font-20 font-bold" align="left">Start</p>
+        <p class="font-14 p-l-10 col-white opacity5 p-t-10 p-b-10" align="left">Point your camera at the QR Code<br/> placed on your table</p>
+      </div>
+      <!-- <div class="col-xs-2 m-t-30 pull-right" align="right">
+        <img src="assets/images/qrcode-small.png">
+      </div> -->
+    </div>
+  </div>
+
+</div>
+
+<!-- devices not found -->
+<div [hidden]="hasDevices && hasPermission" style="position:fixed; width: 100%; height: 100%; overflow: hidden">
+  <section>
+    <div class="camera-center">
+      <h3>No Camera Access</h3>
+      <p class="font-14 col-grey p-t-20">Camera access is required to scan the <span class="col-black font-bold">DiNAMIC</span> Code</p>
+      <p class="font-12 col-black p-t-20">Try this:</p>
+      <ul class="p-t-10 p-l-20 col-grey">
+        <li>
+          Press the 
+          <span style="position:relative; top:-5px">
+            <a href="javascript:void(0)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#2b5a20">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+            </a>
+          </span>
+          icon on your address bar
+        </li>    
+        <li>Open <span class="col-black font-bold">SITE SETTINGS</span></li>
+        <li><span class="font-bold col-black">ALLOW</span> access to your camera</li>
+        <li>Refresh the page</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<!-- Alert Modal -->
+<div id="openModal" style="display: none;" (click)="alertModal.show();">Open Modal</div>
+<div bsModal #alertModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-cart-confirm">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mat-elevation-z2">
+      <div class="modal-body p-t-25 p-b-25 p-l-15 p-r-15">
+        <p class="col-hgrey">Invalid QR Code</p>
+      </div>
+      <div class="modal-footer p-r-10">
+        <button type="button" class="btn btn-link waves-effect" (click)="alertModal.hide();">TRY AGAIN</button>
+      </div>
+      <div class="clearfix">&nbsp;</div>
+    </div>
+  </div>
+</div>

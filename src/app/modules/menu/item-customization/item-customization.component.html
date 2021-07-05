@@ -1,0 +1,69 @@
+<app-ios-notify></app-ios-notify>
+
+<nav class="navbar head-bg-purple">
+	<div class="container-fluid addnote-top">
+		<div class="col-md-10 pull-left">
+			<h3 class="p-t-10 p-b-10 p-r-10">Customization</h3>
+			<p class="opacity7 font-11 col-white p-b-5">{{ item.name }}</p>
+		</div>
+		<div class="col-md-2 pull-right p-t-20 col-white font-12" align="right">
+			<p class="p-t-5 p-b-10 link"><a routerLink="/menu/items">CANCEL</a></p>
+		</div>
+	</div>
+</nav>
+
+<section class="content">
+	<div class="container-fluid">
+
+		<div *ngFor="let x of item.addons; let i = index" class="row clearfix">
+			<div class="col-md-12 no-pad p-t-30">
+				<h2 class="font-16 font-bold500" style="line-height:50px">{{ x.heading }}</h2>
+
+				<!-- RADIO -->
+				<div *ngIf="x.type=='either_or'">
+					<span *ngFor="let y of x.options; let j = index">
+						<div class="md-radio col-xs-12">
+							<input id="{{i}}{{j}}" type="radio" name="{{x.heading}}" [checked]="j===0"
+								(click)="onSelectOption(x, y)" value="{{y.name}}">
+							<label for="{{i}}{{j}}" class="col-xs-10">{{ y.name }}</label><span *ngIf="y.price > 0"
+								class="col-xs-2 text-right no-rightpad col-hgrey pull-right">{{ y.price }}</span>
+						</div>
+					</span>
+				</div>
+				<!-- #RADIO -->
+
+				<!-- CHECKBOX -->
+				<div *ngIf="x.type=='multiple'">
+					<span *ngFor="let y of x.options; let j = index">
+						<div class="md-checkbox col-xs-12 margin-0">
+							<input id="{{i}}{{j}}" type="checkbox" name="{{y.answer}}" (click)="onSelectOption(x, y)">
+							<label for="{{i}}{{j}}" class="col-xs-10">{{ y.name }}</label> <span *ngIf="y.price > 0"
+								class="col-xs-2 text-right no-rightpad col-hgrey pull-right">{{ y.price }}</span>
+						</div>
+					</span>
+				</div>
+				<!-- #CHECKBOX -->
+
+			</div>
+		</div>
+
+		<!-- Special Request -->
+		<div class="row clearfix">
+			<div class="col-md-12 no-pad p-t-30">
+				<h2 class="font-16 font-bold500" style="line-height:40px">Special requests?</h2>
+				<mat-form-field class="mat-full-width">
+					<input matInput name="special_request" [(ngModel)]="special_request">
+				</mat-form-field>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+		<!-- #Special Request -->
+
+	</div>
+</section>
+
+<!--Footer-->
+<div (click)="onConfirm()" class="vieworder-foot col-md-12 no-pad">
+	<div class="col-md-12" align="center"><a>CONFIRM</a></div>
+</div>
+<!--#Footer-->

@@ -1,0 +1,205 @@
+<app-ios-notify></app-ios-notify>
+<!-- 
+<nav class="navbar head-bg-purple animate fadeIn">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <h3 class="p-t-5 p-b-5 p-r-10">
+        <a routerLink="/home" class="p-r-15">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+            <path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+          </svg>
+        </a>Offers
+      </h3>
+    </div>
+  </div>
+</nav> -->
+
+
+<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+	<div class="container-fluid no-pad h-100">
+		<div class="navbar-header col-md-12 no-pad no-margin h-100">
+			<span class="svg-icon p-l-20">
+				<a routerLink="/home" class="p-r-10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
+				<h3 class="h3-style">Offers</h3>
+			</span>
+		</div>
+	</div>
+</nav>
+
+
+
+
+
+<!-- <section *ngIf="offers_list.length == 0" class="animate fadeIn" data-wow-delay="400ms">
+	<div id="screenbg" class="col-md-12">
+		<div style="position:relative;" class="pad50 m-t-60 m-b-30" align="center">
+			<img src="assets/images/Emptylist-icon.svg" class="img-responsive">
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row clearfix p-l-5 p-r-5">
+			<div class="col-md-12">
+				<h2 class="subhead">Status</h2>
+				<div class="col-md-11 pull-left no-leftpad p-t-20">
+					<h4 class="font-15 col-black">NO OFFERS FOUND</h4>
+				</div>
+				<div class="col-md-1 pull-right p-t-10 no-rightpad" align="right"><img
+						src="assets/images/assignment1.svg"></div>
+			</div>
+		</div>
+	</div>
+</section> -->
+
+
+<section class="animate fadeIn" data-wow-delay="400ms">
+	<!-- Item List -->
+	<div class="container-fluid">
+		<!--card-->
+		<div class="row clearfix p-l-5 p-r-5 p-t-40">
+			<div class="col-md-12 p-t-40">
+				<!-- Available Items -->
+				<mat-card class="radius4 mat-elevation-z2 mat-card">
+					<span id="img-width">
+						<!-- <img #lazyImg appTulsiImg [tulsi_img_url]="baseUrl+x.imageUrl" [img_base_url]="baseUrl" class="img-responsive anim" style="object-fit: cover;"> -->
+						<img src="assets/images/offers/bottle_offer.jpg" class="img-responsive" style="object-fit: cover;">
+					</span>
+					<mat-card-header>
+						<div class="col-xs-12">
+							<mat-card-title>
+								<div class="col-xs-10 no-pad pull-left">
+									<span class="md-headline valign-center item-limit">Bottle-D Happiness</span>
+								</div>
+								<div class="col-xs-2 pull-right" align="right">
+									<!-- <span class="p-t-7 opacity7 font-15 p-r-5">1000</span> -->
+									</div>
+							</mat-card-title>
+						</div>
+					</mat-card-header>
+					<mat-card-content>
+						<div class="row no-margin p-b-20 aligncardfoot">
+							<div class="col-xs-7 valign-center">
+								<span class="font-10">&nbsp;</span>
+								<p class="font-12 col-hgrey">Offer Description</p>
+							</div>
+							<div class="col-xs-5" align="right">
+
+								<p data-toggle="modal" data-target="#water">
+									<button type="button" class="btn item-btnbg add-btn mat-elevation-z2 btnstylenew" (click)="offerDetail('602efd4fc4516905817b4587','606711ad8d7dcb1cfabb2884','none')">
+
+										<span class="font-bold font-16 p-l-5">AVAIL</span>
+									</button>
+								</p>
+
+
+
+							</div>
+						</div>
+					</mat-card-content>
+				</mat-card>
+			</div>
+		</div>
+		<!-- #card -->
+
+		<div class="row clearfix p-l-5 p-r-5">
+			<div class="col-md-12 p-t-10">
+				<!-- Available Items -->
+				<mat-card class="radius4 mat-elevation-z2 mat-card">
+					<span id="img-width">
+						<!-- <img #lazyImg appTulsiImg [tulsi_img_url]="baseUrl+x.imageUrl" [img_base_url]="baseUrl" class="img-responsive anim" style="object-fit: cover;"> -->
+						<img src="assets/images/offers/brew_offer.jpg" class="img-responsive"
+							style="object-fit: cover;">
+					</span>
+					<mat-card-header>
+						<div class="col-xs-12">
+							<mat-card-title>
+								<div class="col-xs-10 no-pad pull-left">
+									<span class="md-headline valign-center item-limit">Brew Fest</span>
+								</div>
+								<div class="col-xs-2 pull-right" align="right">
+									<!-- <span class="p-t-7 opacity7 font-15 p-r-5">1000</span> -->
+								</div>
+							</mat-card-title>
+						</div>
+					</mat-card-header>
+					<mat-card-content>
+						<div class="row no-margin p-b-20 aligncardfoot">
+							<div class="col-xs-7 valign-center">
+								<span class="font-10">&nbsp;</span>
+								<p class="font-12 col-hgrey">Offer Description</p>
+							</div>
+							<div class="col-xs-5" align="right">
+
+								<p data-toggle="modal">
+									<button type="button" class="btn item-btnbg add-btn mat-elevation-z2 btnstylenew" (click)="offerDetail('602efd4fc4516905817b4587','6067117e8d7dcb1cfabb2873','60646cbf3b03bd2afdea8918')">
+
+										<span class="font-bold font-16 p-l-5">AVAIL</span>
+									</button>
+								</p>
+
+
+
+							</div>
+						</div>
+					</mat-card-content>
+				</mat-card>
+			</div>
+		</div>
+
+		<!-- card3 -->
+
+		<div class="row clearfix p-l-5 p-r-5">
+			<div class="col-md-12 p-t-10">
+				<!-- Available Items -->
+				<mat-card class="radius4 mat-elevation-z2 mat-card">
+					<span id="img-width">
+						<!-- <img #lazyImg appTulsiImg [tulsi_img_url]="baseUrl+x.imageUrl" [img_base_url]="baseUrl" class="img-responsive anim" style="object-fit: cover;"> -->
+						<img src="assets/images/offers/straight_pour_offer.jpg" class="img-responsive"
+							style="object-fit: cover;">
+					</span>
+					<mat-card-header>
+						<div class="col-xs-12">
+							<mat-card-title>
+								<div class="col-xs-10 no-pad pull-left">
+									<span class="md-headline valign-center item-limit">2+1 on select premium brands</span>
+								</div>
+								<div class="col-xs-2 pull-right" align="right">
+									<!-- <span class="p-t-7 opacity7 font-15 p-r-5">1000</span> -->
+									</div>
+							</mat-card-title>
+						</div>
+					</mat-card-header>
+					<mat-card-content>
+						<div class="row no-margin p-b-20 aligncardfoot">
+							<div class="col-xs-7 valign-center">
+								<span class="font-10">&nbsp;</span>
+								<p class="font-12 col-hgrey">Offer Description</p>
+							</div>
+							<div class="col-xs-5" align="right">
+
+								<p data-toggle="modal">
+									<button type="button" class="btn item-btnbg add-btn mat-elevation-z2 btnstylenew" (click)="offerDetail('602efd4fc4516905817b4587','6067117e8d7dcb1cfabb2873','606170f03b03bd2afde8653b')">
+
+										<span class="font-bold font-16 p-l-5">AVAIL</span>
+									</button>
+								</p>
+
+
+
+							</div>
+						</div>
+					</mat-card-content>
+				</mat-card>
+			</div>
+		</div>
+
+
+	</div>
+	<!-- #Item List -->
+
+</section>
