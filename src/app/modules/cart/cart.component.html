@@ -384,7 +384,7 @@
 				<button type="button" class="btn btn-link btn-cancel waves-effect"
 					(click)="confirmModal.hide();">NO</button>
 				<button [disabled]="!showYesBtn" type="button" class="btn btn-bg"
-					(click)="onConfirmInsta(confirmModal,paymentFailedModal);">YES</button>
+					(click)="showYesBtn=false;loaderStatus=true;onConfirmInsta(confirmModal,paymentFailedModal);">YES</button>
 				
 				<!-- <a [href]="REQUEST_URL" rel="im-checkout" data-behaviour="remote" data-style="light" data-text="Checkout With Instamojo">Checkout</a> -->
 				<!-- <button type="button" class="btn btn-link waves-effect" (click)="onConfirm();">YES</button> -->

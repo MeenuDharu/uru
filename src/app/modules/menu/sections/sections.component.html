@@ -1,7 +1,3 @@
-
-
-
-
 <nav class="navbar head-bg-purple animate fadeIn nav-height"  id="nav-fade">
   <div class="container-fluid no-pad h-100">
   <div class="navbar-header col-md-12 no-pad no-margin h-100">
@@ -26,11 +22,48 @@
 			<div *ngIf="sectionMenu?.length>0">
 			<div  *ngFor="let x of sectionMenu; let i=index;" (click)="categoryList(x)" routerLink="/menu/categories" class="col-md-12 no-pad"
 				[ngClass]="userService.showOrderNow ? 'order-block-point' : ''">
-				<div class="card" [ngClass]="userService.showOrderNow ? 'order-block-color' : ''" >
+				
+
+				<div *ngIf="x.header == 'Coming Soon'" class="col-md-12 no-pad p-t-5 animate fadeIn">
+					
+					<mat-card class="radius6 mat-elevation-z2 mat-card">			
+				
+				 <mat-card-content class="mat-card-content ">
+					 <div class="row no-margin p-b-20 aligncardfoot">
+						<div class="col-xs-12">Time- 9 am- 5pm</div>
+						<div class="col-xs-12 p-b-20">Daily package- 349 AI</div>
+						<div class="md-headline col-xs-12">Package Details</div>
+						<div class="col-xs-12 p-b-20">
+						 <ul>
+						 <li>Free Wifi</li>
+						 <li>Complimentary – Tea/Fresh Lime Soda/Fresh Lime Water- 3 times a day (coupons for the complimentary items will be given to the guest at the time of purchase of Work@URU package )</li>
+						 <li>20% discount on Mannheim Coffee- valid on a max bill of 500/-</li>
+						 <li>20% discount on URU food & non alchoholic beverage menu- valid on a max bill of 2000/-</li>
+						 </ul>
+						</div>
+						<div class="md-headline col-xs-12">T&C</div>
+						<div  class="col-xs-12">
+						<ul>
+							<li>The package is valid only for one person</li>
+							<li>Validity is only on the day of purchase</li>
+							<li>No carry forward of package</li>
+							<li>Discount will be available only on individual bill</li>
+						</ul>	
+						</div>
+				 </div>
+				</mat-card-content>
+			   </mat-card>
+		      
+			
+			</div>
+
+
+
+				<div class="card" [ngClass]="userService.showOrderNow ? 'order-block-color' : ''" *ngIf="x.header != 'Coming Soon'" >
 					<div class="header p_tb25_lr20">
 						<div class="container-fluid no-pad">
 							<div class="col-md-12 no-pad">
-								<div class="col-md-8 no-pad valign-center pull-left">
+								<div class="col-md-8 no-pad valign-center pull-left" >
 									<div class="col-md-2 no-pad pull-left valign-center">
 										<img appMenuSectionImgBroken [src]="baseUrl+x.imageUrl"
 											[ngClass]="userService.showOrderNow ? 'order-block' : ''" class="menu_img">
@@ -462,8 +495,8 @@ role="dialog" aria-labelledby="dialog-user">
 						<div class="swiper-container carousal_2 h-100" *ngIf="popupBanner && popupBanner.length>1">
 							<div class="swiper-wrapper h-100">
 							  <div class="swiper-slide h-100" *ngFor="let x of popupBanner; let i=index;" >		
-								  <img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive p-120">
-								  <div class="swiper-caption">
+								  <img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive p-60">
+								  <div class="swiper-caption" *ngIf="x.cta_text != ''">
 									<button class="btn btn-popup mat-elevation-z2" (click)="popup_linked_category(x.linked_category)"><span class="font-bold font-16">{{x.cta_text}}</span></button>
 								  </div>			
 								 
@@ -481,7 +514,7 @@ role="dialog" aria-labelledby="dialog-user">
 							
 							  <div *ngFor="let x of popupBanner; let i=index;">		
 								  <img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive">
-								<div class="popup-btn-div">
+								<div class="popup-btn-div" *ngIf="x.cta_text != ''">
 									<button class="btn btn-popup font-bold" (click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
 								</div>
 									

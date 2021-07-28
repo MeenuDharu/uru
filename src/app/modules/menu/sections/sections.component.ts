@@ -184,9 +184,13 @@ export class SectionsComponent implements OnInit {
 					for (let i = 0; i < categoryList.length; i++) {	
 						itemsCount += categoryList[i].item_count;
 					}
-					var departments =  result.branch_details[0].departments.sort((a, b) => {
-						return a.department_order - b.department_order;
-					});
+					if(result.branch_details[0].departments)
+					{
+						var departments =  result.branch_details[0].departments.sort((a, b) => {
+							return a.department_order - b.department_order;
+						});
+					}
+
 					if(result.branch_details[0].has_department_module)
 					{
 						departments.forEach(element => {

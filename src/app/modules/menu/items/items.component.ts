@@ -12,6 +12,7 @@ import { CommonService } from 'src/app/_services/common.service';
 import { Location,PlatformLocation  } from '@angular/common';
 import * as _ from "lodash";
 declare let $: any;
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-items',
@@ -366,6 +367,56 @@ export class ItemsComponent implements OnInit {
 	//     observer.observe(images);  
 	//     // Intersection Observer Test.....
 	// }
+	itemdisp(x,y)
+	{
+if(x === 'hidden')
+{
+	return false;
+}
+else if(x === 'unavailable')
+{
+    // var Time = date2.getTime() - date1.getTime(); 
+    // var Days = Time / (1000 * 3600 * 24); //Diference in Days
+	var time1 =  y.split(" ")
+	var date1 =  moment().format("YYYY-MM-DD")+ " "+ time1[1];
+	let r_date: any = moment(new Date(), 'mm : ss');
+	let d_date: any = moment(new Date(date1), 'mm:ss');
+	//let r_date: any = moment(new Date(), 'mm : ss');			
+	let duration = d_date.diff(r_date, 'seconds');	
+	//console.log("time1........", duration);
+	if(duration>0)
+	{
+
+		setInterval(() => {												
+			var date1 =  moment().format("YYYY-MM-DD")+ " "+ time1[1];
+			let r_date: any = moment(new Date(), 'mm : ss');
+			let d_date: any = moment(new Date(date1), 'mm:ss');
+			let duration = d_date.diff(r_date, 'seconds');
+			
+			if(duration < 0) {
+				clearInterval();
+				return true;
+			} else{
+				clearInterval();
+				return false;				
+			}
+			
+		}, 1000);	
+		
+
+	}
+	else
+	{
+		return false
+	}
+	
+}
+else
+{
+	return true;
+}
+	}
+
 
 	viewOrder()
 	{

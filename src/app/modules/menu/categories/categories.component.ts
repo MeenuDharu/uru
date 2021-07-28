@@ -23,9 +23,9 @@ export class CategoriesComponent implements OnInit {
 
 	isSticky: boolean = false;
 	@HostListener('window:scroll', ['$event'])
-  checkScroll() {
-    this.isSticky = window.pageYOffset >=10;
-  }
+	checkScroll() {
+		this.isSticky = window.pageYOffset >=10;
+	}
 
 	optionCheck: string; waterType: string;
 	restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
@@ -204,6 +204,12 @@ export class CategoriesComponent implements OnInit {
 						  itemsCount += categoryList[i].item_count;
 					  }
   
+					  if(result.branch_details[0].departments)
+					  {
+						  var departments =  result.branch_details[0].departments.sort((a, b) => {
+							  return a.department_order - b.department_order;
+						  });
+					  }
 					  if(result.branch_details[0].has_department_module)
 					  {
 						  result.branch_details[0].departments.forEach(element => {
@@ -256,7 +262,7 @@ export class CategoriesComponent implements OnInit {
 							  table_name: result.table_detail.name ? result.table_detail.name : '',
 							  menu_category: categoryList,
 							  isDepartment: result.branch_details[0].has_department_module,
-							  departments:result.branch_details[0].departments ? result.branch_details[0].departments : 'empty',
+							  departments:result.branch_details[0].departments ? departments : 'empty',
 							  menu_sections:result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{'header':'Order Now', 'name':'all', 'section_order': 1}],
 							  quick_options: result.branch_details[0].quick_options,
 							  isBanner:isBanner,
@@ -282,7 +288,7 @@ export class CategoriesComponent implements OnInit {
 							  total_items: result.branch_details[0].total_items_count,
 							  menu_category: categoryList,
 							  isDepartment: result.branch_details[0].has_department_module,
-							  departments:result.branch_details[0].departments ? result.branch_details[0].departments : 'empty',
+							  departments:result.branch_details[0].departments ? departments : 'empty',
 							  menu_sections:result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{'header':'Order Food', 'name':'all', 'section_order': 1}],
 							  quick_options: result.branch_details[0].quick_options,
 							  isBanner:isBanner,
