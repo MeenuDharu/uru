@@ -82,7 +82,9 @@ export class NfcComponent implements OnInit {
       // let methodToBeInvoked = elem.requestFullscreen || elem['webkitRequestFullScreen'] || elem['mozRequestFullscreen'] || elem['msRequestFullscreen'];
       // if (methodToBeInvoked) methodToBeInvoked.call(elem);
       // access code details
-      this.apiService.ACCESS_CODE_DETAILS({"id": 'n', "code": params['code'], baseURL: environment.baseUrl}).subscribe(result => {
+	  let code = encodeURI(params['code']);			
+	  console.log("qrcode.............", code);
+      this.apiService.ACCESS_CODE_DETAILS({"id": 'n', "code": code, baseURL: environment.baseUrl}).subscribe(result => {
         console.log()
         if(result.status) {
           this.loaderStatus = false;

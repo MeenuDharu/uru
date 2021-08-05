@@ -67,8 +67,8 @@ export class CartComponent implements OnInit {
 	illchoose: boolean = false;
 	passwordMismatch: boolean = false;
 	interval: any;
-	timeLeft: number = 60;
-	timeLeftString: String = '00 : 60';
+	timeLeft: number = 30;
+	timeLeftString: String = '00 : 30';
 	mob_num_exist: boolean = false;
 	exist_email: String = '';
 	social_data: any;
@@ -1694,8 +1694,8 @@ console.log("Timer...........")
 		console.log("resend_otp.........",this.mobile_num);	
 		this.apiService.RESEND_OTP({ email: this.userDetails.email, mobile: this.mobile_num }).subscribe(result => {
 			console.log("Resend OTP...", result);
-			this.timeLeft = 60;
-			this.timeLeftString = '00 : 60';
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
 
 			this.startTimer();
 		})
@@ -1708,8 +1708,8 @@ console.log("Timer...........")
 		console.log("send_otp Form............",this.mobile_num)	
 		//modal2.show();
 		//modal1.hide();
-		this.timeLeft = 60;
-		this.timeLeftString = '00 : 60';
+		this.timeLeft = 30;
+		this.timeLeftString = '00 : 30';
 		this.startTimer();
 
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));		
@@ -1719,8 +1719,8 @@ console.log("Timer...........")
 			if (result.status)
 				modal2.show();
 			modal1.hide();
-			this.timeLeft = 60;
-			this.timeLeftString = '00 : 60';
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
 			this.startTimer();
 		})
 	}
@@ -2257,8 +2257,8 @@ console.log("Timer...........")
 
 				this.userService.SAVE_SOCIAL_USER(sendUserData).then((userResp: any) => {
 					console.log('userResp1....', userResp);
-					this.timeLeft = 60;
-					this.timeLeftString = '00 : 60';
+					this.timeLeft = 30;
+					this.timeLeftString = '00 : 30';
 					this.startTimer();
 					this.customer_id=userResp.customer_id;
 				})
@@ -2355,8 +2355,8 @@ console.log("Timer...........")
 					this.sendOTP = true;
 					this.resendOTP = false;					
 					console.log('userResp....', userResp);
-					this.timeLeft = 60;
-					this.timeLeftString = '00 : 60';
+					this.timeLeft = 30;
+					this.timeLeftString = '00 : 30';
 					this.startTimer();
 					this.customer_id=userResp.customer_id;
 				})
@@ -2570,8 +2570,8 @@ console.log("Timer...........")
 
 				this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
 					console.log('userResp1....', userResp);
-					// this.timeLeft = 60;
-					// this.timeLeftString = '00 : 60';
+					// this.timeLeft = 30;
+					// this.timeLeftString = '00 : 30';
 					// this.startTimer();
 					this.customer_id=userResp.customer_id;
 				})
@@ -2822,7 +2822,7 @@ console.log("Timer...........")
 					if(result.status)
 					{		
 						this.customer_id = result.customer_id;				
-						this.timeLeft = 60;
+						this.timeLeft = 30;
 						this.userService.loginDetails = result.data;
 						modalName.hide();
 						this.mobileShow = false;

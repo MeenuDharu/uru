@@ -47,7 +47,7 @@ export class SectionsComponent implements OnInit {
 	mob_num_exist: boolean = false;
 	exist_email: String = '';
 	private user: SocialUser;
-	timeLeftString: String = '00 : 60';
+	timeLeftString: String = '00 : 30';
 	social_data: any;
 	showExit: boolean = true;
 	take_aways: boolean = false;
@@ -117,8 +117,9 @@ export class SectionsComponent implements OnInit {
 		  this.alterUrl =  'assets/images/Dinamic_Logo.png'
 	  }
 
-	  
-		this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": localStorage.getItem('access_code'), baseURL: environment.baseUrl }).subscribe(result => {
+	  	let code = encodeURI(localStorage.getItem('access_code'));			
+		console.log("qrcode.............", code);
+		this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
 			console.log('api call')
 			if (result.status) {
 				console.log('result -------------------------', result);					
@@ -1237,7 +1238,7 @@ export class SectionsComponent implements OnInit {
 					if(result.status)
 					{		
 						this.customer_id = result.customer_id;				
-						this.timeLeft = 60;
+						this.timeLeft = 30;
 						this.userService.loginDetails = result.data;
 						modalName.hide();
 						this.mobileShow = false;

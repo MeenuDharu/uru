@@ -49,8 +49,8 @@ export class CategoriesComponent implements OnInit {
 	pleasewait: boolean = false;
 	passwordMismatch: boolean = false;
 	interval: any;
-	timeLeft: number = 60;
-	timeLeftString: String = '00 : 60';
+	timeLeft: number = 30;
+	timeLeftString: String = '00 : 30';
 	mob_num_exist: boolean = false;
 	exist_email: String = '';
 	social_data: any;
@@ -135,9 +135,10 @@ export class CategoriesComponent implements OnInit {
 		{
 			this.alterUrl =  'assets/images/Dinamic_Logo.png'
 		}
-  
+		let code = encodeURI(localStorage.getItem('access_code'));			
+		console.log("qrcode.............", code);
 		
-		  this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": localStorage.getItem('access_code'), baseURL: environment.baseUrl }).subscribe(result => {
+		  this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
 			  console.log('api call')
 			  if (result.status) {
 				  console.log('result -------------------------', result);					
@@ -931,8 +932,8 @@ newCategory()
 	resend_otp() {
 		this.apiService.RESEND_OTP({ customer_id: this.customer_id, mobile: this.loginForm.mobile }).subscribe(result => {
 			console.log("Resend OTP...", result);
-			this.timeLeft = 60;
-			this.timeLeftString = '00 : 60';
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
 
 			this.startTimer();
 		})
@@ -1357,7 +1358,7 @@ newCategory()
 					if(result.status)
 					{		
 						this.customer_id = result.customer_id;				
-						this.timeLeft = 60;
+						this.timeLeft = 30;
 						this.userService.loginDetails = result.data;
 						modalName.hide();
 						this.mobileShow = false;

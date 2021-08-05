@@ -186,7 +186,7 @@ export class ApiService {
 		})
 	};
 	ITEM_LIST(x: any) {
-		let posUrl = JSON.parse(localStorage.getItem('dinamic_details')!).pos_base_url;
+		let posUrl = JSON.parse(localStorage.getItem('dinamic_details')).pos_base_url;
 		let d = new Date();
 		let year = d.getFullYear();
 		let month = d.getMonth();

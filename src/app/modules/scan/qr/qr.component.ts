@@ -78,8 +78,9 @@ isChrome:boolean = false;
 			// let methodToBeInvoked = elem.requestFullscreen || elem.webkitRequestFullScreen || elem['mozRequestFullscreen'] || elem['msRequestFullscreen'];
 			// if (methodToBeInvoked) methodToBeInvoked.call(elem);
 			// access code details
-			
-			this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": params['code'], baseURL: environment.baseUrl }).subscribe(result => {
+			let code = encodeURI(params['code']);			
+			console.log("qrcode.............", code);
+			this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
 				console.log("result of qr code............", result)
 					if (result.status) {
 					console.log("result of branch id................",result)

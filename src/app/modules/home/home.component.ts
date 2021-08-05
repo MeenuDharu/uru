@@ -212,9 +212,10 @@ export class HomeComponent implements OnInit {
 			this.alterUrl =  'assets/images/Dinamic_Logo.png'
 		}
 
+		let code = encodeURI(localStorage.getItem('access_code'));			
+		console.log("qrcode.............", code);
 
-
-		this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": localStorage.getItem('access_code'), baseURL: environment.baseUrl }).subscribe(result => {
+		this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code":code, baseURL: environment.baseUrl }).subscribe(result => {
 			console.log('api call')
 			if (result.status) {
 				console.log('result -------------------------', result);					

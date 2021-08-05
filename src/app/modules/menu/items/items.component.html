@@ -85,15 +85,13 @@
 
 
 <section id="menu" class="animate fadeIn wrapper" data-wow-delay="400ms">
-
-
 	<!-- Item List -->
 	<div [hidden]="shimmerList.length"  class="container-fluid page-body" id="item-fade">
 
 		<div *ngFor="let x of menu_items | myFilter:'food_type':categoryFilter | searchFilter:'name':item_search; let i=index;"
 			[@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}">
 
-			<div class="row clearfix p-l-5 p-r-5" *ngIf="x.item_status != 'hidden' && x.item_status != 'unavailable'"
+			<div class="row clearfix p-l-5 p-r-5" *ngIf="x.item_status == 'active'"
 				[ngClass]="((x.item_status == 'hidden') || (x.item_status == 'unavailable')) ? 'hideItemDiv' : ''">
 
 				<div *ngIf="!x.notFound" class="card-padding" [ngStyle]="{'margin-top.px': i===0 ? '10' : '0'}">
