@@ -1,7 +1,7 @@
   export const environment = {    
     production: false,
      //ws_url: 'https://dinamic.io/mobileapi',
-     ws_url: 'http://192.168.0.106:4000', 
+     ws_url: 'http://192.168.1.5:4000', 
      socket_url: 'https://web.dinamic.io',
      img_url: 'https://dinamic.io/api/',  
      baseUrl:'https://web.dinamic.io/api',
@@ -20,11 +20,11 @@
       timeout: 60000
     },   
       payment:true,
-      paymentLink : "http://192.168.0.106:4000/",
+      paymentLink : "http://192.168.1.5:4000/",
      // razorpay_payment_url: "",
       razorpay_payment_url: "https://api.razorpay.com/v1/checkout/embedded",
       cancel_url:"http://localhost:4200/#/bill/confirm",
-      redirect_url:"http://192.168.1.3/",      
+      redirect_url:"http://192.168.1.5/",      
       smsType :'production',
       smsUrl:'@www.mob.dinamic.io',
       password:false
