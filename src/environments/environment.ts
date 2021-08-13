@@ -1,10 +1,10 @@
   export const environment = {    
     production: false,
-     //ws_url: 'https://dinamic.io/mobileapi',
-     ws_url: 'http://192.168.1.5:4000', 
-     socket_url: 'https://web.dinamic.io',
+    //  ws_url: 'https://dinamic.io/mobileapi',
+     ws_url: 'http://192.168.0.102:4000', 
+     socket_url: 'https://dinamic.io',
      img_url: 'https://dinamic.io/api/',  
-     baseUrl:'https://web.dinamic.io/api',
+     baseUrl:'https://dinamic.io/api',
     server_public_key: 'null',   
     userBaseURL:"http://localhost:4200/",
     socket_options: {

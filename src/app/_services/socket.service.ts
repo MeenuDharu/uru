@@ -46,7 +46,6 @@ export class SocketService {
              * Test
              */
 		this.socket.on('update_cookie', (data) => {
-
 			console.log('update_cookie data ---------', data);
 			if (JSON.parse(localStorage.getItem('user_details'))) {
 				let user_details = JSON.parse(localStorage.getItem('user_details'));
