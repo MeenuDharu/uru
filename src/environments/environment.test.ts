@@ -25,6 +25,7 @@ export const environment = {
     redirect_url:"https://mob.dinamic.io/",     
     smsType :'production',
     smsUrl:'@mob.dinamic.io',
-    password:false
+    password:false,
+    smsApiStatus: true
    
 };
