@@ -1,10 +1,14 @@
   export const environment = {    
     production: false,
-    //  ws_url: 'https://dinamic.io/mobileapi',
-     ws_url: 'http://192.168.0.102:4000', 
+     // care server (Production)
+     ws_url: 'https://dinamic.io/mobileapi',
+    // Mob server (Testing)
+    //  ws_url: 'https://mob.dinamic.io/api', 
+      // ws_url: 'http://192.168.0.102:4000', 
      socket_url: 'https://dinamic.io',
      img_url: 'https://dinamic.io/api/',  
      baseUrl:'https://dinamic.io/api',
+    // baseUrl:'http://192.168.0.102:5000',
     server_public_key: 'null',   
     userBaseURL:"http://localhost:4200/",
     socket_options: {
@@ -27,7 +31,7 @@
       redirect_url:"http://192.168.1.5/",      
       smsType :'production',
       smsUrl:'@www.mob.dinamic.io',
-      password:false
+      password: false,
       
       //razorpay_redirect_url: "http://localhost:4200/#/bill/confirm",
     //ws_url: 'https://www.dinamic.io:4000',

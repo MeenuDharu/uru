@@ -67,10 +67,26 @@ export class MenuStorageService {
 			submitForm.name = menuItem.name;
 			submitForm.food_type = menuItem.food_type;
 			submitForm.selling_price = menuItem.selling_price;
-			submitForm.tax_rates = menuItem.tax_rates;
+			let new_tax_rates = [];
+			if (menuItem.tax_rates) {
+				new_tax_rates = menuItem.tax_rates.filter((tax) => {
+					if (tax.checked === true) {
+						tax.item_price = menuItem.sold_price * 1;
+						tax.item_gst_price = (menuItem.sold_price * 1) * (tax.percentage / 100);
+						console.log(tax);
+						return tax;
+					} else {
+						console.log('false');
+						return false;
+					}
+				});
+				console.log('new_tax_rates_items.........', new_tax_rates);
+			}
+			submitForm.tax_rates = new_tax_rates;
 			submitForm.sold_price = menuItem.sold_price;
 			submitForm.assigned_printers = menuItem.assigned_printers;
 			submitForm.quantity = 1;
+			submitForm.is_applied_tax = menuItem.is_applied_tax;
 			if (addonDetails) {
 				submitForm.applied_addons = addonDetails.addons;
 				submitForm.requests = addonDetails.special_request;
@@ -111,6 +127,7 @@ export class MenuStorageService {
 					dd.selling_price = menuItem.selling_price;
 					dd.sold_price = menuItem.sold_price;
 					dd.quantity = menuItem.ordered_qty;
+					dd.is_applied_tax = menuItem.is_applied_tax;
 					if (addonDetails) {
 						dd.applied_addons = addonDetails.addons;
 						dd.requests = addonDetails.special_request;
