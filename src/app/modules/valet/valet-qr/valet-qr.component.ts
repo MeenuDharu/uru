@@ -19,7 +19,7 @@ import { UserBrowserService } from 'src/app/_services/user-browser.service';
 export class ValetQrComponent implements OnInit {
 	valet_details: any;
 	@ViewChild('openModal', { static: true }) openModal: ElementRef;
-	constructor(private http: HttpClient, private location: Location, private router: Router, private socket: Socket, private route: ActivatedRoute, private apiService: ApiService, private commonService: CommonService, public userService: UserService,public browserService:UserBrowserService) { }
+	constructor(private http: HttpClient, private location: Location, private router: Router, private socket: Socket, private route: ActivatedRoute, private apiService: ApiService, private commonService: CommonService, public userService: UserService, public browserService: UserBrowserService) { }
 
 	ngOnInit() {
 		this.route.params.subscribe((params: Params) => {
@@ -36,21 +36,21 @@ export class ValetQrComponent implements OnInit {
 			let user_details = JSON.parse(localStorage.getItem('user_details'));
 			console.log("valet user_details.....................", user_details)
 			let resultString = params['code'];
-			let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));	
-			let qr = { qr: resultString, userDetails: user_details, access_code:localStorage.getItem("access_code"), pos_branch_id:restaurant_details.branch_id };
+			let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
+			let qr = { qr: resultString, userDetails: user_details, access_code: localStorage.getItem("access_code"), pos_branch_id: restaurant_details.branch_id };
 			console.log("valet qr...........", qr)
 			this.apiService.VALIDATE_QR_CODE(qr).subscribe(result => {
 				console.log('result........................', result);
 				if (result.status) {
 					let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 					//if (result.data.branch_id == restaurant_details.branch_id) {
-						// let openValetModal: HTMLElement = this.openValetOpenModal.nativeElement as HTMLElement;
-						// openValetModal.click();   
-						this.valet_details = result.data;
-						this.commonService.valet_details = result.data; 
-						localStorage.setItem("valet_access",this.commonService.valet_details._id)
-						console.log("valet detail ID ....", this.commonService.valet_details._id)
-						console.log("branch id --------", restaurant_details.branch_id)
+					// let openValetModal: HTMLElement = this.openValetOpenModal.nativeElement as HTMLElement;
+					// openValetModal.click();   
+					this.valet_details = result.data;
+					this.commonService.valet_details = result.data;
+					localStorage.setItem("valet_access", this.commonService.valet_details._id)
+					console.log("valet detail ID ....", this.commonService.valet_details._id)
+					console.log("branch id --------", restaurant_details.branch_id)
 
 
 					//}

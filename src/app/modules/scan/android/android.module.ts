@@ -11,14 +11,14 @@ import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
-  declarations: [AndroidComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(android_routes),
-    // ZXingScannerModule,
-    ModalModule.forRoot(),
-    FormsModule,
-    SharedModule
-  ]
+	declarations: [AndroidComponent],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(android_routes),
+		// ZXingScannerModule,
+		ModalModule.forRoot(),
+		FormsModule,
+		SharedModule
+	]
 })
 export class AndroidModule { }

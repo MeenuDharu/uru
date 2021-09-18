@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../_services/api.service';
 import { LoadscriptService } from 'src/app/_services/loadscript.service';
-import {DeviceDetectorService} from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
 	selector: 'app-pwd-recovery',
 	templateUrl: './pwd-recovery.component.html',
@@ -13,19 +13,17 @@ export class PwdRecoveryComponent implements OnInit {
 	pwdForm: any = {}; loaderStatus: boolean; cp_hide: boolean;
 	p_hide: boolean; recoveryStatus: boolean; responseData: string;
 	showLengthValidationMsg: boolean;
-	deviceData:any;
-	isChrome:boolean = false;
+	deviceData: any;
+	isChrome: boolean = false;
 	constructor(private activeRoute: ActivatedRoute, private router: Router, private apiService: ApiService,
-		private ldScript: LoadscriptService,private deviceService: DeviceDetectorService) { }
+		private ldScript: LoadscriptService, private deviceService: DeviceDetectorService) { }
 
 	ngOnInit() {
 		this.deviceData = this.deviceService.getDeviceInfo();
-		if(this.deviceData.browser === 'Chrome')
-		{
+		if (this.deviceData.browser === 'Chrome') {
 			this.isChrome = true;
 		}
-		else
-		{
+		else {
 			this.isChrome = false;
 		}
 

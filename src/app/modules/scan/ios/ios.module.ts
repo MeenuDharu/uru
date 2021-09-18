@@ -9,14 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    IosComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(ios_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		IosComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(ios_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class IosModule { }

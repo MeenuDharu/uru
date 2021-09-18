@@ -13,16 +13,16 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    ViewOrderComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(view_order_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatCardModule,
-    IosNotifyModule    
-  ]
+	declarations: [
+		ViewOrderComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(view_order_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatCardModule,
+		IosNotifyModule
+	]
 })
 export class ViewOrderModule { }

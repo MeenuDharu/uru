@@ -21,15 +21,15 @@ export class BillTypeComponent implements OnInit {
 		"name": "DiNAMIC",
 		"description": "Restaurant Application",
 		"modal": { "ondismiss": () => { } }
-	  };
-	  restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
-	  service_charge:any = 0;
-	my_service_charge:any;
+	};
+	restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
+	service_charge: any = 0;
+	my_service_charge: any;
 	otpForm: any = {};
 	cart: any = []; loaderStatus: boolean = true;
-	user_discount:any;
-	discount:any;
-	order_bill_cost:any;
+	user_discount: any;
+	discount: any;
+	order_bill_cost: any;
 	altered_order_list: any = [{
 		'bill_cost': 0,
 		'bill_cost_gst': 0,
@@ -59,7 +59,7 @@ export class BillTypeComponent implements OnInit {
 	pay_mode: any = 'cash';
 	hastableorder_type: String;
 
-	constructor(private router: Router, private apiService: ApiService, public userService: UserService, public snackBar: SnackbarService,private winRef: WindowRef,private browserService:UserBrowserService, private cp: CurrencyPipe) { }
+	constructor(private router: Router, private apiService: ApiService, public userService: UserService, public snackBar: SnackbarService, private winRef: WindowRef, private browserService: UserBrowserService, private cp: CurrencyPipe) { }
 
 	ngOnInit() {
 
@@ -155,24 +155,20 @@ export class BillTypeComponent implements OnInit {
 
 					this.userService.grandTotal = result.orders.grand_total;
 					this.userService.service_charge_amount = result.orders.service_charge_amount ? result.orders.service_charge_amount : 0;
-				    this.userService.service_charge_percentage = result.orders.service_charge_percentage ? result.orders.service_charge_percentage : 0;
-					if(result.orders.item_discounts && result.orders.item_discounts.total_items  && result.orders.item_discounts.total_items != 0)
-					{
+					this.userService.service_charge_percentage = result.orders.service_charge_percentage ? result.orders.service_charge_percentage : 0;
+					if (result.orders.item_discounts && result.orders.item_discounts.total_items && result.orders.item_discounts.total_items != 0) {
 						this.userService.item_discount = result.orders.item_discounts.total_discount
 					}
-					else
-					{
+					else {
 						this.userService.item_discount = 0;
 					}
-					
+
 					let restaurant_details = JSON.parse(localStorage.getItem("restaurant_details"))
 					console.log("service charge..............", restaurant_details.service_charge)
-					if(localStorage.getItem("service_status") === "false")
-					{
+					if (localStorage.getItem("service_status") === "false") {
 						this.userService.service_charge = 0;
 					}
-					else
-					{
+					else {
 						if (restaurant_details.service_charge != '0') {
 							let service_charge = Number(restaurant_details.service_charge) / 100
 							console.log("service charge1..............", result.orders.final_cost)
@@ -183,50 +179,46 @@ export class BillTypeComponent implements OnInit {
 							this.userService.service_charge = 0;
 						}
 					}
-					
-					
-					
+
+
+
 
 					this.userService.order_list_bill_page = result.orders.order_list;
 					console.log("-----------", this.userService.order_list_bill_page)
 
-					let item_details_array = this.userService.order_list_bill_page.map((order,i) => {
+					let item_details_array = this.userService.order_list_bill_page.map((order, i) => {
 						console.log("order.user_id------------------------", result.orders.order_discount.order_number);
 						// (price of the item / total price) * discount
 
 						this.order_bill_cost = Number(order.bill_cost);
 						this.discount = result.orders.order_discount;
-						
-						this.userService.my_service_charge = (Number(order.bill_cost)/Number(result.orders.total_cost))*Number(this.userService.service_charge_amount);
-						console.log("my_service_charge ************ ",this.userService.my_service_charge)
-						
-						if(result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost)/Number(result.orders.total_cost-this.userService.item_discount))*Number(result.orders.order_discount.discount_number);						
+
+						this.userService.my_service_charge = (Number(order.bill_cost) / Number(result.orders.total_cost)) * Number(this.userService.service_charge_amount);
+						console.log("my_service_charge ************ ", this.userService.my_service_charge)
+
+						if (result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost) / Number(result.orders.total_cost - this.userService.item_discount)) * Number(result.orders.order_discount.discount_number);
 						}
-						else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost))*(Number(result.orders.order_discount.discount_number/100));							
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost)) * (Number(result.orders.order_discount.discount_number / 100));
 						}
-						else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost)/Number(result.orders.total_cost-this.userService.item_discount))*Number(result.orders.total_cost-(result.orders.order_discount.discount_number+this.userService.item_discount));
-							
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost) / Number(result.orders.total_cost - this.userService.item_discount)) * Number(result.orders.total_cost - (result.orders.order_discount.discount_number + this.userService.item_discount));
+
 						}
-						else if(result.orders.order_discount &&  result.orders.order_discount.discount_type === 'flat')
-						{
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'flat') {
 
 							this.user_discount = (Number(order.bill_cost));
-						
+
 						}
-						else{
+						else {
 							this.user_discount = 0;
-						
+
 						}
 
-					   console.log("user_discount--------------------------",this.user_discount)
-					   this.userService.order_list_bill_page[i].user_discount = this.user_discount;
-					   this.userService.order_list_bill_page[i].my_service_charge =  this.userService.my_service_charge;
+						console.log("user_discount--------------------------", this.user_discount)
+						this.userService.order_list_bill_page[i].user_discount = this.user_discount;
+						this.userService.order_list_bill_page[i].my_service_charge = this.userService.my_service_charge;
 						if (order.current_user) {
 							console.log('myshare');
 							let myorderitems = order.item_list.flat(Infinity);
@@ -238,11 +230,11 @@ export class BillTypeComponent implements OnInit {
 									console.log('tax.checked  --------', tax.checked)
 									if (tax.checked == true) {
 										tax.item_price = item.sold_price * item.quantity;
-										tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
+										tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
 										console.log("tax.discount4..................", tax.discount)
 										tax.discount_item_price = tax.item_price - tax.discount;
-									//	(price of the item / total price) * discount
-									    tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
+										//	(price of the item / total price) * discount
+										tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 
 										// tax.item_price = item.sold_price * item.quantity;
 										// tax.item_gst_price = (item.sold_price * item.quantity) * (tax.percentage / 100);
@@ -288,10 +280,10 @@ export class BillTypeComponent implements OnInit {
 							console.log('tax.checked  --------', tax.checked)
 							if (tax.checked == true) {
 								tax.item_price = item.sold_price * item.quantity;
-								tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
+								tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
 								console.log("tax.discount4..................", tax.discount)
 								tax.discount_item_price = tax.item_price - tax.discount;
-							//	(price of the item / total price) * discount
+								//	(price of the item / total price) * discount
 								tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 								console.log(tax)
 								return tax
@@ -317,13 +309,13 @@ export class BillTypeComponent implements OnInit {
 					}, {});
 					console.log('result2 ----------', result2)
 					this.userService.tax_details = result2;
-					console.log("Userservice Tax", this.userService.tax_details)	
+					console.log("Userservice Tax", this.userService.tax_details)
 
-									
-						this.userService.tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
+
+					this.userService.tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
 
 					console.log("tax_total---------------------", parseFloat(this.userService.tax_total).toFixed(2));
-					
+
 					this.userService.order_list_bill_page.forEach((element, i) => {
 						// this.altered_order_list[0].item_list.push(element.item_list[0]);  
 						console.log("ele-------------", element);
@@ -334,14 +326,14 @@ export class BillTypeComponent implements OnInit {
 						element.item_list.forEach(ele => {
 							this.altered_order_list[0].item_list.push(ele);
 						});
-                        console.log("final cost**********************",result.orders.final_cost);
+						console.log("final cost**********************", result.orders.final_cost);
 						this.altered_order_list[0].discont = result.orders.total_cost;
 						this.altered_order_list[0].user_discount = element.user_discount;
-						this.altered_order_list[0].bill_cost = this.altered_order_list[0].bill_cost + element.bill_cost;						
+						this.altered_order_list[0].bill_cost = this.altered_order_list[0].bill_cost + element.bill_cost;
 						this.altered_order_list[0].bill_tax = this.userService.tax_total;
-						this.altered_order_list[0].bill_cost_gst =  result.orders.final_cost + this.userService.tax_total;
-				
-						
+						this.altered_order_list[0].bill_cost_gst = result.orders.final_cost + this.userService.tax_total;
+
+
 						this.altered_order_list[0].current_user = true;
 						this.altered_order_list[0].gst = "0.00";
 
@@ -373,7 +365,7 @@ export class BillTypeComponent implements OnInit {
 							console.log("currentuser", this.userService.order_list_bill_page[i].current_user);
 							this.my_share_bill.user_name = this.userService.order_list_bill_page[i].user_name;
 							this.userService.myshare_billTotal = this.userService.order_list_bill_page[i].bill_cost;
-							this.userService.myshare_billTotal_gst = (this.userService.myshare_billTotal-this.userService.order_list_bill_page[i].user_discount) + this.userService.order_list_bill_page[i].my_tax_total+this.userService.order_list_bill_page[i].my_service_charge ;
+							this.userService.myshare_billTotal_gst = (this.userService.myshare_billTotal - this.userService.order_list_bill_page[i].user_discount) + this.userService.order_list_bill_page[i].my_tax_total + this.userService.order_list_bill_page[i].my_service_charge;
 						}
 
 						console.log("mysharetotal", this.userService.myshare_billTotal_gst)
@@ -381,7 +373,7 @@ export class BillTypeComponent implements OnInit {
 
 						this.userService.order_list_bill_page[i].gst = ((this.userService.restaurant_gst / 100) * this.userService.order_list_bill_page[i].bill_cost).toFixed(2);
 						this.userService.billTotal += this.userService.order_list_bill_page[i].bill_cost;
-						this.userService.billTotal_gst = (this.userService.billTotal- this.userService.order_list_bill_page[i].user_discount) + this.userService.tax_total;
+						this.userService.billTotal_gst = (this.userService.billTotal - this.userService.order_list_bill_page[i].user_discount) + this.userService.tax_total;
 						this.table_total = this.userService.billTotal_gst;
 						console.log(this.userService.billTotal_gst, "bill_gst .................");
 
@@ -459,32 +451,30 @@ export class BillTypeComponent implements OnInit {
 
 	onBillConfirm() {
 		this.loaderStatus = true;
-		let restaurant_details = JSON.parse(localStorage.getItem("restaurant_details"));		
+		let restaurant_details = JSON.parse(localStorage.getItem("restaurant_details"));
 		this.service_charge = 0;
 
-		if(localStorage.getItem("service_status") == "false") 
-		{
+		if (localStorage.getItem("service_status") == "false") {
 			this.service_charge = 0;
 		}
-		else
-		{
+		else {
 			this.service_charge = restaurant_details.service_charge ? restaurant_details.service_charge : 0
 		}
 		let sendData = {
 			"dinamic_details": JSON.parse(localStorage.getItem('dinamic_details')),
 			"bill_details": {
 				"bill_type": this.bill_type,
-				"bill_count": this.split_count, 			
+				"bill_count": this.split_count,
 				"service_charge_percentage": this.service_charge
 			}
 		}
 
 		console.log('bill details....', sendData)
-		
+
 		this.apiService.DINAMIC_BILL_CONFIRM(sendData).subscribe(result => {
-			console.log("result status..............",result.status)
+			console.log("result status..............", result.status)
 			if (result.status) {
-		     this.router.navigate(['/bill/confirm']);
+				this.router.navigate(['/bill/confirm']);
 			}
 			else {
 				console.log('response', result);
@@ -593,7 +583,7 @@ export class BillTypeComponent implements OnInit {
 
 		console.log("modeOfPay***********", modeOfPay)
 		if (modeOfPay == 'cash') {
-		//	this.onBillConfirm();
+			//	this.onBillConfirm();
 		} else {
 			// Instamojo payment....
 			console.log('Instamojo setting up....');
@@ -604,9 +594,9 @@ export class BillTypeComponent implements OnInit {
 					"bill_count": this.split_count
 				}
 			}
-		
+
 			console.log("sendData****************", sendData);
-	
+
 			this.apiService.DINAMIC_BILL_CONFIRM(sendData).subscribe(result => {
 				console.log('dinamic Bill confirm.............', result)
 				if (result.status) {
@@ -625,20 +615,20 @@ export class BillTypeComponent implements OnInit {
 						"mobile": this.user_details.mobile,
 						"order_number": '0000'
 					};
-					console.log("orderdata.........", orderData);		
+					console.log("orderdata.........", orderData);
 
 					this.apiService.CONFIRM_PAYMENT(orderData).subscribe(results => {
 						console.log('response....', results);
 						if (results.status) {
 							let razoypayOrderId = result.data.razorpay_response.id;
-				// razorpay response handler
-				this.razorpayOptions.handler = (response) => {
-					let paymentId = response.razorpay_payment_id;
-					window.location.href = "https://localhost:4200/#/checkout/payment-confirm?payment_request_id="+paymentId;
-				};
-				this.razorpayOptions.order_id = razoypayOrderId;
-				// open razorpay modal
-				new this.winRef.nativeWindow.Razorpay(this.razorpayOptions).open();
+							// razorpay response handler
+							this.razorpayOptions.handler = (response) => {
+								let paymentId = response.razorpay_payment_id;
+								window.location.href = "https://localhost:4200/#/checkout/payment-confirm?payment_request_id=" + paymentId;
+							};
+							this.razorpayOptions.order_id = razoypayOrderId;
+							// open razorpay modal
+							new this.winRef.nativeWindow.Razorpay(this.razorpayOptions).open();
 						} else {
 							console.log('response...', results)
 						}
@@ -662,11 +652,11 @@ export class BillTypeComponent implements OnInit {
 					// tax.item_price = item.sold_price * item.quantity;
 					// tax.item_gst_price = (item.sold_price * item.quantity) * (tax.percentage / 100);
 					tax.item_price = item.sold_price * item.quantity;
-										tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
-										console.log("tax.discount4..................", tax.discount)
-										tax.discount_item_price = tax.item_price - tax.discount;
-									//	(price of the item / total price) * discount
-									    tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
+					tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
+					console.log("tax.discount4..................", tax.discount)
+					tax.discount_item_price = tax.item_price - tax.discount;
+					//	(price of the item / total price) * discount
+					tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 					console.log(tax)
 					return tax
 				} else {

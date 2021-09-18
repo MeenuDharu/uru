@@ -2,8 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { UserService } from '../../../_services/user.service';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/_services/api.service';
-import { Location,PlatformLocation } from '@angular/common'
-import {DeviceDetectorService} from 'ngx-device-detector';
+import { Location, PlatformLocation } from '@angular/common'
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
 	selector: 'app-order-status',
@@ -16,14 +16,14 @@ export class OrderStatusComponent implements OnInit {
 	userDetails: any = JSON.parse(localStorage.getItem('user_details'));
 	order_number: any;
 	showAwaiting: boolean = false;
-	deviceData:any;
-	isChrome:boolean = false;
+	deviceData: any;
+	isChrome: boolean = false;
 	@HostListener('window:popstate', ['$event'])
 	onPopState(event) {
-	  console.log('Back button pressed');
-	  this._location.go('/menu/categories')
+		console.log('Back button pressed');
+		this._location.go('/menu/categories')
 	}
-	constructor(public userService: UserService, private router: Router, private apiService: ApiService, location: PlatformLocation,private deviceService: DeviceDetectorService, private _location: Location) {
+	constructor(public userService: UserService, private router: Router, private apiService: ApiService, location: PlatformLocation, private deviceService: DeviceDetectorService, private _location: Location) {
 		// location.onPopState(() => {
 		// 	this.router.navigate(['/menu/categories']);
 		// });
@@ -33,12 +33,10 @@ export class OrderStatusComponent implements OnInit {
 	ngOnInit() {
 
 		this.deviceData = this.deviceService.getDeviceInfo();
-		if(this.deviceData.browser === 'Chrome')
-		{
+		if (this.deviceData.browser === 'Chrome') {
 			this.isChrome = true;
 		}
-		else
-		{
+		else {
 			this.isChrome = false;
 		}
 		console.log("this.actualData........", this.deviceData);
@@ -95,14 +93,12 @@ export class OrderStatusComponent implements OnInit {
 
 	}
 
-	viewOrderItems(x)
-	{
-		if(x === 'awaiting')
-		{
+	viewOrderItems(x) {
+		if (x === 'awaiting') {
 			this.userService.viewStatus = 'placed'
 			//localStorage.setItem('viewStatus', 'placed')
 		}
-		else{
+		else {
 			this.userService.viewStatus = 'confirmed'
 			//localStorage.setItem('viewStatus', 'confirmed')	
 		}

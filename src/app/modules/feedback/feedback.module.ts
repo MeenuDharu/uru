@@ -11,16 +11,16 @@ import { MatCardModule } from '@angular/material';
 
 
 @NgModule({
-  declarations: [
-    FeedbackComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(feedback_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    MatCardModule
-  ]
+	declarations: [
+		FeedbackComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(feedback_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+		MatCardModule
+	]
 })
 export class FeedbackModule { }

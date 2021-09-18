@@ -9,14 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    PaymentComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(payment_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		PaymentComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(payment_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class PaymentModule { }

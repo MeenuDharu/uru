@@ -62,13 +62,11 @@ export class PickupComponent implements OnInit {
 		var dinamic_det = localStorage.getItem('dinamic_details');
 		//this.socket.disconnect();
 		let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
-		if(restaurant_det.order_type === 'in_house')
-		{
-		this.socket.emit('leave_table', restaurant_det.table_id);
+		if (restaurant_det.order_type === 'in_house') {
+			this.socket.emit('leave_table', restaurant_det.table_id);
 		}
-		else
-		{
-		this.socket.emit('close_take_away',localStorage.getItem('pos_order_id'));	
+		else {
+			this.socket.emit('close_take_away', localStorage.getItem('pos_order_id'));
 		}
 		localStorage.clear();
 		sessionStorage.clear();
@@ -89,13 +87,11 @@ export class PickupComponent implements OnInit {
 		// var user_det = localStorage.getItem('user_details');
 		//this.socket.disconnect();
 		let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
-		if(restaurant_det.order_type === 'in_house')
-		{
-		this.socket.emit('leave_table', restaurant_det.table_id);
+		if (restaurant_det.order_type === 'in_house') {
+			this.socket.emit('leave_table', restaurant_det.table_id);
 		}
-		else
-		{
-		this.socket.emit('close_take_away',localStorage.getItem('pos_order_id'));	
+		else {
+			this.socket.emit('close_take_away', localStorage.getItem('pos_order_id'));
 		}
 		localStorage.clear();
 		sessionStorage.clear();

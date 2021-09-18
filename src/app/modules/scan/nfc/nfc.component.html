@@ -6,14 +6,15 @@
 
 <!-- Pre loader -->
 
-<div *ngIf="loaderStatus" id="loader" class="pr__dark" [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+<div *ngIf="loaderStatus" id="loader" class="pr__dark"
+	[ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
 	<span class="progress">
 		<div class="mobile-preloader">
-				<div class="pre-container w-100">
+			<div class="pre-container w-100">
 				<div class="logo-circle">
 					<div class="center">
 						<img src="assets/images/Dinamic_Logo.svg">
-					</div>					
+					</div>
 				</div>
 				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
 			</div>

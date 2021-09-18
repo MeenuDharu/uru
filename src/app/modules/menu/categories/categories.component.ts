@@ -8,7 +8,7 @@ import { send } from 'q';
 import { Socket } from 'ngx-socket-io';
 import { LoadscriptService } from 'src/app/_services/loadscript.service';
 import { environment } from '../../../../environments/environment';
-import { Location,PlatformLocation  } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import { UserBrowserService } from 'src/app/_services/user-browser.service';
 import { CookieService } from 'ngx-cookie-service';
 const FileSaver = require('file-saver');
@@ -24,7 +24,7 @@ export class CategoriesComponent implements OnInit {
 	isSticky: boolean = false;
 	@HostListener('window:scroll', ['$event'])
 	checkScroll() {
-		this.isSticky = window.pageYOffset >=10;
+		this.isSticky = window.pageYOffset >= 10;
 	}
 
 	optionCheck: string; waterType: string;
@@ -37,8 +37,8 @@ export class CategoriesComponent implements OnInit {
 	cartItems: Number = 0;
 	restaurantDetails: any = JSON.parse(localStorage.getItem('restaurant_details'));
 	customer_id: any;
-	photo_url:string;
-	user_name:any;
+	photo_url: string;
+	user_name: any;
 	enterEmailField: boolean = true;
 	enterNameField: boolean = true;
 	enterSurNameField: boolean = false;
@@ -60,40 +60,40 @@ export class CategoriesComponent implements OnInit {
 	index: any;
 	take_aways: boolean = false;
 	order_status: boolean;
-	loaderStatus:boolean = true;
-	disableBtn:boolean = false;
-	tag:any;
-	tagHead:any;
-	socialLogo:boolean = false;
-	sendOTP:boolean = true;
-	mobileShow:boolean = false;
-	resendOTP:boolean = false;
-	modalLogo:boolean = false;
-	isReadonly:boolean = false;
-	no_category_message:any;
-	sectionTag:string;
-	page_redirect:string;
-	orderTypeFlag:string;
-	deviceStringCat:string;
-	deviceStringLogo:string;
-	deviceStringItem:string;
-	alterUrl:any;
+	loaderStatus: boolean = true;
+	disableBtn: boolean = false;
+	tag: any;
+	tagHead: any;
+	socialLogo: boolean = false;
+	sendOTP: boolean = true;
+	mobileShow: boolean = false;
+	resendOTP: boolean = false;
+	modalLogo: boolean = false;
+	isReadonly: boolean = false;
+	no_category_message: any;
+	sectionTag: string;
+	page_redirect: string;
+	orderTypeFlag: string;
+	deviceStringCat: string;
+	deviceStringLogo: string;
+	deviceStringItem: string;
+	alterUrl: any;
 
 	@HostListener('window:popstate', ['$event'])
 	onPopState(event) {
-	  console.log('Back button pressed');
-	  this._location.go('/home')
+		console.log('Back button pressed');
+		this._location.go('/home')
 	}
 	constructor(private socket: Socket, private router: Router, public userService: UserService, private socialAuthService: AuthService, private apiService: ApiService, private snackBar: SnackbarService,
-		private ldScript: LoadscriptService, private _location: Location, location: PlatformLocation, private browserService :UserBrowserService,  private cookieService: CookieService) { 
-				
-		}
+		private ldScript: LoadscriptService, private _location: Location, location: PlatformLocation, private browserService: UserBrowserService, private cookieService: CookieService) {
+
+	}
 
 
-		
-	
-		
-	
+
+
+
+
 	// @HostListener('window:scroll', ['$event']) // for window scroll events
 	// onScroll(event) {
 	//   console.log(window.scrollX);  
@@ -103,299 +103,274 @@ export class CategoriesComponent implements OnInit {
 	// @ViewChild('scroll', { static: true, read: ElementRef }) public scroll: ElementRef<any>;
 
 	ngOnInit() {
-		
+
 		// this._location.subscribe(x => {console.log(x); this._location.go('/home')});
 		this.ldScript.load('font-awesome', 'material-icons').then(data => {
 			console.log('font awesome reference added....');
 		}).catch(error => console.log('err...', error));
 
-		if(this.browserService.isChrome)
-		{		
-			this.alterUrl =  'assets/images/Dinamic_Logo.webp'
+		if (this.browserService.isChrome) {
+			this.alterUrl = 'assets/images/Dinamic_Logo.webp'
 		}
-		else
-		{
-			this.alterUrl =  'assets/images/Dinamic_Logo.png'
+		else {
+			this.alterUrl = 'assets/images/Dinamic_Logo.png'
 		}
 
 		this.sp_hide = true;
 		this.optionCheck = 'Room Temp';
 		this.waterType = 'Regular';
 		this.userService.cust = false;
-	
+
 		this.tag = localStorage.getItem('selected_tag_name');
 		this.tagHead = localStorage.getItem('selected_tag_header');
-		
+
 		this.sectionTag = localStorage.getItem('selected_section_name');
-		if(this.browserService.isChrome)
-		{		
-			this.alterUrl =  'assets/images/Dinamic_Logo.webp'
+		if (this.browserService.isChrome) {
+			this.alterUrl = 'assets/images/Dinamic_Logo.webp'
 		}
-		else
-		{
-			this.alterUrl =  'assets/images/Dinamic_Logo.png'
+		else {
+			this.alterUrl = 'assets/images/Dinamic_Logo.png'
 		}
-		let code = encodeURI(localStorage.getItem('access_code'));			
+		let code = encodeURI(localStorage.getItem('access_code'));
 		console.log("qrcode.............", code);
-		
-		  this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
-			  console.log('api call')
-			  if (result.status) {
-				  console.log('result -------------------------', result);					
-				  if (result.dinamic_details.table_type == "location") {
-				   
-						  
-							  console.log("location origin....", location.origin);
-							  console.log("restuarent det....", result);
-					  let isBanner:boolean;
-					  console.log("image length..........",result.branch_details[0].banner_images.length)
-					  if(result.branch_details[0].banner_images && result.branch_details[0].banner_images.length)
-					  {
-						  isBanner = true
-						  console.log("banner images true...............", )
-					  }
-					  else
-					  {
-						  isBanner = false;
-						  console.log("banner images false...............", )
-					  }
-					  result.branch_details[0].categories_list[0].categories.forEach(element => {
-						  let str = element.imageUrl
-						  if(element.imageUrl)
-						  {
-						  var elems = str.split("/");
-						  elems.splice(elems.length-1, 0, this.deviceStringCat)
-						  element.imageUrl = elems.join("/")
-						  }
-						  
-					  });
-  
-  
-					  
-  
-					 let categoryList = result.branch_details[0].categories_list[0].categories;
-					 let logoStr = result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl
-					 var logoElems = logoStr.split("/");
-					 logoElems.splice(logoElems.length-1, 0, this.deviceStringLogo);
-					 let logoURL = logoElems.join("/")
-				  
-  
-					 
-  
-					  console.log("category list....", categoryList);
-					  this.userService.restaurant_gst = result.branch_details[0].tax_value;
-					  result.branch_details[0].taxes.forEach((element, index) => {
-						  if (index != (result.branch_details[0].taxes.length - 1)) {
-							  this.userService.restuarant_taxes = this.userService.restuarant_taxes + element.value + " + ";
-						  } else {
-							  this.userService.restuarant_taxes = this.userService.restuarant_taxes + element.value;
-						  }
-					  });
-  
-					  console.log("restuarant taxes.....", this.userService.restuarant_taxes);
-					  let itemsCount = 0;
-			  
-			  
-					  var str="/image/picture.jpg";
-					  var elems = str.split("/");
-					  elems.splice(elems.length-1, 0, "original")
-					  console.log("join...............",elems.join("/"))
-	  
-					  for (let i = 0; i < categoryList.length; i++) {	
-						  itemsCount += categoryList[i].item_count;
-					  }
-  
-					  if(result.branch_details[0].departments)
-					  {
-						  var departments =  result.branch_details[0].departments.sort((a, b) => {
-							  return a.department_order - b.department_order;
-						  });
-					  }
-					  if(result.branch_details[0].has_department_module)
-					  {
-						  result.branch_details[0].departments.forEach(element => {
-							  let rest = JSON.parse(localStorage.getItem('restaurant_details'))
-							  
-							  if(element.pop_up_banners &&  element.pop_up_banners.length)
-							  {
-								  
-								  rest.departments.filter(element1 =>{
-								  
-								   if(element1._id === element._id)
-								   {
-									  console.log("element1...............", element1)
-									  if(element1.pop_up_banners &&  element1.pop_up_banners.length && element1.popup == false)
-									  {
-										  element.popup =false;
-									  }
-									  else
-									  {
-										  element.popup =true;	
-									  }
-								   }
-								  })
-  
-							  }
-						  });
-					  }
-					  console.log('result -------------------------', result);
-					  console.log("location origin....", location.origin)
-					  if (result.dinamic_details.table_type == "location") {
-						  // location
-						  let restaurant_details = {
-							  order_type: "in_house",
-							  company_id: result.branch_details[0].company_id,
-							  branch_id: result.branch_details[0]._id,
-							  floor_id: result.table_detail.floor_id,
-							  table_id: result.table_detail._id,
-							  branch_name: result.branch_details[0].name,
-							  logo_url: result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl,
-							  service_charge : result.branch_details[0].service_charge ? result.branch_details[0].service_charge : '0',
-							  customer_editable_sc : result.branch_details[0].customer_editable_sc,
-							  branch_location: result.branch_details[0].location,
-							  gst: result.branch_details[0].tax_value,
-							  restaurant_tax: this.userService.restuarant_taxes,
-							  valet_service: true,
-							  session_started_at: result.table_detail.session_started_at,
-							  offers: [],
-							  total_items: result.branch_details[0].total_items_count,
-							  table_order_status: result.table_detail.table_order_status,
-							  table_name: result.table_detail.name ? result.table_detail.name : '',
-							  menu_category: categoryList,
-							  isDepartment: result.branch_details[0].has_department_module,
-							  departments:result.branch_details[0].departments ? departments : 'empty',
-							  menu_sections:result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{'header':'Order Now', 'name':'all', 'section_order': 1}],
-							  quick_options: result.branch_details[0].quick_options,
-							  isBanner:isBanner,
-							  banner_images: isBanner ? result.branch_details[0].banner_images : 'empty'
-						  }
-						  localStorage.setItem('restaurant_details', JSON.stringify(restaurant_details));
-						  
-					  }
-					  else {
-						  // locationless
-						  let restaurant_details = {
-							  order_type: "take_aways",
-							  company_id: result.branch_details[0].company_id,
-							  branch_id: result.branch_details[0]._id,
-							  branch_name: result.branch_details[0].name,
-							  branch_location: result.branch_details[0].location,
-							  logo_url: result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl,
-							  service_charge : result.branch_details[0].service_charge ? result.branch_details[0].service_charge : '0',
-							  gst: result.branch_details[0].tax_value,
-							  restaurant_tax: this.userService.restuarant_taxes,
-							  valet_service: false,
-							  offers: [],
-							  total_items: result.branch_details[0].total_items_count,
-							  menu_category: categoryList,
-							  isDepartment: result.branch_details[0].has_department_module,
-							  departments:result.branch_details[0].departments ? departments : 'empty',
-							  menu_sections:result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{'header':'Order Food', 'name':'all', 'section_order': 1}],
-							  quick_options: result.branch_details[0].quick_options,
-							  isBanner:isBanner,
-							  banner_images: isBanner ? result.branch_details[0].banner_images : 'empty'
-						  }
-						  localStorage.setItem('restaurant_details', JSON.stringify(restaurant_details));
-						  
-					  }
-  
-  
-					  
-					  localStorage.setItem('access_type', result.dinamic_details.table_type);
-					  localStorage.setItem('dinamic_details', JSON.stringify(result.dinamic_details));
-							  console.log("table Engaged Socket..........*******************")
-							  // this.socket.emit("table_engaged", resturant_det.table_id);
-					  
-  
-					  
-  
-				  }
-  
-			  } else {
-				  console.log('response', result);
-				  console.log('response idle', result);
-				  document.getElementById("networkAlertModal").click();
-				  let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
-				  if(restaurant_det.order_type === 'in_house')
-				  {
-				  this.socket.emit('leave_table', restaurant_det.table_id);
-				  }
-				  else
-				  {
-				  this.socket.emit('close_take_away',localStorage.getItem('pos_order_id'));	
-				  }
-				  
-				  // localStorage.clear();
-				  // sessionStorage.clear();
-				  this.cookieService.deleteAll('/', '.dinamic.io', true, 'Strict'); 
-			  }
-		  });
+
+		this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
+			console.log('api call')
+			if (result.status) {
+				console.log('result -------------------------', result);
+				if (result.dinamic_details.table_type == "location") {
+
+
+					console.log("location origin....", location.origin);
+					console.log("restuarent det....", result);
+					let isBanner: boolean;
+					console.log("image length..........", result.branch_details[0].banner_images.length)
+					if (result.branch_details[0].banner_images && result.branch_details[0].banner_images.length) {
+						isBanner = true
+						console.log("banner images true...............",)
+					}
+					else {
+						isBanner = false;
+						console.log("banner images false...............",)
+					}
+					result.branch_details[0].categories_list[0].categories.forEach(element => {
+						let str = element.imageUrl
+						if (element.imageUrl) {
+							var elems = str.split("/");
+							elems.splice(elems.length - 1, 0, this.deviceStringCat)
+							element.imageUrl = elems.join("/")
+						}
+
+					});
+
+
+
+
+					let categoryList = result.branch_details[0].categories_list[0].categories;
+					let logoStr = result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl
+					var logoElems = logoStr.split("/");
+					logoElems.splice(logoElems.length - 1, 0, this.deviceStringLogo);
+					let logoURL = logoElems.join("/")
+
+
+
+
+					console.log("category list....", categoryList);
+					this.userService.restaurant_gst = result.branch_details[0].tax_value;
+					result.branch_details[0].taxes.forEach((element, index) => {
+						if (index != (result.branch_details[0].taxes.length - 1)) {
+							this.userService.restuarant_taxes = this.userService.restuarant_taxes + element.value + " + ";
+						} else {
+							this.userService.restuarant_taxes = this.userService.restuarant_taxes + element.value;
+						}
+					});
+
+					console.log("restuarant taxes.....", this.userService.restuarant_taxes);
+					let itemsCount = 0;
+
+
+					var str = "/image/picture.jpg";
+					var elems = str.split("/");
+					elems.splice(elems.length - 1, 0, "original")
+					console.log("join...............", elems.join("/"))
+
+					for (let i = 0; i < categoryList.length; i++) {
+						itemsCount += categoryList[i].item_count;
+					}
+
+					if (result.branch_details[0].departments) {
+						var departments = result.branch_details[0].departments.sort((a, b) => {
+							return a.department_order - b.department_order;
+						});
+					}
+					if (result.branch_details[0].has_department_module) {
+						result.branch_details[0].departments.forEach(element => {
+							let rest = JSON.parse(localStorage.getItem('restaurant_details'))
+
+							if (element.pop_up_banners && element.pop_up_banners.length) {
+
+								rest.departments.filter(element1 => {
+
+									if (element1._id === element._id) {
+										console.log("element1...............", element1)
+										if (element1.pop_up_banners && element1.pop_up_banners.length && element1.popup == false) {
+											element.popup = false;
+										}
+										else {
+											element.popup = true;
+										}
+									}
+								})
+
+							}
+						});
+					}
+					console.log('result -------------------------', result);
+					console.log("location origin....", location.origin)
+					if (result.dinamic_details.table_type == "location") {
+						// location
+						let restaurant_details = {
+							order_type: "in_house",
+							company_id: result.branch_details[0].company_id,
+							branch_id: result.branch_details[0]._id,
+							floor_id: result.table_detail.floor_id,
+							table_id: result.table_detail._id,
+							branch_name: result.branch_details[0].name,
+							logo_url: result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl,
+							service_charge: result.branch_details[0].service_charge ? result.branch_details[0].service_charge : '0',
+							customer_editable_sc: result.branch_details[0].customer_editable_sc,
+							branch_location: result.branch_details[0].location,
+							gst: result.branch_details[0].tax_value,
+							restaurant_tax: this.userService.restuarant_taxes,
+							valet_service: true,
+							session_started_at: result.table_detail.session_started_at,
+							offers: [],
+							total_items: result.branch_details[0].total_items_count,
+							table_order_status: result.table_detail.table_order_status,
+							table_name: result.table_detail.name ? result.table_detail.name : '',
+							menu_category: categoryList,
+							isDepartment: result.branch_details[0].has_department_module,
+							departments: result.branch_details[0].departments ? departments : 'empty',
+							menu_sections: result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{ 'header': 'Order Now', 'name': 'all', 'section_order': 1 }],
+							quick_options: result.branch_details[0].quick_options,
+							isBanner: isBanner,
+							banner_images: isBanner ? result.branch_details[0].banner_images : 'empty'
+						}
+						localStorage.setItem('restaurant_details', JSON.stringify(restaurant_details));
+
+					}
+					else {
+						// locationless
+						let restaurant_details = {
+							order_type: "take_aways",
+							company_id: result.branch_details[0].company_id,
+							branch_id: result.branch_details[0]._id,
+							branch_name: result.branch_details[0].name,
+							branch_location: result.branch_details[0].location,
+							logo_url: result.branch_details[0].logo_url ? (environment.img_url + result.branch_details[0].logo_url) : this.alterUrl,
+							service_charge: result.branch_details[0].service_charge ? result.branch_details[0].service_charge : '0',
+							gst: result.branch_details[0].tax_value,
+							restaurant_tax: this.userService.restuarant_taxes,
+							valet_service: false,
+							offers: [],
+							total_items: result.branch_details[0].total_items_count,
+							menu_category: categoryList,
+							isDepartment: result.branch_details[0].has_department_module,
+							departments: result.branch_details[0].departments ? departments : 'empty',
+							menu_sections: result.branch_details[0].menu_sections ? result.branch_details[0].menu_sections : [{ 'header': 'Order Food', 'name': 'all', 'section_order': 1 }],
+							quick_options: result.branch_details[0].quick_options,
+							isBanner: isBanner,
+							banner_images: isBanner ? result.branch_details[0].banner_images : 'empty'
+						}
+						localStorage.setItem('restaurant_details', JSON.stringify(restaurant_details));
+
+					}
+
+
+
+					localStorage.setItem('access_type', result.dinamic_details.table_type);
+					localStorage.setItem('dinamic_details', JSON.stringify(result.dinamic_details));
+					console.log("table Engaged Socket..........*******************")
+					// this.socket.emit("table_engaged", resturant_det.table_id);
+
+
+
+
+				}
+
+			} else {
+				console.log('response', result);
+				console.log('response idle', result);
+				document.getElementById("networkAlertModal").click();
+				let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
+				if (restaurant_det.order_type === 'in_house') {
+					this.socket.emit('leave_table', restaurant_det.table_id);
+				}
+				else {
+					this.socket.emit('close_take_away', localStorage.getItem('pos_order_id'));
+				}
+
+				// localStorage.clear();
+				// sessionStorage.clear();
+				this.cookieService.deleteAll('/', '.dinamic.io', true, 'Strict');
+			}
+		});
 
 		console.log("categories.....................", this.restaurantDetails.menu_category)
 		console.log("tag.............", this.tag)
-		if(this.restaurantDetails.isDepartment)
-		{
-			
-			this.restaurantDetails.menu_category.filter((i) =>
-			{
-				
-				let t1 = i.associated_dept_sections.filter((j) =>
-				{
-					console.log("dept sections.....",j);
-					
-					if(j._id === this.sectionTag && j.selected === true)
-					{
-						console.log("menu sections...........",j.menu_sections)
-						let t = j.menu_sections.filter((k) => k._id === this.tag && k.selected === true);						
-						if(t.length)
-						{			
-						this.menu_categories.push(i)
-						return i;
+		if (this.restaurantDetails.isDepartment) {
+
+			this.restaurantDetails.menu_category.filter((i) => {
+
+				let t1 = i.associated_dept_sections.filter((j) => {
+					console.log("dept sections.....", j);
+
+					if (j._id === this.sectionTag && j.selected === true) {
+						console.log("menu sections...........", j.menu_sections)
+						let t = j.menu_sections.filter((k) => k._id === this.tag && k.selected === true);
+						if (t.length) {
+							this.menu_categories.push(i)
+							return i;
 						}
 					}
-					
+
 				});
-			
-				
-			} );
-			
+
+
+			});
+
 		}
-		else
-		{
-			
-			if(this.tag === 'all')
-			{
+		else {
+
+			if (this.tag === 'all') {
 				this.menu_categories = this.restaurantDetails.menu_category;
 			}
-			else
-			{
-		
-						
-						this.restaurant_details.menu_category.filter((item) => {
-									// console.log("Items.......", item)
-									let menu_items = item.associated_dept_sections.filter((menu) => {
-										// console.log('type of tax.value  --------',menu);								
-										  let t = menu.menu_sections.filter((j) => j._id === this.tag && j.selected === true);
-								  if(t.length)
-								  {			
-									this.menu_categories.push(item)
-									return item;
-								  }
-	
-									})
-							
-								})
-						
+			else {
+
+
+				this.restaurant_details.menu_category.filter((item) => {
+					// console.log("Items.......", item)
+					let menu_items = item.associated_dept_sections.filter((menu) => {
+						// console.log('type of tax.value  --------',menu);								
+						let t = menu.menu_sections.filter((j) => j._id === this.tag && j.selected === true);
+						if (t.length) {
+							this.menu_categories.push(item)
+							return item;
+						}
+
+					})
+
+				})
+
 			}
 		}
 
 
-		  if(this.menu_categories === 0)
-		  {
+		if (this.menu_categories === 0) {
 			this.no_category_message = 'No items found in this category';
-		  }
-	
-		console.log('categories..............',this.menu_categories);
+		}
+
+		console.log('categories..............', this.menu_categories);
 		this.quick_options = this.restaurantDetails.quick_options;
 		console.log("this.quick_options", this.quick_options)
 		this.selected_quick_option = null;
@@ -527,7 +502,7 @@ export class CategoriesComponent implements OnInit {
 			this.userService.placed_order_status = false;
 		}
 		console.log("loader status............", this.loaderStatus)
-		
+
 		setTimeout(() => { this.loaderStatus = false; }, 500);
 	}
 
@@ -544,22 +519,19 @@ export class CategoriesComponent implements OnInit {
 			// {behavior: "smooth", block: "start", inline: "nearest"}
 		}
 	}
-newCategory()
-{
-	this.restaurantDetails.menu_category.filter((i) =>
-		{
-			
-			
+	newCategory() {
+		this.restaurantDetails.menu_category.filter((i) => {
+
+
 			let t1 = i.associated_dept_sections.filter((j) => j.header === this.tag);
 			let t = i.associated_menu_sections.filter((j) => j.name === this.tag);
-				if(t.length)
-				{			
+			if (t.length) {
 				this.menu_categories.push(i)
 				return i;
-				}
-			
-		} );	
-}
+			}
+
+		});
+	}
 	onQuickOption(x) {
 		this.selected_quick_option = x;
 		localStorage.setItem("selected_quick_option", JSON.stringify(this.selected_quick_option));
@@ -585,9 +557,8 @@ newCategory()
 
 
 
-	viewOrder()
-	{
-		
+	viewOrder() {
+
 		this.loaderStatus = true;
 		this.router.navigate(['/cart/list']);
 	}
@@ -602,7 +573,7 @@ newCategory()
 					this.disableBtn = false;
 					this.snackBar.OPEN('Your service call has been placed.', 'Close');
 				}
-				else {console.log('response', result.response);}
+				else { console.log('response', result.response); }
 			});
 			//serviceModal.hide();
 			//this.disableBtn = false;			
@@ -612,7 +583,7 @@ newCategory()
 			serviceModal.hide();
 			this.userService.continueBtn = false;
 			this.userService.loginSocialDisable = true;
-			this.isReadonly  = false;
+			this.isReadonly = false;
 			this.disableBtn = false;
 			this.socialLogo = true;
 
@@ -625,17 +596,15 @@ newCategory()
 			let sendData = null;
 			let type_id;
 			let order_type;
-			if(this.restaurantDetails.order_type === 'in_house')
-			{
-			type_id = this.restaurantDetails.table_id;
-			order_type = this.restaurantDetails.order_type
+			if (this.restaurantDetails.order_type === 'in_house') {
+				type_id = this.restaurantDetails.table_id;
+				order_type = this.restaurantDetails.order_type
 			}
-			else
-			{
+			else {
 				type_id = localStorage.getItem("pos_order_id");
-				order_type = this.restaurantDetails.order_type;	
+				order_type = this.restaurantDetails.order_type;
 			}
-		
+
 
 			if (selectedQuickOption.name == 'water') {
 				console.log(this.waterType)
@@ -648,10 +617,10 @@ newCategory()
 							free_service: false,
 							price: selectedQuickOption.service_cost[0].price,
 							called_on: "12/02/2015",
-							
+
 						}],
 						order_type: order_type,
-						type_id : type_id	
+						type_id: type_id
 					};
 				}
 				else {
@@ -662,9 +631,9 @@ newCategory()
 							quantity: 1,
 							free_service: true,
 							called_on: "12/02/2015"
-						}],						
+						}],
 						order_type: order_type,
-						type_id : type_id	
+						type_id: type_id
 					};
 				}
 			}
@@ -675,17 +644,17 @@ newCategory()
 						name: selectedQuickOption.name,
 						quantity: 1,
 						free_service: true,
-						called_on: "12/02/2015"					
-						
+						called_on: "12/02/2015"
+
 					}],
 					order_type: order_type,
-					type_id : type_id	
+					type_id: type_id
 				};
 			}
 			console.log(sendData)
 			// service api
 			this.apiService.CONFIRM_SERVICE(sendData).subscribe(result => {
-				console.log("service call..........",result )
+				console.log("service call..........", result)
 				if (result.status) {
 					this.snackBar.OPEN('Your service call has been placed.', 'Close');
 					resolve({ status: true });
@@ -744,7 +713,7 @@ newCategory()
 	userOtpValidate(modalName) {
 		this.loaderStatus = true;
 		this.userService.SIGNUP_OTP_VALIDATE({ customer_id: this.customer_id, otp: this.otpForm.otp }).then((result: any) => {
-			if (result.status) {				
+			if (result.status) {
 				modalName.hide();
 				this.loaderStatus = false;
 				if (this.selected_quick_option.name == 'bill')
@@ -752,10 +721,10 @@ newCategory()
 				else if (this.selected_quick_option)
 					this.onServiceConfirm(this.selected_quick_option);
 			}
-			else{
-				 this.otpForm.error_msg = result.message;
-				 this.loaderStatus = false;
-				}
+			else {
+				this.otpForm.error_msg = result.message;
+				this.loaderStatus = false;
+			}
 		});
 	}
 
@@ -772,21 +741,20 @@ newCategory()
 			else this.loginForm.error_msg = result.message;
 		});
 	}
-	onConfirmPassVal(event)
-	{
-	
-			 console.log("password and confirm");
-			 
-			if (this.loginForm.password !== this.loginForm.confirm_password) {
-				console.log("Mismatch password....");
-				this.passwordMismatch = true;
+	onConfirmPassVal(event) {
 
-			} else {
-				this.passwordMismatch = false;
-				this.userService.pass_error = "";
+		console.log("password and confirm");
+
+		if (this.loginForm.password !== this.loginForm.confirm_password) {
+			console.log("Mismatch password....");
+			this.passwordMismatch = true;
+
+		} else {
+			this.passwordMismatch = false;
+			this.userService.pass_error = "";
 			//	this.loaderStatus = true;
-			}
-	
+		}
+
 
 	}
 
@@ -795,85 +763,82 @@ newCategory()
 		this.passwordMismatch = true;
 		if (this.loginForm.name) {
 			// console.log("password and confirm");
-					this.enterEmailField = false;
-					this.enterOtpField = false;
-					this.enterNameField = true;				
-					this.enterPasswordField = true;
-					this.confirmPasswordField = true;
-					this.mob_num_exist = false;
-				
-			
-				this.userService.pass_error  = "";
-				this.passwordMismatch = false;
-				this.loaderStatus = true;
-				//this.pleasewait = true;
-				
-				if(environment.password === false)
-				{
-					this.loginForm.password = '123456'
-					this.loginForm.confirm_password = '123456'
-				}
+			this.enterEmailField = false;
+			this.enterOtpField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = true;
+			this.confirmPasswordField = true;
+			this.mob_num_exist = false;
+
+
+			this.userService.pass_error = "";
+			this.passwordMismatch = false;
+			this.loaderStatus = true;
+			//this.pleasewait = true;
+
+			if (environment.password === false) {
+				this.loginForm.password = '123456'
+				this.loginForm.confirm_password = '123456'
+			}
 
 
 
-				let newSignupForm = {
-					'email': this.loginForm.username,
-					'name': this.loginForm.name,
-					'surname': this.loginForm.surname,
-					'mobile': this.loginForm.mobile,
-					'password': this.loginForm.password,
-					'confirm_password': this.loginForm.confirm_password,
-					"company_id":this.restaurant_details.company_id,
-					"branch":{"branch_id":this.restaurant_details.branch_id, count:0},
-					"smsType":environment.smsType,
-					'smsUrl' : environment.smsUrl
-				}
+			let newSignupForm = {
+				'email': this.loginForm.username,
+				'name': this.loginForm.name,
+				'surname': this.loginForm.surname,
+				'mobile': this.loginForm.mobile,
+				'password': this.loginForm.password,
+				'confirm_password': this.loginForm.confirm_password,
+				"company_id": this.restaurant_details.company_id,
+				"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
+				"smsType": environment.smsType,
+				'smsUrl': environment.smsUrl
+			}
 
-				console.log("Signup Details...", newSignupForm)
+			console.log("Signup Details...", newSignupForm)
 
-				this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
-					//  this.signupForm.submit = false;
-					if (result.status) {
+			this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
+				//  this.signupForm.submit = false;
+				if (result.status) {
 					//	this.pleasewait = false;
-						this.loaderStatus = false;
-						this.customer_id = result.customer_id;
-						this.user_name =  result.name; 
-						let sendData = {
-							"user": this.customer_id,
-							"company_id":this.restaurant_details.company_id,
-							"branch_id":this.restaurant_details.branch_id,
-							"userBaseURL":environment.userBaseURL
+					this.loaderStatus = false;
+					this.customer_id = result.customer_id;
+					this.user_name = result.name;
+					let sendData = {
+						"user": this.customer_id,
+						"company_id": this.restaurant_details.company_id,
+						"branch_id": this.restaurant_details.branch_id,
+						"userBaseURL": environment.userBaseURL
+					}
+					this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
+						console.log("mail result...", result);
+						if (result.status) {
+							this.loaderStatus = false;
+
 						}
-						this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
-							console.log("mail result...", result);
-							if(result.status)
-							{
-								this.loaderStatus = false;
+						else {
+							this.loaderStatus = false;
+						}
 
-							}
-							else
-							{
-								this.loaderStatus = false;
-							}
-				
-						})
-					
-						this.enterPasswordField = false;
-						this.confirmPasswordField = false;
-						this.enterNameField = false;	
-						this.mob_num_exist = false;
-						this.enterOtpField = true;
-					}
-					else {
-						console.log('response', result);
-						this.loaderStatus = false;
-						//this.pleasewait = false;						
-						this.loginForm.error_msg = result.message;
-						this.signupForm.error_msg = result.message;
-					}
-				});
+					})
 
-			
+					this.enterPasswordField = false;
+					this.confirmPasswordField = false;
+					this.enterNameField = false;
+					this.mob_num_exist = false;
+					this.enterOtpField = true;
+				}
+				else {
+					console.log('response', result);
+					this.loaderStatus = false;
+					//this.pleasewait = false;						
+					this.loginForm.error_msg = result.message;
+					this.signupForm.error_msg = result.message;
+				}
+			});
+
+
 
 		}
 		else if (this.loginForm.password) {
@@ -891,10 +856,10 @@ newCategory()
 			});
 
 		}
-		
-		else if (this.loginForm.username) {					
-					
-			this.enterEmailField = false;				
+
+		else if (this.loginForm.username) {
+
+			this.enterEmailField = false;
 			this.enterNameField = true;
 			this.enterPasswordField = true;
 			this.confirmPasswordField = true;
@@ -955,42 +920,39 @@ newCategory()
 	}
 
 
-	goBack(m1,m2)
-	{
-		if(this.enterEmailField)
-		{
-		m1.hide();
-		this.closeLogin()
-		m2.show()
+	goBack(m1, m2) {
+		if (this.enterEmailField) {
+			m1.hide();
+			this.closeLogin()
+			m2.show()
 		}
-		else if(this.enterNameField)
-		{
-		this.enterEmailField = true;
-		this.enterOtpField = false;
-		this.enterNameField = true;
-		this.enterPasswordField = false;
-		this.confirmPasswordField = false;
-		this.pleasewait = false;
-		this.loginForm.confirm_password = "";
-		this.loginForm.password=""
-		this.mob_num_exist = false
+		else if (this.enterNameField) {
+			this.enterEmailField = true;
+			this.enterOtpField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = false;
+			this.confirmPasswordField = false;
+			this.pleasewait = false;
+			this.loginForm.confirm_password = "";
+			this.loginForm.password = ""
+			this.mob_num_exist = false
 		}
-		
-		
-					
-				
+
+
+
+
 	}
-	
+
 	optionChange(x) {
 		if (x == 'Warm') { this.waterType = 'Regular'; }
 	}
 
 	onItemPage(category, catIndex) {
-		category.popup=false;
+		category.popup = false;
 		console.log("catIndex....", catIndex);
 		localStorage.removeItem("scroll_y_pos")
 		this.router.navigate(['/menu/items']);
-		localStorage.setItem('catIndex', catIndex);		
+		localStorage.setItem('catIndex', catIndex);
 		localStorage.setItem('selected_category', JSON.stringify(category));
 	}
 
@@ -1030,128 +992,120 @@ newCategory()
 	}
 
 
-	
 
-	  onKeyPress(event: any) {
+
+	onKeyPress(event: any) {
 		// this.values = event.target.value;
 		this.otpForm.error_msg = "";
 		this.userService.error_msg = "";
 		console.log(event.target.value.length)
 
-	 };
+	};
 
-	 OnKeyDown(element)
-	 {
-   //  console.log(element.target.value.length)
-	 }
-	
-	 onKeyUp(element){	
-		let length = element.target.value.length ; //this will have the length of the text entered in the input box
+	OnKeyDown(element) {
+		//  console.log(element.target.value.length)
+	}
+
+	onKeyUp(element) {
+		let length = element.target.value.length; //this will have the length of the text entered in the input box
 		//console.log(element.target.value.length);
 		this.userService.continueBtn = false;
 		this.userService.loginSocialDisable = true;
-			
-		if(length === 10)
-		{
-			
+
+		if (length === 10) {
+
 			let sendData =
 			{
-				mobile : element.target.value,
-				type:'checkmobile',
-				company_id:this.restaurant_details.company_id,
-				branch_id:this.restaurant_details.branch_id,
-				user_type:'existing_user'
+				mobile: element.target.value,
+				type: 'checkmobile',
+				company_id: this.restaurant_details.company_id,
+				branch_id: this.restaurant_details.branch_id,
+				user_type: 'existing_user'
 			}
 			this.isReadonly = true;
-			console.log("keyup data..........",sendData);
+			console.log("keyup data..........", sendData);
 			this.apiService.CHECK_MOBILE_LOGIN(sendData).subscribe(result => {
-			console.log("result Mobile..............", result);		
-				if(result.data && result.data.activation === true)
-				{
+				console.log("result Mobile..............", result);
+				if (result.data && result.data.activation === true) {
 					this.userService.loginDetails = result.data;
 					this.isReadonly = false;
 					this.customer_id = result.data._id;
-					this.userService.continueBtn = true;					
+					this.userService.continueBtn = true;
 				}
-				else{
+				else {
 					this.userService.loginSocialDisable = false;
 					this.isReadonly = false;
 				}
 
 			})
 		}
-		else
-		{
-			this.userService.loginSocialDisable = true	
+		else {
+			this.userService.loginSocialDisable = true
 		}
-	  }
+	}
 
 
-	  continueSignin(newUserModal,newOTPModal)
-	  {
+	continueSignin(newUserModal, newOTPModal) {
 		// newUSerModal.hide() ;
 		// newOTPModal.show();
-	//	this.social_data['mobile'] = this.mobile_num;
-	
-		let userData = this.social_data;	
-				let sendUserData = {				
-					'mobile': this.mobile_num,
-					'customer_id' : this.customer_id,
-					'otp_status':'sent',
-					'user_type':'existing_user',
-					'type':'sentotp',
-					'company_id':this.restaurant_details.company_id,
-					'branch_id':this.restaurant_details.branch_id,
-					'smsType':environment.smsType,
-					'smsUrl' : environment.smsUrl	
-				}	
+		//	this.social_data['mobile'] = this.mobile_num;
 
-				this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
-					console.log('userResp1....', userResp);
-					// this.timeLeft = 60;
-					// this.timeLeftString = '00 : 60';
-					// this.startTimer();
-					this.customer_id=userResp.customer_id;
-				})
-			
-				newUserModal.hide();
-				this.mobileShow = false;				
-				this.otpForm.otp = "";
-				this.sendOTP = true;
-				newOTPModal.show();
+		let userData = this.social_data;
+		let sendUserData = {
+			'mobile': this.mobile_num,
+			'customer_id': this.customer_id,
+			'otp_status': 'sent',
+			'user_type': 'existing_user',
+			'type': 'sentotp',
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
+			'smsType': environment.smsType,
+			'smsUrl': environment.smsUrl
+		}
+
+		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
+			console.log('userResp1....', userResp);
+			// this.timeLeft = 60;
+			// this.timeLeftString = '00 : 60';
+			// this.startTimer();
+			this.customer_id = userResp.customer_id;
+		})
+
+		newUserModal.hide();
+		this.mobileShow = false;
+		this.otpForm.otp = "";
+		this.sendOTP = true;
+		newOTPModal.show();
 
 
-	  }
-	  
-	  signinVerify(newOTPModal)
-	  {
+	}
+
+	signinVerify(newOTPModal) {
 		this.loaderStatus = true;
 		console.log("otp value.........", this.otpForm.otp)
-		let sendUserData = {				
+		let sendUserData = {
 			'mobile': this.mobile_num,
-			'customer_id' : this.customer_id,
-			'otp_status':'verified',
-			'type':'otpverify',
+			'customer_id': this.customer_id,
+			'otp_status': 'verified',
+			'type': 'otpverify',
 			'otp': String(this.otpForm.otp),
-			'company_id':this.restaurant_details.company_id,
-			'branch_id':this.restaurant_details.branch_id,	
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
 
-									
-		}	
-		console.log("senddata............",sendUserData );
+
+		}
+		console.log("senddata............", sendUserData);
 		this.apiService.UPDATE_EXISTING_USER(sendUserData).then(result => {
 			console.log('SAVE_SOCIAL_USER....', result);
-			console.log("result", result);			
-			if(result.status)
-			{
-				if(result.data.user_id)
-				{
+			console.log("result", result);
+			if (result.status) {
+				if (result.data.user_id) {
 					let userData = {
 						id: result.data.user_id,
 						social_unique_id: result.data.user_id,
 						name: result.data.name,
 						email: result.data.email,
-						mobile: result.data.mobile,				
+						mobile: result.data.mobile,
 						provider: result.data.third_party_provider,
 						photoUrl: result.data.photo_url,
 						user_type: result.data.user_type
@@ -1159,27 +1113,25 @@ newCategory()
 					console.log("true2..........", userData)
 					this.social_login_user(userData, newOTPModal);
 				}
-			   else
-			   {
-				let userData = {
-					id: result.data._id,
-					social_unique_id: result.data._id,
-					name: result.data.name,
-					email: result.data.email,
-					mobile: result.data.mobile,	
-					email_confirmed: result.data.email_confirmed,			
-					provider: 'Dinamic',					
-					user_type: result.data.user_type,
-					status:result.status
+				else {
+					let userData = {
+						id: result.data._id,
+						social_unique_id: result.data._id,
+						name: result.data.name,
+						email: result.data.email,
+						mobile: result.data.mobile,
+						email_confirmed: result.data.email_confirmed,
+						provider: 'Dinamic',
+						user_type: result.data.user_type,
+						status: result.status
+					}
+					console.log("true1..........", userData)
+					this.email_login_user(userData, newOTPModal);
 				}
-				console.log("true1..........", userData)
-				this.email_login_user(userData, newOTPModal);
-			   }
-				
-				
+
+
 			}
-			else
-			{
+			else {
 
 				this.otpForm.error_msg = result.message;
 				// this.otpForm.otp = "";
@@ -1187,20 +1139,19 @@ newCategory()
 				this.resendOTP = true;
 				this.loaderStatus = false;
 			}
-		
+
 		})
-		this.mobileShow = false;				
+		this.mobileShow = false;
 		this.otpForm.otp = "";
 		this.sendOTP = true;
-	//	newOTPModal.hide();
+		//	newOTPModal.hide();
 
-	  }
+	}
 
-	  email_login_user(userData, newOTPModal)
-	  {
+	email_login_user(userData, newOTPModal) {
 		this.userService.LOGIN(userData).then((result: any) => {
 			console.log('user login....', result);
-			if (result.status) {				
+			if (result.status) {
 				newOTPModal.hide();
 				this.loaderStatus = false;
 				if (this.selected_quick_option.name == 'bill')
@@ -1208,25 +1159,24 @@ newCategory()
 				else if (this.selected_quick_option)
 					this.onServiceConfirm(this.selected_quick_option);
 			}
-			else{
+			else {
 				this.loaderStatus = false;
 				this.loginForm.error_msg = result.message;
-			} 
+			}
 		});
-	  }
+	}
 
-	  social_login_user(userData, newOTPModal)
-	  {
+	social_login_user(userData, newOTPModal) {
 		this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {
-			
+
 			if (result.status) {
-				this.userService.user_name =userData.name;
-			    this.photo_url =  userData.photoUrl;
-				   newOTPModal.hide();
-				   this.loaderStatus = false;
+				this.userService.user_name = userData.name;
+				this.photo_url = userData.photoUrl;
+				newOTPModal.hide();
+				this.loaderStatus = false;
 
 
-				   if (this.page_redirect) {
+				if (this.page_redirect) {
 					console.log(this.page_redirect);
 					if (this.page_redirect === '/myorder') {
 						this.router.navigate(['/myorder']);
@@ -1238,46 +1188,46 @@ newCategory()
 						}
 					}
 				}
-				  else(userData.user_type === 'existing_user')
-				   {
+				else (userData.user_type === 'existing_user')
+				{
 					this.apiService.GET_BILL().subscribe(result => {
 						console.log('oms bills.....', result);
-						if (result.status) {						
+						if (result.status) {
 							this.ngOnInit();
 							let bills = result.bills.bills;
 							let check_currentuser_ordered = bills.filter(ss => ss.orderer_name === userData.name);
 							console.log('bills....', check_currentuser_ordered);
-	
+
 							if (check_currentuser_ordered.length) {
 								this.userService.showOrderNow = true;
 								this.userService.showExit = true;
-							
+
 								if (!this.take_aways) {
 									this.router.navigate(['bill/confirm']);
 								}
 								else {
-	
+
 								}
-	
+
 							} else {
 								this.userService.showOrderNow = false;
 							}
 						} else {
 							this.userService.showOrderNow = false;
 							if (this.selected_quick_option.name == 'bill')
-										this.router.navigate(['/bill/view']);
-									else if (this.selected_quick_option)
-										this.onServiceConfirm(this.selected_quick_option);
+								this.router.navigate(['/bill/view']);
+							else if (this.selected_quick_option)
+								this.onServiceConfirm(this.selected_quick_option);
 
 						}
 					})
-				   }
-				
+				}
+
 			}
 			else this.signupForm.error_msg = result.message;
 		});
-	  }
-	  socialSignIn(modalName, socialPlatform: string, otpModal) {
+	}
+	socialSignIn(modalName, socialPlatform: string, otpModal) {
 		let socialPlatformProvider;
 		this.userService.usableLink = false;
 		this.loaderStatus = true;
@@ -1289,24 +1239,20 @@ newCategory()
 		else if (socialPlatform == "google") {
 			socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
 			console.log("success1............")
-			if(socialPlatformProvider)
-		{
-			console.log("success............")
-		}
-		else
-		{
-			console.log("false............")
-		}
+			if (socialPlatformProvider) {
+				console.log("success............")
+			}
+			else {
+				console.log("false............")
+			}
 
 		}
 
 		console.log("HAndle socialPlatformProvider............", socialPlatformProvider)
-		if(socialPlatformProvider)
-		{
+		if (socialPlatformProvider) {
 			console.log("success............")
 		}
-		else
-		{
+		else {
 			console.log("false............")
 		}
 
@@ -1316,8 +1262,8 @@ newCategory()
 			let sendData = {
 				email: userData.email
 			}
-	        this.social_data = userData;
-			
+			this.social_data = userData;
+
 			this.userService.usableLink = true;
 			// this.apiService.CHECK_MOBILE_SOCIAL_LOGIN(sendData).subscribe(result => {
 			// 	console.log("result Login................", result)
@@ -1326,52 +1272,50 @@ newCategory()
 			// 	    this.userService.error_msg = result.message;
 
 			// 	} else {
-				//	this.social_data = userData;
-				
-					console.log("ask_mobile Data", this.social_data)
+			//	this.social_data = userData;
+
+			console.log("ask_mobile Data", this.social_data)
+			modalName.hide();
+
+			this.social_data['mobile'] = this.mobile_num;
+
+			console.log('user social login details....', this.social_data);
+			console.log("social data...", userData);
+			let sendUserData = {
+				user_id: userData.id,
+				social_unique_id: userData.id,
+				name: userData.name,
+				email: userData.email,
+				mobile: userData.mobile,
+				email_confirmed: true,
+				photo_url: userData.photoUrl,
+				third_party_provider: userData.provider,
+				'password': '13579',
+				social_user: this.social_data,
+				company_id: this.restaurant_details.company_id,
+				branch: { branch_id: this.restaurant_details.branch_id, count: 0 },
+				user_type: 'new_user',
+				smsType: environment.smsType,
+				'smsUrl': environment.smsUrl,
+				count: 0
+			}
+			this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
+				console.log('userResp1....', result);
+				if (result.status) {
+					this.customer_id = result.customer_id;
+					this.timeLeft = 30;
+					this.userService.loginDetails = result.data;
 					modalName.hide();
-					
-					this.social_data['mobile'] = this.mobile_num;
-          
-					console.log('user social login details....', this.social_data);
-					console.log("social data...", userData);		
-					let sendUserData = {
-					user_id: userData.id,
-					social_unique_id:userData.id,
-					name: userData.name,
-					email: userData.email,
-					mobile: userData.mobile,
-					email_confirmed: true,
-					photo_url:userData.photoUrl,
-					third_party_provider: userData.provider,
-					'password': '13579',
-					social_user:this.social_data,
-					company_id:this.restaurant_details.company_id,
-					branch:{branch_id:this.restaurant_details.branch_id, count:0},
-					user_type:'new_user',
-					smsType:environment.smsType,
-					'smsUrl' : environment.smsUrl,
-					count:0													
-					}
-				this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
-					console.log('userResp1....', result);
-					if(result.status)
-					{		
-						this.customer_id = result.customer_id;				
-						this.timeLeft = 30;
-						this.userService.loginDetails = result.data;
-						modalName.hide();
-						this.mobileShow = false;
-						this.otpForm.otp = "";
-						this.sendOTP = true;
-						this.loaderStatus = false;
-						otpModal.show();
-					}
-					else
-					{
-						this.loaderStatus = false	;
-					}
-				})
+					this.mobileShow = false;
+					this.otpForm.otp = "";
+					this.sendOTP = true;
+					this.loaderStatus = false;
+					otpModal.show();
+				}
+				else {
+					this.loaderStatus = false;
+				}
+			})
 			// 	}
 			// }, err => {
 			// 	console.log("Google err............", err)
@@ -1379,31 +1323,28 @@ newCategory()
 		}, err => {
 			this.loaderStatus = true;
 			console.log("Google err1............", err);
-			this.userService.usableLink= true;
+			this.userService.usableLink = true;
 		});
 
 	}
 
-	OTPCloseModal(modalName)
-	{
-	   modalName.hide();
-	   this.loaderStatus = false;
+	OTPCloseModal(modalName) {
+		modalName.hide();
+		this.loaderStatus = false;
 	}
 	onOtherService(userModal, routingName) {
 		// localStorage.setItem('close_tooltip','true');  
 		console.log("show exist", this.userService.showExit)
 		this.page_redirect = null;
 		this.selected_quick_option = null;
-        this.socialLogo = true;
-		if(this.take_aways)
-		{
+		this.socialLogo = true;
+		if (this.take_aways) {
 			routingName = '/myorder';
 		}
-		else
-		{
+		else {
 			routingName = '/bill/view';
 		}
-	
+
 		console.log(routingName);
 		console.log(this.orderTypeFlag);
 		if (this.userService.showExit) {
@@ -1419,7 +1360,7 @@ newCategory()
 
 		else {
 			if (routingName == 'valet') {
-				
+
 				this.snackBar.OPEN('Please settle your bill to continue.', 'Close');
 				this.router.navigate(['/bill/view']);
 			}
@@ -1498,32 +1439,30 @@ newCategory()
 
 		}
 		else {
-			if(routingName === '/valet-android')
-			{
+			if (routingName === '/valet-android') {
 				this.router.navigate(['/valet-android']);
 			}
-			else if(routingName === '/valet-ios')
-			{
+			else if (routingName === '/valet-ios') {
 				this.router.navigate(['/valet-ios']);
 			}
-			else{
+			else {
 				this.page_redirect = routingName;
 				this.mobile_num = "";
 				this.userService.continueBtn = false;
 				this.userService.loginSocialDisable = true;
-				this.isReadonly  = false;		
+				this.isReadonly = false;
 				this.socialLogo = true;
 				userModal.show();
 			}
-			
+
 		}
 	}
-	downloadPdf(pdfUrl: string, pdfName: string ) {
+	downloadPdf(pdfUrl: string, pdfName: string) {
 		//const pdfUrl = './assets/sample.pdf';
 		//const pdfName = 'your_pdf_file';
 		FileSaver.saveAs(pdfUrl, pdfName);
-	  }
-	
-	
+	}
+
+
 }
 

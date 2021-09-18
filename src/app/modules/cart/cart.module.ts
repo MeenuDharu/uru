@@ -11,16 +11,16 @@ import { IosNotifyModule } from '../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    CartComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(cart_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
-  ]
+	declarations: [
+		CartComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(cart_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+	]
 })
 export class CartModule { }

@@ -47,7 +47,7 @@ export class AndroidComponent implements OnInit {
 		}
 
 		if (JSON.parse(localStorage.getItem('user_details'))) {
-			console.log('yes...');			
+			console.log('yes...');
 			this.router.navigate(['/home']);
 
 		} else {

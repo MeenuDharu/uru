@@ -10,15 +10,15 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    ValetDetailsComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(valet_details_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule
-  ]
+	declarations: [
+		ValetDetailsComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(valet_details_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule
+	]
 })
 export class ValetDetailsModule { }

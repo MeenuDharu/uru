@@ -9,23 +9,23 @@ import { LqimgLoadDirective } from 'src/app/_directives/lqimg-load.directive';
 import { MenuSectionImgBrokenDirective } from 'src/app/_directives/menu-section-img-broken.directive';
 import { PopupMgBrokenDirective } from 'src/app/_directives/popup-mg-broken.directive';
 @NgModule({
-  declarations: [LogoImgBrokenDirective,MenuSectionImgBrokenDirective ,
-    ItemImgBrokenDirective,PopupMgBrokenDirective,
-    DeferLoadDirective,
-    LqimgLoadDirective,LazyloadDirective],
-  imports: [
-    CommonModule
-  ],
-  exports:[
-    ZXingScannerModule,
-    LogoImgBrokenDirective ,
-    PopupMgBrokenDirective,
-    MenuSectionImgBrokenDirective,
-    ItemImgBrokenDirective,
-    DeferLoadDirective,
-    LqimgLoadDirective,
-    LazyloadDirective
-    
-  ]
+	declarations: [LogoImgBrokenDirective, MenuSectionImgBrokenDirective,
+		ItemImgBrokenDirective, PopupMgBrokenDirective,
+		DeferLoadDirective,
+		LqimgLoadDirective, LazyloadDirective],
+	imports: [
+		CommonModule
+	],
+	exports: [
+		ZXingScannerModule,
+		LogoImgBrokenDirective,
+		PopupMgBrokenDirective,
+		MenuSectionImgBrokenDirective,
+		ItemImgBrokenDirective,
+		DeferLoadDirective,
+		LqimgLoadDirective,
+		LazyloadDirective
+
+	]
 })
 export class SharedModule { }

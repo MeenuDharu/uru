@@ -20,20 +20,20 @@ import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
-  declarations: [
-    ItemsComponent,
-    // OrderByPipe   
-    TulsiImgDirective,    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(items_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,SharedModule,
-    MatCardModule, MatFormFieldModule, MatInputModule,
-    LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset}),
-    // lazySizes
-  ]
+	declarations: [
+		ItemsComponent,
+		// OrderByPipe   
+		TulsiImgDirective,
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(items_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule, SharedModule,
+		MatCardModule, MatFormFieldModule, MatInputModule,
+		LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset }),
+		// lazySizes
+	]
 })
 export class ItemsModule { }

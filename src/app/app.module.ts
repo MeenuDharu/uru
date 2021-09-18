@@ -1,4 +1,4 @@
- import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -47,83 +47,83 @@ import { ScrolltoelemDirective } from './_directives/scrolltoelem.directive';
 
 // Configs 
 export function getAuthServiceConfigs() {
-  if(environment.production) {
-    return new AuthServiceConfig([
-      {
-        id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider("319677579381843")
-      },
-      {
-        id: GoogleLoginProvider.PROVIDER_ID,
-        // provider: new GoogleLoginProvider("871981474086-58qnk8ohtg54olrab3n730lfgj46omrc.apps.googleusercontent.com")  
-      //  //care.dinamic.io   
-      //   provider: new GoogleLoginProvider("1098710898816-ouub7k9m0836hcvdr1ebm6nuj1cq0njp.apps.googleusercontent.com")
-          //mob.dinamic.io
-        // provider: new GoogleLoginProvider("1098710898816-gsv32hi153b9vj3p96928sh30nkongsu.apps.googleusercontent.com")
-           provider: new GoogleLoginProvider("523119267952-kubva6l7074l6cds6v527stmrb787g1n.apps.googleusercontent.com")
+	if (environment.production) {
+		return new AuthServiceConfig([
+			{
+				id: FacebookLoginProvider.PROVIDER_ID,
+				provider: new FacebookLoginProvider("319677579381843")
+			},
+			{
+				id: GoogleLoginProvider.PROVIDER_ID,
+				// provider: new GoogleLoginProvider("871981474086-58qnk8ohtg54olrab3n730lfgj46omrc.apps.googleusercontent.com")  
+				//  //care.dinamic.io   
+				//   provider: new GoogleLoginProvider("1098710898816-ouub7k9m0836hcvdr1ebm6nuj1cq0njp.apps.googleusercontent.com")
+				//mob.dinamic.io
+				// provider: new GoogleLoginProvider("1098710898816-gsv32hi153b9vj3p96928sh30nkongsu.apps.googleusercontent.com")
+				provider: new GoogleLoginProvider("523119267952-kubva6l7074l6cds6v527stmrb787g1n.apps.googleusercontent.com")
 
-      }
-    ]);
-  }
-  else {
-    return new AuthServiceConfig([
-      {
-        id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider("319677579381843")
-      },
-      {
-        id: GoogleLoginProvider.PROVIDER_ID,
-      // //care.dinamic.io
-      //  provider: new GoogleLoginProvider("1098710898816-ouub7k9m0836hcvdr1ebm6nuj1cq0njp.apps.googleusercontent.com")
-        //mob.dinamic.io
-       // provider: new GoogleLoginProvider("1098710898816-gsv32hi153b9vj3p96928sh30nkongsu.apps.googleusercontent.com")
-        
-     provider: new GoogleLoginProvider("523119267952-kubva6l7074l6cds6v527stmrb787g1n.apps.googleusercontent.com")
-      }
-    ]);
-  }
+			}
+		]);
+	}
+	else {
+		return new AuthServiceConfig([
+			{
+				id: FacebookLoginProvider.PROVIDER_ID,
+				provider: new FacebookLoginProvider("319677579381843")
+			},
+			{
+				id: GoogleLoginProvider.PROVIDER_ID,
+				// //care.dinamic.io
+				//  provider: new GoogleLoginProvider("1098710898816-ouub7k9m0836hcvdr1ebm6nuj1cq0njp.apps.googleusercontent.com")
+				//mob.dinamic.io
+				// provider: new GoogleLoginProvider("1098710898816-gsv32hi153b9vj3p96928sh30nkongsu.apps.googleusercontent.com")
+
+				provider: new GoogleLoginProvider("523119267952-kubva6l7074l6cds6v527stmrb787g1n.apps.googleusercontent.com")
+			}
+		]);
+	}
 }
 
 // import { WindowRef } from './WindowRef';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FilterAnimationDirective,
-    ScrolltoelemDirective,
-    // PopupMgBrokenDirective
-   // MenuSectionImgBrokenDirective,
-   // LqimgLoadDirective,
-   
-    // DeferLoadDirective,
-   // LogoImgBrokenDirective,
-    // ItemImgBrokenDirective,
-    // CatImgBrokenDirective,
-  
-    // LazyloadDirective,
-    // TulsiImgDirective
-  ],
-  imports: [
-    BrowserModule,   
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ModalModule.forRoot(),
-   
-    // CartModule,
-    MatKeyboardModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule,
-    SocialLoginModule,
-    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
-    SocketIoModule.forRoot(config),
-    DeviceDetectorModule.forRoot(),    
-    RouterModule.forRoot(routes, { useHash: true }),
-    LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset })
-  ],
-  providers: [
-    { provide: AuthServiceConfig, useFactory: getAuthServiceConfigs },
-    CookieService,
-  SocketService, UserService, ApiService, CommonService, MenuStorageService, QrcodeReaderService, SnackbarService, WindowRef],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		FilterAnimationDirective,
+		ScrolltoelemDirective,
+		// PopupMgBrokenDirective
+		// MenuSectionImgBrokenDirective,
+		// LqimgLoadDirective,
+
+		// DeferLoadDirective,
+		// LogoImgBrokenDirective,
+		// ItemImgBrokenDirective,
+		// CatImgBrokenDirective,
+
+		// LazyloadDirective,
+		// TulsiImgDirective
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		ModalModule.forRoot(),
+
+		// CartModule,
+		MatKeyboardModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule,
+		SocialLoginModule,
+		ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+		SocketIoModule.forRoot(config),
+		DeviceDetectorModule.forRoot(),
+		RouterModule.forRoot(routes, { useHash: true }),
+		LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset })
+	],
+	providers: [
+		{ provide: AuthServiceConfig, useFactory: getAuthServiceConfigs },
+		CookieService,
+		SocketService, UserService, ApiService, CommonService, MenuStorageService, QrcodeReaderService, SnackbarService, WindowRef],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

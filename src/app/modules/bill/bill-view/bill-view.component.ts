@@ -16,12 +16,12 @@ export class BillViewComponent implements OnInit {
 	awaitingcontent: any;
 	index: any;
 	cart: any = []; loaderStatus: boolean = true;
-	user_discount:any;
-	discount:any;
-	final_cost:any=0;
-	my_service_charge:any;
-	order_bill_cost:any;
-	disableBtn:boolean = false;
+	user_discount: any;
+	discount: any;
+	final_cost: any = 0;
+	my_service_charge: any;
+	order_bill_cost: any;
+	disableBtn: boolean = false;
 	altered_order_list: any = [{
 		'bill_cost': 0,
 		'bill_cost_gst': 0,
@@ -32,17 +32,17 @@ export class BillViewComponent implements OnInit {
 		'user_name': null,
 	}];
 	restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
-	order:any;
+	order: any;
 	showlabel: boolean = true;
-	restaurantDetails:any = JSON.parse(localStorage.getItem('restaurant_details'));
-	customer_editable_sc:any = this.restaurantDetails.customer_editable_sc;
-	serviceStatus:any ;
-	
+	restaurantDetails: any = JSON.parse(localStorage.getItem('restaurant_details'));
+	customer_editable_sc: any = this.restaurantDetails.customer_editable_sc;
+	serviceStatus: any;
+
 	order_list: any = []; billItems; billTotal; locationBased: boolean;
 	billTotal_gst: any;
 	dinamic_details: any = JSON.parse(localStorage.getItem('dinamic_details'));
 	restaurant_gst: any = JSON.parse(localStorage.getItem('restaurant_details')).gst;
-	constructor(private router: Router, private apiService: ApiService, public userService: UserService, public snackBar: SnackbarService, private browserService :UserBrowserService) { }
+	constructor(private router: Router, private apiService: ApiService, public userService: UserService, public snackBar: SnackbarService, private browserService: UserBrowserService) { }
 
 
 
@@ -65,7 +65,7 @@ export class BillViewComponent implements OnInit {
 		this.userService.restuarant_taxes = JSON.parse(localStorage.getItem('restaurant_details')).restaurant_tax;
 		console.log('GST......', this.userService.restaurant_gst);
 		this.cart = JSON.parse(localStorage.getItem('cart'));
-	
+
 		if (!this.cart) { this.cart = []; }
 		console.log(this.dinamic_details.table_type);
 		if (this.cart.length) {
@@ -184,71 +184,62 @@ export class BillViewComponent implements OnInit {
 						'user_id': null,
 						'user_name': null,
 					}];
-					this.order =  result.orders;
+					this.order = result.orders;
 					this.userService.grandTotal = result.orders.grand_total;
 					this.userService.service_charge_amount = result.orders.service_charge_amount ? result.orders.service_charge_amount : 0;
 					this.userService.service_charge_percentage = result.orders.service_charge_percentage ? result.orders.service_charge_percentage : 0;
 					this.userService.total_cost_after_dicount = result.orders.total_cost_after_dicount ? result.orders.total_cost_after_dicount : 0;
-					if(result.orders.item_discounts && result.orders.item_discounts.total_items  && result.orders.item_discounts.total_items != 0)
-					{
+					if (result.orders.item_discounts && result.orders.item_discounts.total_items && result.orders.item_discounts.total_items != 0) {
 						this.userService.item_discount = result.orders.item_discounts.total_discount
 					}
-					else
-					{
+					else {
 						this.userService.item_discount = 0;
 					}
 
-					if(result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number)
-					{
+					if (result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number) {
 						this.userService.bill_discount = result.orders.order_discount.discount_number;
-						
-					}
-					else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number)
-					{
-						this.userService.bill_discount = (Number(result.orders.total_cost-this.userService.item_discount))*(Number(result.orders.order_discount.discount_number/100));
-						this.userService.discount_type = result.orders.order_discount.discount_type;
-						this.userService.discount_number = result.orders.order_discount.discount_number+"%";
-					}
-					else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number)
-					{
-						this.userService.bill_discount = Number(result.orders.total_cost-(result.orders.order_discount.discount_number+this.userService.item_discount));
-						this.userService.discount_type = result.orders.order_discount.discount_type;
-						this.userService.discount_number = Number(result.orders.total_cost-(result.orders.order_discount.discount_number));
-					}
-					else if(result.orders.order_discount &&  result.orders.order_discount.discount_type === 'flat')
-					{
 
-						this.userService.bill_discount = (Number(result.orders.total_cost-this.userService.item_discount));
+					}
+					else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number) {
+						this.userService.bill_discount = (Number(result.orders.total_cost - this.userService.item_discount)) * (Number(result.orders.order_discount.discount_number / 100));
+						this.userService.discount_type = result.orders.order_discount.discount_type;
+						this.userService.discount_number = result.orders.order_discount.discount_number + "%";
+					}
+					else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number) {
+						this.userService.bill_discount = Number(result.orders.total_cost - (result.orders.order_discount.discount_number + this.userService.item_discount));
+						this.userService.discount_type = result.orders.order_discount.discount_type;
+						this.userService.discount_number = Number(result.orders.total_cost - (result.orders.order_discount.discount_number));
+					}
+					else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'flat') {
+
+						this.userService.bill_discount = (Number(result.orders.total_cost - this.userService.item_discount));
 						this.userService.discount_type = result.orders.order_discount.discount_type;
 						this.userService.discount_number = "100%";
 					}
-					else{
+					else {
 						this.userService.bill_discount = 0;
 						this.userService.discount_type = "none";
 						this.userService.discount_number = 0;
 					}
 
-					 
-				  console.log("this.userService.item_discount-----------------", this.userService.item_discount)
-					if(this.customer_editable_sc)
-						{
-							console.log("this.customer_editable_sc.............", this.customer_editable_sc)
-							if(result.orders.is_applied_service_charge === true)
-							{
-							localStorage.setItem("service_status","true");
+
+					console.log("this.userService.item_discount-----------------", this.userService.item_discount)
+					if (this.customer_editable_sc) {
+						console.log("this.customer_editable_sc.............", this.customer_editable_sc)
+						if (result.orders.is_applied_service_charge === true) {
+							localStorage.setItem("service_status", "true");
 							this.userService.serviceStatus = true;
 							console.log("this.userService.serviceStatus .............", this.userService.serviceStatus)
-							}
-							else
-							{
-								this.userService.serviceStatus = false;
-								console.log("this.userService.serviceStatus false.............", this.userService.serviceStatus)
-							}		
-							
+						}
+						else {
+							this.userService.serviceStatus = false;
+							console.log("this.userService.serviceStatus false.............", this.userService.serviceStatus)
 						}
 
+					}
 
-					
+
+
 					let restaurant_details = JSON.parse(localStorage.getItem("restaurant_details"))
 					console.log("service charge..............", restaurant_details.service_charge)
 					if (restaurant_details.service_charge != '0') {
@@ -261,102 +252,98 @@ export class BillViewComponent implements OnInit {
 					else {
 						this.userService.service_charge = 0;
 					}
-					
-					
+
+
 
 					this.userService.order_list_bill_page = result.orders.order_list;
-				
+
 					console.log("-----------", this.userService.order_list_bill_page)
 
-					let item_details_array = this.userService.order_list_bill_page.map((order,i) => {
+					let item_details_array = this.userService.order_list_bill_page.map((order, i) => {
 						console.log("order.user_id------------------------", result.orders.order_discount.order_number);
 						// (price of the item / total price) * discount
 
 						this.order_bill_cost = Number(order.bill_cost);
 						this.discount = result.orders.order_discount;
 						console.log("order..............", order)
-					
-						this.userService.my_service_charge = (Number(order.bill_cost)/Number(result.orders.total_cost-this.userService.item_discount))*Number(result.orders.service_charge_amount);
-						console.log("my_service_charge ************ ",this.userService.my_service_charge);
 
-						console.log("order_bill_cost************",order.bill_cost,"total cost......", result.orders.total_cost)
+						this.userService.my_service_charge = (Number(order.bill_cost) / Number(result.orders.total_cost - this.userService.item_discount)) * Number(result.orders.service_charge_amount);
+						console.log("my_service_charge ************ ", this.userService.my_service_charge);
 
-						if(result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost)/Number(result.orders.total_cost-this.userService.item_discount))*Number(result.orders.order_discount.discount_number);
+						console.log("order_bill_cost************", order.bill_cost, "total cost......", result.orders.total_cost)
+
+						if (result.orders.order_discount && result.orders.order_discount.discount_type === 'amount' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost) / Number(result.orders.total_cost - this.userService.item_discount)) * Number(result.orders.order_discount.discount_number);
 							this.userService.discount_type = result.orders.order_discount.discount_type;
-						    this.userService.discount_number = result.orders.order_discount.discount_number;
+							this.userService.discount_number = result.orders.order_discount.discount_number;
 						}
-						else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost))*(Number(result.orders.order_discount.discount_number/100));
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'percentage' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost)) * (Number(result.orders.order_discount.discount_number / 100));
 							this.userService.discount_type = result.orders.order_discount.discount_type;
-						    this.userService.discount_number = result.orders.order_discount.discount_number+"%";
+							this.userService.discount_number = result.orders.order_discount.discount_number + "%";
 						}
-						else if(result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number)
-						{
-							this.user_discount = (Number(order.bill_cost)/Number(result.orders.total_cost-this.userService.item_discount))*Number(result.orders.total_cost-(result.orders.order_discount.discount_number+this.userService.item_discount));
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'new_value' && result.orders.order_discount.discount_number) {
+							this.user_discount = (Number(order.bill_cost) / Number(result.orders.total_cost - this.userService.item_discount)) * Number(result.orders.total_cost - (result.orders.order_discount.discount_number + this.userService.item_discount));
 							this.userService.discount_type = result.orders.order_discount.discount_type;
-						    this.userService.discount_number = Number(result.orders.total_cost-(result.orders.order_discount.discount_number+this.userService.item_discount));
+							this.userService.discount_number = Number(result.orders.total_cost - (result.orders.order_discount.discount_number + this.userService.item_discount));
 						}
-						else if(result.orders.order_discount &&  result.orders.order_discount.discount_type === 'flat')
-						{
+						else if (result.orders.order_discount && result.orders.order_discount.discount_type === 'flat') {
 
 							this.user_discount = (Number(order.bill_cost));
 							this.userService.discount_type = result.orders.order_discount.discount_type;
-						    this.userService.discount_number = "100%";
+							this.userService.discount_number = "100%";
 						}
-						else{
+						else {
 							this.user_discount = 0;
 							this.userService.discount_type = "none";
-						    this.userService.discount_number = 0;
+							this.userService.discount_number = 0;
 						}
-					
-					   console.log("user_discount--------------------------",this.user_discount)
-					   let sub_total = order.item_list.reduce((a, b) => a + (b.selling_price*b.quantity), 0)
-					   console.log("subtotal............", sub_total);
 
-					   //let all_item_list1 = item_details_array.flat(Infinity);
+						console.log("user_discount--------------------------", this.user_discount)
+						let sub_total = order.item_list.reduce((a, b) => a + (b.selling_price * b.quantity), 0)
+						console.log("subtotal............", sub_total);
 
-					   let addon_rates = order.item_list.map((item) => {
-						   console.log("Items of addon.......", item)
-						   let new_addon_rates = item.addons.filter((addon) => {
-							   console.log('type of tax.value  --------',addon.addon_price)
-							   console.log('tax.percentage  --------', addon.addon_quantity)
-						   //	console.log('tax.checked  --------', tax.checked)
-							   
-							   if (addon) {
-								   addon.addon_quantity = item.quantity;
-								   addon.addon_total = addon.addon_price*item.quantity;
-   
-								   console.log("adddon total.......", addon.addon_price*item.quantity)						
-									 return addon
-							   } else {
-								   return false
-							   }
-						   })
-						   console.log('new_addon_rates...............', new_addon_rates)
-						   return new_addon_rates;
-					   })
-   
-					   console.log('addon_rates...............', addon_rates)
-					   let addon_rates_array = addon_rates.flat(Infinity);
-					   let result4 = [];
-					   addon_rates_array.reduce(function (res, value) {
-						   console.log('value of addon---------', value)
-						   res[value.addon_heading] = {addon_heading:value.addon_heading,addon_total: 0, addon_name:value.addon_name, adddon_quantity:value.adddon_quantity };
-						   result4.push(res[value.addon_heading])
-						   res[value.addon_heading].addon_total += value.addon_total;
-						   return res;
-						   
-					   }, {});
-					   console.log('result4----------', result4)
-					   let addon_total = result4.reduce((a, b) => a + b.addon_total, 0)
+						//let all_item_list1 = item_details_array.flat(Infinity);
 
-					   this.userService.order_list_bill_page[i].addon_total = addon_total;
-					   this.userService.order_list_bill_page[i].sub_total = sub_total;					   
-					   this.userService.order_list_bill_page[i].user_discount = this.user_discount;	
-					   this.userService.order_list_bill_page[i].my_service_charge =  this.userService.my_service_charge;
+						let addon_rates = order.item_list.map((item) => {
+							console.log("Items of addon.......", item)
+							let new_addon_rates = item.addons.filter((addon) => {
+								console.log('type of tax.value  --------', addon.addon_price)
+								console.log('tax.percentage  --------', addon.addon_quantity)
+								//	console.log('tax.checked  --------', tax.checked)
+
+								if (addon) {
+									addon.addon_quantity = item.quantity;
+									addon.addon_total = addon.addon_price * item.quantity;
+
+									console.log("adddon total.......", addon.addon_price * item.quantity)
+									return addon
+								} else {
+									return false
+								}
+							})
+							console.log('new_addon_rates...............', new_addon_rates)
+							return new_addon_rates;
+						})
+
+						console.log('addon_rates...............', addon_rates)
+						let addon_rates_array = addon_rates.flat(Infinity);
+						let result4 = [];
+						addon_rates_array.reduce(function (res, value) {
+							console.log('value of addon---------', value)
+							res[value.addon_heading] = { addon_heading: value.addon_heading, addon_total: 0, addon_name: value.addon_name, adddon_quantity: value.adddon_quantity };
+							result4.push(res[value.addon_heading])
+							res[value.addon_heading].addon_total += value.addon_total;
+							return res;
+
+						}, {});
+						console.log('result4----------', result4)
+						let addon_total = result4.reduce((a, b) => a + b.addon_total, 0)
+
+						this.userService.order_list_bill_page[i].addon_total = addon_total;
+						this.userService.order_list_bill_page[i].sub_total = sub_total;
+						this.userService.order_list_bill_page[i].user_discount = this.user_discount;
+						this.userService.order_list_bill_page[i].my_service_charge = this.userService.my_service_charge;
 						if (order.current_user) {
 							console.log('myshare');
 							let myorderitems = order.item_list.flat(Infinity);
@@ -368,11 +355,11 @@ export class BillViewComponent implements OnInit {
 									console.log('tax.checked  --------', tax.checked)
 									if (tax.checked == true) {
 										tax.item_price = item.sold_price * item.quantity;
-										tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
+										tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
 										console.log("tax.discount4..................", tax.discount)
 										tax.discount_item_price = tax.item_price - tax.discount;
-									//	(price of the item / total price) * discount
-									    tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
+										//	(price of the item / total price) * discount
+										tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 
 										// tax.item_price = item.sold_price * item.quantity;
 										// tax.item_gst_price = (item.sold_price * item.quantity) * (tax.percentage / 100);
@@ -408,10 +395,10 @@ export class BillViewComponent implements OnInit {
 						return order.item_list;
 					});
 
-					
+
 
 					console.log("item array......", item_details_array)
-					
+
 					let all_item_list = item_details_array.flat(Infinity);
 
 					let tax_rates = all_item_list.map((item) => {
@@ -419,13 +406,13 @@ export class BillViewComponent implements OnInit {
 						let new_tax_rates = item.tax_rates.filter((tax) => {
 							console.log('type of tax.value--------', typeof (tax.percentage))
 							console.log('tax.percentage--------', tax.percentage)
-							console.log('tax.checked--------', tax.checked);							
+							console.log('tax.checked--------', tax.checked);
 							if (tax.checked == true) {
 								tax.item_price = item.sold_price * item.quantity;
-								tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
+								tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
 								console.log("tax.discount4..................", tax.discount)
 								tax.discount_item_price = tax.item_price - tax.discount;
-							//	(price of the item / total price) * discount
+								//	(price of the item / total price) * discount
 								tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 								console.log(tax)
 								return tax
@@ -451,14 +438,14 @@ export class BillViewComponent implements OnInit {
 					}, {});
 					console.log('result2 ----------', result2)
 					this.userService.tax_details = result2;
-					console.log("Userservice Tax", this.userService.tax_details)	
+					console.log("Userservice Tax", this.userService.tax_details)
 
-					console.log("tax_total det---------------------",result2);
-						this.userService.tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
-						
-						//this.userService.tax_total = result.orders.order_tax_amount;
+					console.log("tax_total det---------------------", result2);
+					this.userService.tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
+
+					//this.userService.tax_total = result.orders.order_tax_amount;
 					console.log("tax_total---------------------", parseFloat(this.userService.tax_total).toFixed(2));
-					
+
 					this.userService.order_list_bill_page.forEach((element, i) => {
 						// this.altered_order_list[0].item_list.push(element.item_list[0]);  
 						console.log("element-------------", element);
@@ -470,12 +457,12 @@ export class BillViewComponent implements OnInit {
 							this.altered_order_list[0].item_list.push(ele);
 						});
 
-                        console.log("final cost**********************",result.orders.final_cost);
+						console.log("final cost**********************", result.orders.final_cost);
 						this.altered_order_list[0].discont = result.orders.total_cost;
 						this.altered_order_list[0].user_discount = element.user_discount;
-						this.altered_order_list[0].bill_cost = this.altered_order_list[0].bill_cost + element.bill_cost;						
+						this.altered_order_list[0].bill_cost = this.altered_order_list[0].bill_cost + element.bill_cost;
 						this.altered_order_list[0].bill_tax = this.userService.tax_total;
-						this.altered_order_list[0].total_cost = result.orders.total_cost;						this.altered_order_list[0].current_user = true;
+						this.altered_order_list[0].total_cost = result.orders.total_cost; this.altered_order_list[0].current_user = true;
 						this.altered_order_list[0].gst = "0.00";
 
 						if (element.user_id !== null) {
@@ -502,7 +489,7 @@ export class BillViewComponent implements OnInit {
 						this.userService.order_list_bill_page[i].gst = ((this.userService.restaurant_gst / 100) * this.userService.order_list_bill_page[i].bill_cost).toFixed(2);
 						this.userService.billTotal += this.userService.order_list_bill_page[i].bill_cost;
 						this.userService.billTotal_gst = this.userService.billTotal + this.userService.tax_total;
-						
+
 						console.log(this.userService.billTotal_gst, "bill_gst .................")
 
 						let itemList = this.userService.order_list_bill_page[i].item_list;
@@ -521,7 +508,7 @@ export class BillViewComponent implements OnInit {
 	}
 
 
-	checkValue(event: any,modalName){
+	checkValue(event: any, modalName) {
 		this.cart = JSON.parse(localStorage.getItem('cart'));
 		if (!this.cart) { this.cart = []; }
 		let cartDetails = this.userService.CART_DETAILS();
@@ -530,58 +517,54 @@ export class BillViewComponent implements OnInit {
 		this.showlabel = true;
 		console.log(event);
 		console.log(event.target.checked)
-	
-		if(event.target.checked)
-		{
-	this.serviceStatus =  true
-	localStorage.setItem("service_status", "true")
-	console.log("service charge..............", this.restaurantDetails.service_charge)
-	if (this.restaurantDetails.service_charge != '0') {		
-		let service_charge = Number(this.restaurantDetails.service_charge) / 100;	
-		console.log("service charge1..............", cartDetails.cart_total)
-		this.userService.service_charge = (service_charge * this.final_cost);
-		console.log("service Charge...........................", this.userService.service_charge)
 
-	}
-	else {
-	
-		this.userService.service_charge = 0;
-	}
+		if (event.target.checked) {
+			this.serviceStatus = true
+			localStorage.setItem("service_status", "true")
+			console.log("service charge..............", this.restaurantDetails.service_charge)
+			if (this.restaurantDetails.service_charge != '0') {
+				let service_charge = Number(this.restaurantDetails.service_charge) / 100;
+				console.log("service charge1..............", cartDetails.cart_total)
+				this.userService.service_charge = (service_charge * this.final_cost);
+				console.log("service Charge...........................", this.userService.service_charge)
+
+			}
+			else {
+
+				this.userService.service_charge = 0;
+			}
 
 
 		}
-		else
-		{
+		else {
 			event.target.checked = true
 			this.userService.serviceStatus = true;
 			modalName.show();
-		
+
 		}
-	
-	 }
 
-	 serviceChargeRequest(modalName)
-	 {
-	console.log("bill value.................",this.order)
-	this.apiService.SERVICE_STATUS_REQUEST({'order_id':this.order._id}).subscribe(result => {
-	console.log('response', result);
-	if(result)	  
-	{
-		this.userService.serviceStatus = false;
-		localStorage.setItem("service_status", "false")
-		this.apiService.CONFIRMED_ORDERS().subscribe(result => {
-			this.userService.grandTotal = result.orders.grand_total;
-			
-			this.userService.service_charge_amount = result.orders.service_charge_amount ? result.orders.service_charge_amount : 0;
-			this.userService.service_charge_percentage = result.orders.service_charge_percentage ? result.orders.service_charge_percentage : 0;
+	}
+
+	serviceChargeRequest(modalName) {
+		console.log("bill value.................", this.order)
+		this.apiService.SERVICE_STATUS_REQUEST({ 'order_id': this.order._id }).subscribe(result => {
+			console.log('response', result);
+			if (result) {
+				this.userService.serviceStatus = false;
+				localStorage.setItem("service_status", "false")
+				this.apiService.CONFIRMED_ORDERS().subscribe(result => {
+					this.userService.grandTotal = result.orders.grand_total;
+
+					this.userService.service_charge_amount = result.orders.service_charge_amount ? result.orders.service_charge_amount : 0;
+					this.userService.service_charge_percentage = result.orders.service_charge_percentage ? result.orders.service_charge_percentage : 0;
+				});
+				modalName.hide();
+
+			}
+
 		});
-		modalName.hide();
-	
-	}	
 
-	});
-
-	 }
+	}
 
 	onRequestBill() {
 		localStorage.setItem('user_count', this.userService.order_list_bill_page.length);
@@ -640,11 +623,11 @@ export class BillViewComponent implements OnInit {
 					// tax.item_price = item.sold_price * item.quantity;
 					// tax.item_gst_price = (item.sold_price * item.quantity) * (tax.percentage / 100);
 					tax.item_price = item.sold_price * item.quantity;
-										tax.discount = ((item.sold_price * item.quantity)/this.order_bill_cost)*this.user_discount;
-										console.log("tax.discount4..................", tax.discount)
-										tax.discount_item_price = tax.item_price - tax.discount;
-									//	(price of the item / total price) * discount
-									    tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
+					tax.discount = ((item.sold_price * item.quantity) / this.order_bill_cost) * this.user_discount;
+					console.log("tax.discount4..................", tax.discount)
+					tax.discount_item_price = tax.item_price - tax.discount;
+					//	(price of the item / total price) * discount
+					tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
 					console.log(tax)
 					return tax
 				} else {
@@ -674,7 +657,7 @@ export class BillViewComponent implements OnInit {
 		let tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
 		console.log("tax_total1-----------------------------------", tax_total);
 		return tax_total;
-		
+
 
 	}
 
