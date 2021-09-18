@@ -1,11 +1,11 @@
 <app-ios-notify></app-ios-notify>
 
-<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+<nav class="navbar theme-bg head-bg-purple animate fadeIn nav-height" id="nav-fade">
 	<div class="container-fluid no-pad h-100">
 		<div class="navbar-header col-md-12 no-pad no-margin h-100">
 			<span class="svg-icon p-l-20">
 				<a routerLink="/menu/items" class="p-r-10">
-					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+					<svg xmlns="http://www.w3.org/2000/svg" class="nav-back-arrow" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
 						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
 					</svg>
 				</a>
@@ -50,19 +50,19 @@
 	<div class="clearfix"></div>
 	<div class="row" style="margin:0">
 
-		<div class="col-xs-12 pull-left">
+		<div class="col-xs-12 pull-left p-t-10">
 			<h2 class="subhead">Status</h2>
 			<h4 class="font-15 p-t-20 col-black">NO ITEMS FOUND</h4>
 
 		</div>
 		<!-- <div class="col-md-8 pull-right no-rightpad" align="right">
-        <button type="button" class="btn bg-purple text-white mat-elevation-z2 btnstylenew"><span class="font-bold font-16 p-l-5 text-upper">Start ordering</span>
+        <button type="button" class="btn theme-btn mat-elevation-z2 btnstylenew"><span class="font-bold font-16 p-l-5 text-upper">Start ordering</span>
           </button>
     </div> -->
 	</div>
 	<div class="col-xs-12 p-t-70" align="center">
 		<button type="button" style="width:100%" routerLink="/menu/categories"
-			class="btn bg-purple text-white mat-elevation-z2 btnstylenew"><span
+			class="btn theme-btn mat-elevation-z2 btnstylenew"><span
 				class="font-bold font-16 p-l-5 text-upper">Start ordering</span>
 		</button>
 	</div>
@@ -252,9 +252,9 @@
         <span class="p-r-5">{{ cartItems }} item<span *ngIf="cartItems > 1">s</span></span>
 		</div> -->
 			
-				<a class="font-bold col-white font-14" >
+				<a class="font-bold theme-btn font-14" >
 				<span class="p-r-5" style="margin-bottom: 1px;">						
-				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
 					</span> <span>CONFIRM ORDER</span></a>
 			
 		
@@ -268,9 +268,9 @@
       </div> -->
 
 		
-		<a class="font-bold col-white font-14">
+		<a class="font-bold theme-btn font-14">
 			<span class="p-r-5" style="margin-bottom: 1px;">
-				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
 			</span> <span>CONFIRM ORDER</span></a>
 			
 	
@@ -285,9 +285,9 @@
       </div> -->
 
 	
-		<a class="font-bold col-white font-14 valign-center">
+		<a class="font-bold theme-btn font-14 valign-center">
 			<span class="p-r-5">
-				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme" enable-background="new 0 0 24 24" height="18" width="18" viewBox="0 0 24 24" width="24" fill="#fff"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M20,3H4C2.9,3,2,3.9,2,5v14c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V5 C22,3.9,21.1,3,20,3z M10,17H5v-2h5V17z M10,13H5v-2h5V13z M10,9H5V7h5V9z M14.82,15L12,12.16l1.41-1.41l1.41,1.42L17.99,9 l1.42,1.42L14.82,15z" fill-rule="evenodd"/></g></g></svg>
 			</span> <span>CONFIRM ORDER</span></a>
 		
 
@@ -372,7 +372,7 @@
 	role="dialog" aria-labelledby="dialog-confirm">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-md-12">
 					<h4 class="modal-title" id="defaultModalLabel">CONFIRM ORDER</h4>
 				</div>
@@ -473,7 +473,7 @@
 	role="dialog" aria-labelledby="dialog-otp">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-8 pull-left">
 						<P class="font-14 font-bold ">CASH PAYMENT</P>
@@ -540,7 +540,7 @@
 	role="dialog" aria-labelledby="dialog-otp">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-8 pull-left">
@@ -805,7 +805,7 @@
 	aria-labelledby="dialog-confirm">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-md-12">
 					<h4 class="modal-title" id="defaultModalLabel">PAYMENT FAILED</h4>
 				</div>
@@ -836,16 +836,16 @@
 		<!-- Modal content-->
 		<div class="modal-content mat-elevation-z2">
 
-			<div class="modal-header head-bg-purple" style="padding:15px 5px!important">
+			<div class="modal-header theme-bg head-bg-purple" style="padding:15px 5px!important">
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-8 word-brk pull-left">
 						<h3 class="modal-title" id="defaultModalLabel">Customization</h3>
-						<p class="opacity5 col-white">{{ item.name }}</p>
+						<p class="opacity5">{{ item.name }}</p>
 						<!-- <p class="opacity7 font-12 col-white p-b-5 txt-style">{{ item.name }} - {{item_cost_flag }}</p> -->
 					</div>
 					<div class="col-xs-4 pull-right p-t-10 col-white font-12" align="right">
 						<p class="p-t-5 p-b-5 link font-bold"><a data-dismiss="modal"
-								(click)="cancelCust(customizationmodal)">CANCEL</a></p>
+								(click)="cancelCust(customizationmodal)" class="theme-text">CANCEL</a></p>
 					</div>
 				</div>
 			</div>
@@ -1062,7 +1062,7 @@
 
 <div *ngIf="itemRepeatFooter" id="slide-bot"
 	class="vieworder-foot-white mat-elevation-z4 col-md-12 no-pad slide-in-bottom">
-	<div class="row margin-0 pad15 valign-center head-bg-purple text-white" style="width:100%;">
+	<div class="row margin-0 pad15 valign-center theme-bg head-bg-purple text-white" style="width:100%;">
 		<!-- <div class="col-md-11 no-leftpad pull-left font-bold">
           <div class="pull-left">
             <span class="p-l-5 valign-center" *ngIf="cartItemDetails.food_type == 'Veg'"><img src="assets/images/veg_new.svg" class="valign-center icon-width" /></span>
@@ -1093,7 +1093,7 @@
 		<div class="col-xs-2 pull-right no-rightpad font-bold" align="right">
 			<a (click)="itemRepeatFooter=false; closeitemreapter();">
 				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="#fff"
-					class="valign-center">
+					class="valign-center nav-back-arrow">
 					<path
 						d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
 				</svg>
@@ -1111,11 +1111,11 @@
 	<div class="col-md-12 no-pad">
 		<div class="col-md-6 p-r-6 pull-left" style="width:50%">
 			<!-- (click)="onChooseCutomize(); -->
-			<div class="repeat-item text-purple" (click)="iwillchoose()" data-toggle="modal" data-target="#water">CHOOSE
+			<div class="repeat-item text-purple font-bold" (click)="iwillchoose()" data-toggle="modal" data-target="#water">CHOOSE
 				AGAIN</div>
 		</div>
 		<div class="col-md-6 p-l-6 pull-right" style="width:50%">
-			<div class="repeat-item text-white head-bg-purple" (click)="onRepeatLastItem(cartItemDetails.cart_id);">
+			<div class="repeat-item theme-btn font-bold" (click)="onRepeatLastItem(cartItemDetails.cart_id);">
 				REPEAT LAST</div>
 		</div>
 	</div>
@@ -1172,7 +1172,7 @@
 	role="dialog" aria-labelledby="dialog-otp">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-8 pull-left">
 						<P class="font-14 font-bold ">OTP</P>
@@ -1399,7 +1399,12 @@ role="dialog" aria-labelledby="dialog-user">
 						<div class="col-md-12 no-pad m-t-30" *ngIf="enterOtpField">
 							<div class="form-group">
 							<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
-							<label class="OTP-input-label1 font-bold "><img src="assets/images/pin.svg"></label>
+							<label class="OTP-input-label1 font-bold ">
+								<!-- <img src="assets/images/pin.svg"> -->
+								<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme-bg" height="32" viewBox="0 0 24 24" width="32" fill="#212121" >
+									<path d="M0 0h24v24H0z" fill="none"/><path d="M5.5 10.5h2v1h-2zM20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM9 11.5c0 .85-.65 1.5-1.5 1.5h-2v2H4V9h3.5c.85 0 1.5.65 1.5 1.5v1zm3.5 3.5H11V9h1.5v6zm7.5 0h-1.2l-2.55-3.5V15H15V9h1.25l2.5 3.5V9H20v6z"/>
+								</svg>
+							</label>
 							<input type="tel"  pattern="[0-9]*" maxlength="6" #otp  name="otp" [(ngModel)]="otpForm.otp"
 							#otp="ngModel"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
 								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
@@ -1498,7 +1503,12 @@ role="dialog" aria-labelledby="dialog-user">
       <div class="col-md-12 no-pad m-t-30">
         <div class="form-group">
         <label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
-        <label class="OTP-input-label1 font-bold  "><img src="assets/images/pin.svg"></label>
+        <label class="OTP-input-label1 font-bold">
+			<!-- <img src="assets/images/pin.svg"> -->
+			<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme-bg" height="32" viewBox="0 0 24 24" width="32" fill="#212121" >
+				<path d="M0 0h24v24H0z" fill="none"/><path d="M5.5 10.5h2v1h-2zM20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM9 11.5c0 .85-.65 1.5-1.5 1.5h-2v2H4V9h3.5c.85 0 1.5.65 1.5 1.5v1zm3.5 3.5H11V9h1.5v6zm7.5 0h-1.2l-2.55-3.5V15H15V9h1.25l2.5 3.5V9H20v6z"/>
+			</svg>
+		</label>
         <input type="tel"  pattern="[0-9]*"  #otp  name="otp" [(ngModel)]="otpForm.otp"
         #otp="ngModel" id="otp"  maxlength="6"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
           <div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
