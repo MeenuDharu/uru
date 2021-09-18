@@ -1,6 +1,6 @@
 <app-ios-notify></app-ios-notify>
 
-<nav class="navbar head-bg-black " id="nav-fade">
+<nav class="navbar theme-bg head-bg-black " id="nav-fade">
 
 	<div *ngIf="restaurant_details.isBanner">
 		<div (click)="userIconClick(newUserModal, logoutModal)" class="pull-right img-circle">
@@ -375,7 +375,7 @@
 	role="dialog" aria-labelledby="dialog-waiter">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-md-12">
 					<h4 class="modal-title" id="defaultModalLabel">CALL WAITER</h4>
 				</div>
@@ -605,7 +605,12 @@
 						<div class="col-md-12 no-pad m-t-30" *ngIf="enterOtpField">
 							<div class="form-group">
 							<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
-							<label class="OTP-input-label1 font-bold "><img src="assets/images/pin.svg"></label>
+							<label class="OTP-input-label1 font-bold">
+								<!-- <img src="assets/images/pin.svg"> -->
+								<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme-bg" height="32" viewBox="0 0 24 24" width="32" fill="#212121" >
+									<path d="M0 0h24v24H0z" fill="none"/><path d="M5.5 10.5h2v1h-2zM20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM9 11.5c0 .85-.65 1.5-1.5 1.5h-2v2H4V9h3.5c.85 0 1.5.65 1.5 1.5v1zm3.5 3.5H11V9h1.5v6zm7.5 0h-1.2l-2.55-3.5V15H15V9h1.25l2.5 3.5V9H20v6z"/>
+								</svg>
+							</label>
 							<input type="tel"  pattern="[0-9]*" maxlength="6" #otp  name="otp" [(ngModel)]="otpForm.otp"
 							#otp="ngModel"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
 								<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
@@ -704,7 +709,12 @@
 				<div class="col-md-12 no-pad m-t-30">
 					<div class="form-group m-b-18">
 					<label for="otp" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-label-e' : 'login-label'">Enter OTP</label>
-					<label class="OTP-input-label1 font-bold  "><img src="assets/images/pin.svg"></label>
+					<label class="OTP-input-label1 font-bold">
+						<!-- <img src="assets/images/pin.svg"> -->
+						<svg xmlns="http://www.w3.org/2000/svg" class="btn-svg-theme-bg" height="32" viewBox="0 0 24 24" width="32" fill="#212121" >
+							<path d="M0 0h24v24H0z" fill="none"/><path d="M5.5 10.5h2v1h-2zM20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM9 11.5c0 .85-.65 1.5-1.5 1.5h-2v2H4V9h3.5c.85 0 1.5.65 1.5 1.5v1zm3.5 3.5H11V9h1.5v6zm7.5 0h-1.2l-2.55-3.5V15H15V9h1.25l2.5 3.5V9H20v6z"/>
+						</svg>
+					</label>
 					<input autocomplete="one-time-code" inputmode="numeric" type="tel"  pattern="[0-9]*"  #otp  name="otp"  id="otp" [(ngModel)]="otpForm.otp"
 					#otp="ngModel" id="otp"  maxlength="6"  (keypress)="onKeyPress($event)" (focus)='onKeyPress($event)' required	class="p-l-55 font-bold col-black font-18 p-t-28" [ngClass]="otpForm.error_msg == 'Invalid OTP' ? 'input-rounded-e' : 'form-control'" >
 						<div *ngIf="otpForm.error_msg" class="col-md-12 no-pad text-left">
@@ -793,7 +803,7 @@
 	role="dialog" aria-labelledby="dialog-otp">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header bg-purple">
+			<div class="modal-header theme-bg">
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-8 pull-left">
 						<P class="font-14 font-bold ">OTP</P>
@@ -1218,7 +1228,7 @@
 
 								<div class="col-xs-12 p-t-15" align="center">
 									<button type="button" style="width:100%"
-										class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+										class="btn theme-btn mat-elevation-z2 btnstylenew"
 										(click)="contactManager()">
 										<span class="font-bold font-16 p-l-5 text-upper">CONTACT MANAGER</span></button>
 								</div>
@@ -1267,7 +1277,7 @@
 								<div class="row margin-0">
 									<div class="col-xs-12 p-t-15" align="center">
 										<button type="button" style="width:100%"
-											class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+											class="btn theme-btn mat-elevation-z2 btnstylenew"
 											(click)="requestAgain()">
 											<span class="font-bold font-15 p-l-5 text-upper">REQUEST
 												AGAIN</span></button>
