@@ -8,15 +8,15 @@ import { MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenav
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    PwdRecoveryComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(pwdrecovery_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
-  ]
+	declarations: [
+		PwdRecoveryComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(pwdrecovery_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+	]
 })
 export class PwdRecoveryModule { }

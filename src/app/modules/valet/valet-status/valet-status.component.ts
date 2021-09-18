@@ -7,7 +7,7 @@ import { UserService } from 'src/app/_services/user.service';
 import { element } from 'protractor';
 import { LoadscriptService } from 'src/app/_services/loadscript.service';
 import { Socket } from 'ngx-socket-io';
-import { Location,PlatformLocation  } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { AuthService, GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
 @Component({
@@ -28,14 +28,14 @@ export class ValetStatusComponent implements OnInit {
 	valet_id: any;
 	valet_details: any;
 	social_data: any;
-	re_request:boolean = false;
-	socialLogo:boolean = false;
-	sendOTP:boolean = true;
-	mobileShow:boolean = false;
-	resendOTP:boolean = false;
-	modalLogo:boolean = false;
+	re_request: boolean = false;
+	socialLogo: boolean = false;
+	sendOTP: boolean = true;
+	mobileShow: boolean = false;
+	resendOTP: boolean = false;
+	modalLogo: boolean = false;
 	mobile_num: any;
-	isReadonly:boolean = false;mobile:any;
+	isReadonly: boolean = false; mobile: any;
 	enterEmailField: boolean = true;
 	enterNameField: boolean = false;
 	enterSurNameField: boolean = false;
@@ -46,14 +46,14 @@ export class ValetStatusComponent implements OnInit {
 	pleasewait: boolean = false;
 	passwordMismatch: boolean = false;
 	customer_id: any;
-	photo_url:string;
+	photo_url: string;
 	take_aways: boolean = false;
-	loaderStatus:boolean = true;
+	loaderStatus: boolean = true;
 	mob_num_exist: boolean = false;
 	interval: any;
-	user_name:any;
+	user_name: any;
 	signupForm: any = {}; otpForm: any = {}; loginForm: any = {}; forgotForm: any = {};
-	restaurantDetails:any = JSON.parse(localStorage.getItem('restaurant_details'));
+	restaurantDetails: any = JSON.parse(localStorage.getItem('restaurant_details'));
 	@ViewChild('cd', { static: false }) private countdown: CountdownComponent;
 	@ViewChild('closeValett', { static: true }) closeValett: ElementRef;
 	@ViewChild('openValetOpenModal', { static: true }) openValetOpenModal: ElementRef;
@@ -63,11 +63,11 @@ export class ValetStatusComponent implements OnInit {
 
 	@HostListener('window:popstate', ['$event'])
 	onPopState(event) {
-	  console.log('Back button pressed');
-	  this._location.go('/bill/confirm')
+		console.log('Back button pressed');
+		this._location.go('/bill/confirm')
 	}
 
-	constructor(public commonService: CommonService, private router: Router, private apiService: ApiService, private loadScript: LoadscriptService, private socket: Socket,public userService: UserService,  private socialAuthService: AuthService, private _location: Location) { }
+	constructor(public commonService: CommonService, private router: Router, private apiService: ApiService, private loadScript: LoadscriptService, private socket: Socket, public userService: UserService, private socialAuthService: AuthService, private _location: Location) { }
 
 	ngOnInit() {
 		this.confirm_click = true;
@@ -79,73 +79,71 @@ export class ValetStatusComponent implements OnInit {
 		console.log("status...........", this.confirm_click)
 		console.log("valet detail ID ....", this.commonService.valet_details)
 		//if (JSON.parse(localStorage.getItem('user_details'))) {
-			let a = JSON.parse(localStorage.getItem('user_details'));
-			let sendData = {
-			    //dinamic_user_id:a.dinamic_user_id,
-				valet_id:localStorage.getItem("valet_access"),
-				access_code :localStorage.getItem("access_code"),
-				pos_branch_id:this.restaurantDetails.branch_id
-			}
-			this.apiService.GET_VALET_DETAILS_STATUS(sendData).subscribe(result => {
-				console.log('valet result....', result);
+		let a = JSON.parse(localStorage.getItem('user_details'));
+		let sendData = {
+			//dinamic_user_id:a.dinamic_user_id,
+			valet_id: localStorage.getItem("valet_access"),
+			access_code: localStorage.getItem("access_code"),
+			pos_branch_id: this.restaurantDetails.branch_id
+		}
+		this.apiService.GET_VALET_DETAILS_STATUS(sendData).subscribe(result => {
+			console.log('valet result....', result);
 
-				let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
-				if (result.status) {
-					this.valet_details = result.data;
-					this.commonService.valet_details = result.data;
-					this.resultString = result.data.serial_number;
+			let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
+			if (result.status) {
+				this.valet_details = result.data;
+				this.commonService.valet_details = result.data;
+				this.resultString = result.data.serial_number;
 
+
+				let data = {
+					"vehicle_details": {
+						"branch_id": restaurant_details.branch_id,
+						"valet_id": this.commonService.valet_details._id,
+						"serial_number": result.data.serial_number
+					}
+				}
+
+				let user_details = JSON.parse(localStorage.getItem('user_details'));
+				//this.commonService.valetStatus = 'awaiting';  
+				if (result.data.valet_status === 'vehicle_parked') {
+					this.re_request = true;
 
 					let data = {
-						"vehicle_details": {
-							"branch_id": restaurant_details.branch_id,
-							"valet_id": this.commonService.valet_details._id,  
-							"serial_number": result.data.serial_number
-						}
-					}
-
-					let user_details = JSON.parse(localStorage.getItem('user_details'));
-					//this.commonService.valetStatus = 'awaiting';  
-					if(result.data.valet_status === 'vehicle_parked')
-					{
-						this.re_request = true;	
-						
-						let data = {
-							vehicle_details: {
-								_id: this.commonService.valet_details.pos_valet_id,
-								serial_number: this.commonService.valet_details.serial_number,
-								valet_id: this.commonService.valet_details._id,
-								branch_id: restaurant_details.branch_id,
-								delivery_time: Date.now(),
-								action: 're_request',
-								requested_delay: Number(this.delayTime),
-								user_details: {
-									name: user_details.name,
-									contact_number: user_details.mobile,
-									email: user_details.email
-								}
+						vehicle_details: {
+							_id: this.commonService.valet_details.pos_valet_id,
+							serial_number: this.commonService.valet_details.serial_number,
+							valet_id: this.commonService.valet_details._id,
+							branch_id: restaurant_details.branch_id,
+							delivery_time: Date.now(),
+							action: 're_request',
+							requested_delay: Number(this.delayTime),
+							user_details: {
+								name: user_details.name,
+								contact_number: user_details.mobile,
+								email: user_details.email
 							}
-				
 						}
-                        localStorage.setItem('valet_details', JSON.stringify(data));
 
 					}
-					else
-					{
-						this.re_request = false;	
-					}
-					console.log("request status........", this.re_request)
-					localStorage.setItem('valet_status', this.commonService.valetStatus);
-					console.log("join_valet valet status............")
-					this.socket.emit("join_valet", data);
-					//  this.router.navigate(['/valet/status']);
+					localStorage.setItem('valet_details', JSON.stringify(data));
 
 				}
 				else {
-					this.router.navigate(['/']);
-
+					this.re_request = false;
 				}
-			})
+				console.log("request status........", this.re_request)
+				localStorage.setItem('valet_status', this.commonService.valetStatus);
+				console.log("join_valet valet status............")
+				this.socket.emit("join_valet", data);
+				//  this.router.navigate(['/valet/status']);
+
+			}
+			else {
+				this.router.navigate(['/']);
+
+			}
+		})
 		//}
 
 	}
@@ -153,7 +151,7 @@ export class ValetStatusComponent implements OnInit {
 
 
 	cancelValet() {
-	this.router.navigate(['/bill/confirm'])	;		
+		this.router.navigate(['/bill/confirm']);
 	}
 
 	setPlusFive() {
@@ -282,8 +280,42 @@ export class ValetStatusComponent implements OnInit {
 		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 		let user_details = JSON.parse(localStorage.getItem('user_details'));
 
-			let data = {
-				vehicle_details: {
+		let data = {
+			vehicle_details: {
+				_id: valet_details.vehicle_details._id,
+				serial_number: serial_no,
+				valet_id: valet_details.vehicle_details.valet_id,
+				branch_id: restaurant_details.branch_id,
+				delivery_time: Date.now(),
+				action: 're_request',
+				requested_delay: Number(this.delayTime),
+				user_details: {
+					name: user_details.name,
+					contact_number: user_details.mobile,
+					email: user_details.email
+				}
+			}
+
+		}
+
+		console.log('re-request data.....', data);
+
+		this.apiService.VALET_CONFIRM(data).subscribe(result => {
+			console.log('re Request result....', result);
+			if (result.status) {
+				localStorage.setItem('reRequest', '1');
+				// this.closeValet();
+				//valetOpenModal.hide();
+				this.apiService.GET_BILL().subscribe(result => {
+					console.log('oms bills.....', result);
+					if (result.status) {
+						this.router.navigate(['/bill/confirm'])
+					}
+					else {
+						this.router.navigate(['/home'])
+					}
+				})
+				let data1 = {
 					_id: valet_details.vehicle_details._id,
 					serial_number: serial_no,
 					valet_id: valet_details.vehicle_details.valet_id,
@@ -294,55 +326,20 @@ export class ValetStatusComponent implements OnInit {
 					user_details: {
 						name: user_details.name,
 						contact_number: user_details.mobile,
-						email: user_details.email
+						email: user_details.email,
+						dinamic_user_id: user_details.dinamic_user_id
 					}
 				}
-	
+				localStorage.setItem('valet_details', JSON.stringify(data1));
+
+				this.commonService.valetStatus = 'awaiting';
+				localStorage.setItem('valet_status', this.commonService.valetStatus);
 			}
-	
-			console.log('re-request data.....', data);
-	
-			this.apiService.VALET_CONFIRM(data).subscribe(result => {
-				console.log('re Request result....', result);
-				if (result.status) {
-					localStorage.setItem('reRequest', '1');
-					// this.closeValet();
-					//valetOpenModal.hide();
-					this.apiService.GET_BILL().subscribe(result => {
-						console.log('oms bills.....', result);
-						if (result.status) {
-					this.router.navigate(['/bill/confirm'])
-						}
-						else
-						{
-							this.router.navigate(['/home'])
-						}
-					})
-					let data1 =  {
-						_id: valet_details.vehicle_details._id,
-						serial_number: serial_no,
-						valet_id: valet_details.vehicle_details.valet_id,
-						branch_id: restaurant_details.branch_id,
-						delivery_time: Date.now(),
-						action: 're_request',
-						requested_delay: Number(this.delayTime),
-						user_details: {
-							name: user_details.name,
-							contact_number: user_details.mobile,
-							email: user_details.email,
-							dinamic_user_id:user_details.dinamic_user_id
-						}
-					}
-					localStorage.setItem('valet_details', JSON.stringify(data1));
-				
-					this.commonService.valetStatus = 'awaiting';
-					localStorage.setItem('valet_status', this.commonService.valetStatus);
-				}
-			}, error => {
-				console.log('errors.....', error);
-			});
-		
-		
+		}, error => {
+			console.log('errors.....', error);
+		});
+
+
 	}
 
 	onConfirm1(newUserModal) {
@@ -353,8 +350,7 @@ export class ValetStatusComponent implements OnInit {
 
 		console.log("user_details........", user_details)
 		//valetStatusModal.show();
-		if(user_details)
-		{
+		if (user_details) {
 			this.commonService.valetStatus = 'awaiting';
 			newUserModal.hide();
 			localStorage.setItem('valet_status........', this.commonService.valetStatus);
@@ -371,7 +367,7 @@ export class ValetStatusComponent implements OnInit {
 						"name": user_details.name,
 						"contact_number": user_details.mobile,
 						"email": user_details.email,
-						"dinamic_user_id":user_details.dinamic_user_id
+						"dinamic_user_id": user_details.dinamic_user_id
 					}
 				}
 			}
@@ -380,16 +376,19 @@ export class ValetStatusComponent implements OnInit {
 				console.log('valet result1....', result);
 				if (result.status) {
 					localStorage.setItem('valet_details', JSON.stringify(result.data));
-					this.apiService.UPDATE_VALET_STATUS({ valet_id: this.commonService.valet_details._id, valet_status: 'awaiting',type:'new', pos_valet_id:result.data._id, user_details:{"name": user_details.name,
-					"contact_number": user_details.mobile,"email": user_details.email,dinamic_user_id:user_details.dinamic_user_id}}).subscribe(result => {
+					this.apiService.UPDATE_VALET_STATUS({
+						valet_id: this.commonService.valet_details._id, valet_status: 'awaiting', type: 'new', pos_valet_id: result.data._id, user_details: {
+							"name": user_details.name,
+							"contact_number": user_details.mobile, "email": user_details.email, dinamic_user_id: user_details.dinamic_user_id
+						}
+					}).subscribe(result => {
 						console.log('result valet2..........', result);
 						this.apiService.GET_BILL().subscribe(result => {
 							console.log('oms bills.....', result);
 							if (result.status) {
-						this.router.navigate(['/bill/confirm'])
+								this.router.navigate(['/bill/confirm'])
 							}
-							else
-							{
+							else {
 								this.userService.showExit = false;
 								this.router.navigate(['/home'])
 							}
@@ -398,10 +397,9 @@ export class ValetStatusComponent implements OnInit {
 					})
 				}
 			});
-		
+
 		}
-		else
-		{
+		else {
 			newUserModal.show();
 		}
 	}
@@ -413,386 +411,359 @@ export class ValetStatusComponent implements OnInit {
 		this.userService.error_msg = "";
 		// console.log(event.target.value.length)
 
-	 };
+	};
 
-	 OnKeyDown(element)
-	 {
-   //  console.log(element.target.value.length)
-	 }
-	 onKeyUp(element){	
-		let length = element.target.value.length ; //this will have the length of the text entered in the input box
+	OnKeyDown(element) {
+		//  console.log(element.target.value.length)
+	}
+	onKeyUp(element) {
+		let length = element.target.value.length; //this will have the length of the text entered in the input box
 		//console.log(element.target.value.length);
 		this.userService.continueBtn = false;
 		this.userService.loginSocialDisable = true;
-			
-		if(length === 10)
-		{
-			
+
+		if (length === 10) {
+
 			let sendData =
 			{
-				mobile : element.target.value,
-				type:'checkmobile',
-				company_id:this.restaurant_details.company_id,
-				branch_id:this.restaurant_details.branch_id,
-				user_type:'existing_user'
+				mobile: element.target.value,
+				type: 'checkmobile',
+				company_id: this.restaurant_details.company_id,
+				branch_id: this.restaurant_details.branch_id,
+				user_type: 'existing_user'
 			}
 			this.isReadonly = true;
-			console.log("keyup data..........",sendData);
+			console.log("keyup data..........", sendData);
 			this.apiService.CHECK_MOBILE_LOGIN(sendData).subscribe(result => {
-			console.log("result Mobile..............", result);		
-				if(result.data && result.data.activation === true)
-				{
+				console.log("result Mobile..............", result);
+				if (result.data && result.data.activation === true) {
 					this.userService.loginDetails = result.data;
 					this.isReadonly = false;
 					this.customer_id = result.data._id;
-					this.userService.continueBtn = true;					
+					this.userService.continueBtn = true;
 				}
-				else{
+				else {
 					this.userService.loginSocialDisable = false;
 					this.isReadonly = false;
 				}
 
 			})
 		}
-		else
-		{
-			this.userService.loginSocialDisable = true	
+		else {
+			this.userService.loginSocialDisable = true
 		}
-	  }
-
-
-	continueSignin(newUserModal,newOTPModal)
-	{
-	  // newUSerModal.hide() ;
-	  // newOTPModal.show();
-  //	this.social_data['mobile'] = this.mobile_num;
-  
-	  let userData = this.social_data;	
-			  let sendUserData = {				
-				  'mobile': this.mobile_num,
-				  'customer_id' : this.customer_id,
-				  'otp_status':'sent',
-				  'user_type':'existing_user',
-				  'type':'sentotp',
-				  'company_id':this.restaurant_details.company_id,
-				  'branch_id':this.restaurant_details.branch_id,
-				  'smsType':environment.smsType,	
-			  }	
-
-			  this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
-				  console.log('userResp1....', userResp);
-				  // this.timeLeft = 60;
-				  // this.timeLeftString = '00 : 60';
-				  // this.startTimer();
-				  this.customer_id=userResp.customer_id;
-			  })
-		  
-			  newUserModal.hide();
-			  this.mobileShow = false;				
-			  this.otpForm.otp = "";
-			  this.sendOTP = true;
-			  newOTPModal.show();
-
-
-	}
-	
-	signinVerify(newOTPModal)
-	{
-	  this.loaderStatus = true;
-	  console.log("otp value.........", this.otpForm.otp)
-	  let sendUserData = {				
-		  'mobile': this.mobile_num,
-		  'customer_id' : this.customer_id,
-		  'otp_status':'verified',
-		  'type':'otpverify',
-		  'otp': String(this.otpForm.otp),
-		  'company_id':this.restaurant_details.company_id,
-		  'branch_id':this.restaurant_details.branch_id,	
-
-								  
-	  }	
-	  console.log("senddata............",sendUserData );
-	  this.apiService.UPDATE_EXISTING_USER(sendUserData).then(result => {
-		  console.log('SAVE_SOCIAL_USER....', result);
-		  console.log("result", result);			
-		  if(result.status)
-		  {
-			  if(result.data.user_id)
-			  {
-				  let userData = {
-					  id: result.data.user_id,
-					  social_unique_id: result.data.user_id,
-					  name: result.data.name,
-					  email: result.data.email,
-					  mobile: result.data.mobile,				
-					  provider: result.data.third_party_provider,
-					  photoUrl: result.data.photo_url,
-					  user_type: result.data.user_type
-				  }
-				  console.log("true2..........", userData)
-				  this.social_login_user(userData, newOTPModal);
-			  }
-			 else
-			 {
-			  let userData = {
-				  id: result.data._id,
-				  social_unique_id: result.data._id,
-				  name: result.data.name,
-				  email: result.data.email,
-				  mobile: result.data.mobile,	
-				  email_confirmed: result.data.email_confirmed,			
-				  provider: 'Dinamic',					
-				  user_type: result.data.user_type,
-				  status:result.status
-			  }
-			  console.log("true1..........", userData)
-			  this.email_login_user(userData, newOTPModal);
-			 }
-			  
-			  
-		  }
-		  else
-		  {
-
-			  this.otpForm.error_msg = result.message;
-			  // this.otpForm.otp = "";
-			  this.sendOTP = true;
-			  this.resendOTP = true;
-			  this.loaderStatus = false;
-		  }
-	  
-	  })
-	  this.mobileShow = false;				
-	  this.otpForm.otp = "";
-	  this.sendOTP = true;
-  //	newOTPModal.hide();
-
 	}
 
-	email_login_user(userData, newOTPModal)
-	{
-	  this.userService.LOGIN(userData).then((result: any) => {
-		  console.log('user login....', result);
-		  if (result.status) {				
-			  newOTPModal.hide();
-			  this.loaderStatus = false;
-			  let orderType = JSON.parse(localStorage.getItem('restaurant_details')).order_type;
 
-			console.log('order type...', orderType);
+	continueSignin(newUserModal, newOTPModal) {
+		// newUSerModal.hide() ;
+		// newOTPModal.show();
+		//	this.social_data['mobile'] = this.mobile_num;
 
-			if (orderType == 'in_house') {
-			  this.apiService.CONFIRMED_ORDERS().subscribe(result => {
-				let order_list = result.orders.order_list;
-				if (order_list.length) {
-					this.router.navigate(['/bill/view'])
-					
-				}
-				else{
-					this.onConfirm1(newOTPModal)
-				}
-				
-			})
+		let userData = this.social_data;
+		let sendUserData = {
+			'mobile': this.mobile_num,
+			'customer_id': this.customer_id,
+			'otp_status': 'sent',
+			'user_type': 'existing_user',
+			'type': 'sentotp',
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
+			'smsType': environment.smsType,
 		}
-			//   if (this.selected_quick_option.name == 'bill')
-			// 	  this.router.navigate(['/bill/view']);
-			//   else if (this.selected_quick_option)
-			// 	  this.onServiceConfirm(this.selected_quick_option);
-		  }
-		  else{
-			  this.loaderStatus = false;
-			  this.loginForm.error_msg = result.message;
-		  } 
-	  });
+
+		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
+			console.log('userResp1....', userResp);
+			// this.timeLeft = 60;
+			// this.timeLeftString = '00 : 60';
+			// this.startTimer();
+			this.customer_id = userResp.customer_id;
+		})
+
+		newUserModal.hide();
+		this.mobileShow = false;
+		this.otpForm.otp = "";
+		this.sendOTP = true;
+		newOTPModal.show();
+
+
 	}
 
-	social_login_user(userData, newOTPModal)
-	{
-	  this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {
-		  
-		  if (result.status) {
-			  this.userService.user_name =userData.name;
-			  this.photo_url =  userData.photoUrl;
-				 newOTPModal.hide();
-				 this.loaderStatus = false;
-				 if(userData.user_type === 'existing_user')
-				 {
+	signinVerify(newOTPModal) {
+		this.loaderStatus = true;
+		console.log("otp value.........", this.otpForm.otp)
+		let sendUserData = {
+			'mobile': this.mobile_num,
+			'customer_id': this.customer_id,
+			'otp_status': 'verified',
+			'type': 'otpverify',
+			'otp': String(this.otpForm.otp),
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
+
+
+		}
+		console.log("senddata............", sendUserData);
+		this.apiService.UPDATE_EXISTING_USER(sendUserData).then(result => {
+			console.log('SAVE_SOCIAL_USER....', result);
+			console.log("result", result);
+			if (result.status) {
+				if (result.data.user_id) {
+					let userData = {
+						id: result.data.user_id,
+						social_unique_id: result.data.user_id,
+						name: result.data.name,
+						email: result.data.email,
+						mobile: result.data.mobile,
+						provider: result.data.third_party_provider,
+						photoUrl: result.data.photo_url,
+						user_type: result.data.user_type
+					}
+					console.log("true2..........", userData)
+					this.social_login_user(userData, newOTPModal);
+				}
+				else {
+					let userData = {
+						id: result.data._id,
+						social_unique_id: result.data._id,
+						name: result.data.name,
+						email: result.data.email,
+						mobile: result.data.mobile,
+						email_confirmed: result.data.email_confirmed,
+						provider: 'Dinamic',
+						user_type: result.data.user_type,
+						status: result.status
+					}
+					console.log("true1..........", userData)
+					this.email_login_user(userData, newOTPModal);
+				}
+
+
+			}
+			else {
+
+				this.otpForm.error_msg = result.message;
+				// this.otpForm.otp = "";
+				this.sendOTP = true;
+				this.resendOTP = true;
+				this.loaderStatus = false;
+			}
+
+		})
+		this.mobileShow = false;
+		this.otpForm.otp = "";
+		this.sendOTP = true;
+		//	newOTPModal.hide();
+
+	}
+
+	email_login_user(userData, newOTPModal) {
+		this.userService.LOGIN(userData).then((result: any) => {
+			console.log('user login....', result);
+			if (result.status) {
+				newOTPModal.hide();
+				this.loaderStatus = false;
+				let orderType = JSON.parse(localStorage.getItem('restaurant_details')).order_type;
+
+				console.log('order type...', orderType);
+
+				if (orderType == 'in_house') {
+					this.apiService.CONFIRMED_ORDERS().subscribe(result => {
+						let order_list = result.orders.order_list;
+						if (order_list.length) {
+							this.router.navigate(['/bill/view'])
+
+						}
+						else {
+							this.onConfirm1(newOTPModal)
+						}
+
+					})
+				}
+				//   if (this.selected_quick_option.name == 'bill')
+				// 	  this.router.navigate(['/bill/view']);
+				//   else if (this.selected_quick_option)
+				// 	  this.onServiceConfirm(this.selected_quick_option);
+			}
+			else {
+				this.loaderStatus = false;
+				this.loginForm.error_msg = result.message;
+			}
+		});
+	}
+
+	social_login_user(userData, newOTPModal) {
+		this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {
+
+			if (result.status) {
+				this.userService.user_name = userData.name;
+				this.photo_url = userData.photoUrl;
+				newOTPModal.hide();
+				this.loaderStatus = false;
+				if (userData.user_type === 'existing_user') {
 					let orderType = JSON.parse(localStorage.getItem('restaurant_details')).order_type;
-  
-			if (orderType == 'in_house') {
-				this.apiService.CONFIRMED_ORDERS().subscribe(result => {
-				 // let order_list = result.orders.order_list;
-				 console.log("result of confirm orders............",result)
 
-				 this.onConfirm1(newOTPModal)
+					if (orderType == 'in_house') {
+						this.apiService.CONFIRMED_ORDERS().subscribe(result => {
+							// let order_list = result.orders.order_list;
+							console.log("result of confirm orders............", result)
 
-				 if(result.status != 0)
-				 {
-					let order_list = result.orders.order_list;
-					if( result.orders && result.orders.order_list && result.orders.order_list.length)
-					{
-						this.router.navigate(['/bill/view'])
+							this.onConfirm1(newOTPModal)
+
+							if (result.status != 0) {
+								let order_list = result.orders.order_list;
+								if (result.orders && result.orders.order_list && result.orders.order_list.length) {
+									this.router.navigate(['/bill/view'])
+								}
+								else {
+									this.onConfirm1(newOTPModal)
+								}
+							}
+							else {
+								this.onConfirm1(newOTPModal)
+							}
+							//   if (order_list.length) {
+							// 	  this.router.navigate(['/bill/view'])
+
+							//   }
+							//   else{
+							// 	  this.onConfirm1(newOTPModal)
+							//   }
+
+						})
 					}
-					else
-					{
-						this.onConfirm1(newOTPModal)
-					}
-				 }
-				 else
-				 {
-					this.onConfirm1(newOTPModal)
-				 }
-				//   if (order_list.length) {
-				// 	  this.router.navigate(['/bill/view'])
-					  
-				//   }
-				//   else{
-				// 	  this.onConfirm1(newOTPModal)
-				//   }
-				  
-			  })
-		  }
-				 }
-			  
-		  }
-		  else this.signupForm.error_msg = result.message;
-	  });
+				}
+
+			}
+			else this.signupForm.error_msg = result.message;
+		});
 	}
 
 	socialSignIn(modalName, socialPlatform: string, otpModal) {
-	  let socialPlatformProvider;
-	  this.userService.usableLink = false;
-	  this.loaderStatus = true;
-	  if (socialPlatform == "facebook") {
-		  console.log("success2............")
-		  socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+		let socialPlatformProvider;
+		this.userService.usableLink = false;
+		this.loaderStatus = true;
+		if (socialPlatform == "facebook") {
+			console.log("success2............")
+			socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
 
-	  }
-	  else if (socialPlatform == "google") {
-		  socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
-		  console.log("success1............")
-		  if(socialPlatformProvider)
-	  {
-		  console.log("success............")
-	  }
-	  else
-	  {
-		  console.log("false............")
-	  }
-
-	  }
-
-	  console.log("HAndle socialPlatformProvider............", socialPlatformProvider)
-	  if(socialPlatformProvider)
-	  {
-		  console.log("success............")
-	  }
-	  else
-	  {
-		  console.log("false............")
-	  }
-
-	  this.socialAuthService.signIn(socialPlatformProvider).then((userData: any) => {
-		  console.log("social data...", userData);
-
-		  let sendData = {
-			  email: userData.email
-		  }
-		  this.social_data = userData;
-		  
-		  this.userService.usableLink = true;
-		  // this.apiService.CHECK_MOBILE_SOCIAL_LOGIN(sendData).subscribe(result => {
-		  // 	console.log("result Login................", result)
-		  // 	if (result.status === true && result.data.activation === true) {
-		  // 		this.social_data = userData;							
-		  // 	    this.userService.error_msg = result.message;
-
-		  // 	} else {
-			  //	this.social_data = userData;
-			  
-				  console.log("ask_mobile Data", this.social_data)
-				  modalName.hide();
-				  
-				  this.social_data['mobile'] = this.mobile_num;
-		
-				  console.log('user social login details....', this.social_data);
-				  console.log("social data...", userData);		
-				  let sendUserData = {
-				  user_id: userData.id,
-				  social_unique_id:userData.id,
-				  name: userData.name,
-				  email: userData.email,
-				  mobile: userData.mobile,
-				  email_confirmed: true,
-				  photo_url:userData.photoUrl,
-				  third_party_provider: userData.provider,
-				  'password': '13579',
-				  social_user:this.social_data,
-				  company_id:this.restaurant_details.company_id,
-				  branch:{branch_id:this.restaurant_details.branch_id, count:0},
-				  user_type:'new_user',
-				  smsType:environment.smsType,
-				  count:0													
-				  }
-			  this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
-				  console.log('userResp1....', result);
-				  if(result.status)
-				  {		
-					  this.customer_id = result.customer_id;				
-					 // this.timeLeft = 60;
-					  this.userService.loginDetails = result.data;
-					  modalName.hide();
-					  this.mobileShow = false;
-					  this.otpForm.otp = "";
-					  this.sendOTP = true;
-					  this.loaderStatus = false;
-					  otpModal.show();
-				  }
-				  else
-				  {
-					  this.loaderStatus = false	;
-				  }
-			  })
-		  // 	}
-		  // }, err => {
-		  // 	console.log("Google err............", err)
-		  // })
-	  }, err => {
-		  this.loaderStatus = true;
-		  console.log("Google err1............", err);
-		  this.userService.usableLink= true;
-	  });
-
-  }
-
-  OTPCloseModal(modalName)
-  {
-	 modalName.hide();
-	 this.loaderStatus = false;
-  }
-  goBack(m1,m2)
-	{
-		if(this.enterEmailField)
-		{
-		m1.hide();
-		this.closeLogin()
-		m2.show()
 		}
-		else if(this.enterNameField && this.enterPasswordField && this.confirmPasswordField)
-		{
-		this.enterEmailField = true;
-		this.enterOtpField = false;
-		this.enterNameField = false;
-		this.enterPasswordField = false;
-		this.confirmPasswordField = false;
-		this.pleasewait = false;
-		this.loginForm.confirm_password = "";
-		this.loginForm.password=""
-		this.mob_num_exist = false
+		else if (socialPlatform == "google") {
+			socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
+			console.log("success1............")
+			if (socialPlatformProvider) {
+				console.log("success............")
+			}
+			else {
+				console.log("false............")
+			}
+
 		}
-		
-		
-					
-				
+
+		console.log("HAndle socialPlatformProvider............", socialPlatformProvider)
+		if (socialPlatformProvider) {
+			console.log("success............")
+		}
+		else {
+			console.log("false............")
+		}
+
+		this.socialAuthService.signIn(socialPlatformProvider).then((userData: any) => {
+			console.log("social data...", userData);
+
+			let sendData = {
+				email: userData.email
+			}
+			this.social_data = userData;
+
+			this.userService.usableLink = true;
+			// this.apiService.CHECK_MOBILE_SOCIAL_LOGIN(sendData).subscribe(result => {
+			// 	console.log("result Login................", result)
+			// 	if (result.status === true && result.data.activation === true) {
+			// 		this.social_data = userData;							
+			// 	    this.userService.error_msg = result.message;
+
+			// 	} else {
+			//	this.social_data = userData;
+
+			console.log("ask_mobile Data", this.social_data)
+			modalName.hide();
+
+			this.social_data['mobile'] = this.mobile_num;
+
+			console.log('user social login details....', this.social_data);
+			console.log("social data...", userData);
+			let sendUserData = {
+				user_id: userData.id,
+				social_unique_id: userData.id,
+				name: userData.name,
+				email: userData.email,
+				mobile: userData.mobile,
+				email_confirmed: true,
+				photo_url: userData.photoUrl,
+				third_party_provider: userData.provider,
+				'password': '13579',
+				social_user: this.social_data,
+				company_id: this.restaurant_details.company_id,
+				branch: { branch_id: this.restaurant_details.branch_id, count: 0 },
+				user_type: 'new_user',
+				smsType: environment.smsType,
+				count: 0
+			}
+			this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
+				console.log('userResp1....', result);
+				if (result.status) {
+					this.customer_id = result.customer_id;
+					// this.timeLeft = 60;
+					this.userService.loginDetails = result.data;
+					modalName.hide();
+					this.mobileShow = false;
+					this.otpForm.otp = "";
+					this.sendOTP = true;
+					this.loaderStatus = false;
+					otpModal.show();
+				}
+				else {
+					this.loaderStatus = false;
+				}
+			})
+			// 	}
+			// }, err => {
+			// 	console.log("Google err............", err)
+			// })
+		}, err => {
+			this.loaderStatus = true;
+			console.log("Google err1............", err);
+			this.userService.usableLink = true;
+		});
+
+	}
+
+	OTPCloseModal(modalName) {
+		modalName.hide();
+		this.loaderStatus = false;
+	}
+	goBack(m1, m2) {
+		if (this.enterEmailField) {
+			m1.hide();
+			this.closeLogin()
+			m2.show()
+		}
+		else if (this.enterNameField && this.enterPasswordField && this.confirmPasswordField) {
+			this.enterEmailField = true;
+			this.enterOtpField = false;
+			this.enterNameField = false;
+			this.enterPasswordField = false;
+			this.confirmPasswordField = false;
+			this.pleasewait = false;
+			this.loginForm.confirm_password = "";
+			this.loginForm.password = ""
+			this.mob_num_exist = false
+		}
+
+
+
+
 	}
 
 	closeLogin() {
@@ -814,13 +785,13 @@ export class ValetStatusComponent implements OnInit {
 		this.passwordMismatch = true;
 		if (this.loginForm.password && this.loginForm.confirm_password && this.loginForm.name) {
 			// console.log("password and confirm");
-					this.enterEmailField = false;
-					this.enterOtpField = false;
-					this.enterNameField = true;				
-					this.enterPasswordField = true;
-					this.confirmPasswordField = true;
-					this.mob_num_exist = false;
-				
+			this.enterEmailField = false;
+			this.enterOtpField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = true;
+			this.confirmPasswordField = true;
+			this.mob_num_exist = false;
+
 			if (this.loginForm.password !== this.loginForm.confirm_password) {
 				console.log("Mismatch password....");
 				this.passwordMismatch = true;
@@ -831,7 +802,7 @@ export class ValetStatusComponent implements OnInit {
 				this.passwordMismatch = false;
 				this.loaderStatus = true;
 				//this.pleasewait = true;
-				
+
 				let newSignupForm = {
 					'email': this.loginForm.username,
 					'name': this.loginForm.name,
@@ -839,9 +810,9 @@ export class ValetStatusComponent implements OnInit {
 					'mobile': this.mobile_num,
 					'password': this.loginForm.password,
 					'confirm_password': this.loginForm.confirm_password,
-					"company_id":this.restaurant_details.company_id,
-					"branch":{"branch_id":this.restaurant_details.branch_id, count:0},
-					"smsType":environment.smsType
+					"company_id": this.restaurant_details.company_id,
+					"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
+					"smsType": environment.smsType
 				}
 
 				console.log("Signup Details...", newSignupForm)
@@ -850,33 +821,31 @@ export class ValetStatusComponent implements OnInit {
 					//  this.signupForm.submit = false;
 					console.log("signup result Data.........", result)
 					if (result.status) {
-					//	this.pleasewait = false;
+						//	this.pleasewait = false;
 						this.loaderStatus = false;
 						this.customer_id = result.customer_id;
-						this.user_name =  result.name; 
+						this.user_name = result.name;
 						let sendData = {
 							"user": this.customer_id,
-							"company_id":this.restaurant_details.company_id,
-							"branch_id":this.restaurant_details.branch_id,
-							"userBaseURL":environment.userBaseURL
+							"company_id": this.restaurant_details.company_id,
+							"branch_id": this.restaurant_details.branch_id,
+							"userBaseURL": environment.userBaseURL
 						}
 						this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
 							console.log("mail result...", result);
-							if(result.status)
-							{
+							if (result.status) {
 								this.loaderStatus = false;
 
 							}
-							else
-							{
+							else {
 								this.loaderStatus = false;
 							}
-				
+
 						})
-					
+
 						this.enterPasswordField = false;
 						this.confirmPasswordField = false;
-						this.enterNameField = false;	
+						this.enterNameField = false;
 						this.mob_num_exist = false;
 						this.enterOtpField = true;
 						//this.loginForm.name = "";

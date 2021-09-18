@@ -9,14 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    ConfirmEmailComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(confirm_email_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		ConfirmEmailComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(confirm_email_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class ConfirmEmailModule { }

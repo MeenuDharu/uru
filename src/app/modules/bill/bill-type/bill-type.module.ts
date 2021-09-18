@@ -7,21 +7,21 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { IosNotifyComponent } from '../../ios-notify/ios-notify.component';
 import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
-import {CurrencyPipe} from '@angular/common'
+import { CurrencyPipe } from '@angular/common'
 
 @NgModule({
-  declarations: [
-    BillTypeComponent,
-    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(bill_type_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    
-  ],
-  providers: [CurrencyPipe]
+	declarations: [
+		BillTypeComponent,
+
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(bill_type_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+
+	],
+	providers: [CurrencyPipe]
 })
 export class BillTypeModule { }

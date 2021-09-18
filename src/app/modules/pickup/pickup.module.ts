@@ -9,19 +9,17 @@ import { MatProgressSpinnerModule } from '@angular/material';
 import { IosNotifyComponent } from '../ios-notify/ios-notify.component';
 import { IosNotifyModule } from '../ios-notify/ios-notify.module';
 
-
-
 @NgModule({
-  declarations: [
-    PickupComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(pickup_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule,
-    IosNotifyModule
-  ]
+	declarations: [
+		PickupComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(pickup_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule,
+		IosNotifyModule
+	]
 })
 export class PickupModule { }

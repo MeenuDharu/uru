@@ -13,15 +13,14 @@ import { OrderByPipe } from 'src/app/_pipes/order-by.pipe';
 import { CatImgBrokenDirective } from 'src/app/_directives/cat-img-broken.directive';
 import { SharedModule } from '../../shared/shared.module';
 @NgModule({
-  declarations: [SectionsComponent],
-  imports: [
-    CommonModule,
- 
-    RouterModule.forChild(sections_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,SharedModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
-  ]
+	declarations: [SectionsComponent],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(sections_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule, SharedModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+	]
 })
 export class SectionsModule { }

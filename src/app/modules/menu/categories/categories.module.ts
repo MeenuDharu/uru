@@ -12,18 +12,18 @@ import { OrderByPipe } from 'src/app/_pipes/order-by.pipe';
 import { CatImgBrokenDirective } from 'src/app/_directives/cat-img-broken.directive';
 
 @NgModule({
-  declarations: [
-    CategoriesComponent,
-    CatImgBrokenDirective
-    // OrderByPipe 
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(categories_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
-  ]
+	declarations: [
+		CategoriesComponent,
+		CatImgBrokenDirective
+		// OrderByPipe 
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(categories_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+	]
 })
 export class CategoriesModule { }

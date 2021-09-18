@@ -11,16 +11,16 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    TakeawayOrderComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(takeaway_order_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatCardModule,
-    IosNotifyModule
-  ]
+	declarations: [
+		TakeawayOrderComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(takeaway_order_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatCardModule,
+		IosNotifyModule
+	]
 })
 export class TakeawayOrderModule { }

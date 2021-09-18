@@ -12,26 +12,26 @@ import { OrderDescPipe } from 'src/app/_pipes/order-desc.pipe';
 
 
 @NgModule({
-  declarations: [ 
-    IosNotifyComponent,
-    OrderByPipe,
-    SearchFilterPipe,
-    MyFilterPipe,
-    RailwayToLocalPipe,
-    OrderDescPipe
-  ],
-  imports: [
-    CommonModule,
-    ModalModule.forRoot(),
-    FormsModule
-  ],
-  exports: [ 
-    IosNotifyComponent,
-    OrderByPipe,
-    SearchFilterPipe,
-    MyFilterPipe,
-    RailwayToLocalPipe,
-    OrderDescPipe
-  ]
+	declarations: [
+		IosNotifyComponent,
+		OrderByPipe,
+		SearchFilterPipe,
+		MyFilterPipe,
+		RailwayToLocalPipe,
+		OrderDescPipe
+	],
+	imports: [
+		CommonModule,
+		ModalModule.forRoot(),
+		FormsModule
+	],
+	exports: [
+		IosNotifyComponent,
+		OrderByPipe,
+		SearchFilterPipe,
+		MyFilterPipe,
+		RailwayToLocalPipe,
+		OrderDescPipe
+	]
 })
 export class IosNotifyModule { }

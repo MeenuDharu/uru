@@ -30,19 +30,19 @@ export class MyorderComponent implements OnInit {
 		user_id: '',
 		user_name: ''
 	};
-	deviceData:any;
-	user_discount:any;
+	deviceData: any;
+	user_discount: any;
 	live_orders: any = [];
 	completed_orders: any = [];
 	order_status: any;
-	restaurant_details:any = JSON.parse(localStorage.getItem("restaurant_details"));
+	restaurant_details: any = JSON.parse(localStorage.getItem("restaurant_details"));
 	billItems; billTotal; locationBased: boolean;
 	dinamic_details: any = JSON.parse(localStorage.getItem('dinamic_details'));
 	restaurant_gst: any = JSON.parse(localStorage.getItem('restaurant_details')).gst;
-	total_cost :any;
-	isChrome:boolean = false;
+	total_cost: any;
+	isChrome: boolean = false;
 	constructor(private router: Router, private apiService: ApiService, public socketService: SocketService,
-		private snackBar: SnackbarService, private swPush: SwPush, public userService: UserService, private browserService:UserBrowserService) { }
+		private snackBar: SnackbarService, private swPush: SwPush, public userService: UserService, private browserService: UserBrowserService) { }
 
 	ngOnInit() {
 		// this.deviceData = this.deviceService.getDeviceInfo();
@@ -59,14 +59,14 @@ export class MyorderComponent implements OnInit {
 		this.userService.live_orders = [];
 		console.log("live orders.............", this.userService.live_orders)
 		this.apiService.GET_ALL_MY_ORDERS().subscribe(result => {
-		console.log("All my orders.....", result);
+			console.log("All my orders.....", result);
 			if (result.orders) {
 				this.loaderStatus = false;
 				this.userService.live_orders = [];
 				result.orders.forEach(element => {
 					if (element.is_live) {
-						this.userService.live_orders.push(element);						
-					} else {				
+						this.userService.live_orders.push(element);
+					} else {
 						this.userService.completed_orders.push(element);
 					}
 				});
@@ -136,9 +136,9 @@ export class MyorderComponent implements OnInit {
 	// taxcalc(ele) {
 	// 	// console.log("ele........................", ele)
 	// 	console.log("ele1........................", ele)
-		
-		
-		
+
+
+
 	// 	if(ele.order_discount && ele.order_discount.discount_type === 'amount' && ele.order_discount.discount_number)
 	// 	{
 	// 		this.user_discount = Number(ele.order_discount.discount_number);
@@ -149,13 +149,13 @@ export class MyorderComponent implements OnInit {
 	// 	{
 	// 		this.user_discount = (Number(ele.total_cost))*(Number(ele.orders[0].order_discount.discount_number/100));
 	// 		ele.discount =  this.user_discount;
-			
+
 	// 	}
 	// 	else if(ele.order_discount && ele.order_discount.discount_type === 'new_value' && ele.order_discount.discount_number)
 	// 	{
 	// 		this.user_discount = Number(ele.total_cost- ele.order_discount.discount_number);
 	// 		ele.discount =  this.user_discount;
-		
+
 	// 	}
 	// 	else if(ele.order_discount &&  ele.order_discount.discount_type === 'flat')
 	// 	{
@@ -165,15 +165,15 @@ export class MyorderComponent implements OnInit {
 	// 	else{
 	// 		this.user_discount = 0;
 	// 		ele.discount = this.user_discount;	
-		
+
 	// 	}
-		
+
 	// 	console.log("user_discount--------------------------",this.user_discount)
-		
-		
-		
+
+
+
 	// 			let myorderitems = ele.item_list.flat(Infinity);
-		
+
 	// 			let tax_rates = myorderitems.map((item) => {
 	// 				console.log("Items111111111.......", item)
 	// 				let new_tax_rates = item.tax_rates.filter((tax) => {
@@ -193,7 +193,7 @@ export class MyorderComponent implements OnInit {
 	// 						{
 	// 							tax.discount = 0;	
 	// 						}
-											
+
 	// 										tax.discount_item_price = tax.item_price - tax.discount;
 	// 										//	(price of the item / total price) * discount
 	// 										tax.item_gst_price = (tax.discount_item_price) * (tax.percentage / 100);
@@ -206,9 +206,9 @@ export class MyorderComponent implements OnInit {
 	// 				console.log('new_tax_rates**************ele', new_tax_rates)
 	// 				return new_tax_rates;
 	// 			})
-		
-		
-		
+
+
+
 	// 			let tax_rates_array = tax_rates.flat(Infinity);
 	// 			let result2 = [];
 	// 			tax_rates_array.reduce(function (res, value) {
@@ -225,13 +225,13 @@ export class MyorderComponent implements OnInit {
 	// 			this.userService.tax_details = result2;
 	// 			console.log("Userservice Tax", this.userService.tax_details)
 	// 			let tax_total = this.userService.tax_details.reduce((a, b) => a + b.item_gst_price, 0)
-		
+
 	// 			return tax_total;
 	// 			console.log("tax_total1-----------------------------------", tax_total);
-		
+
 	// 		}
 
-			
+
 	viewLiveOrder(orderId) {
 		this.router.navigate(['/live-order/' + orderId]);
 	}

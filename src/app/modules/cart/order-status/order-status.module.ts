@@ -10,15 +10,15 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    OrderStatusComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(order_status_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule
-  ]
+	declarations: [
+		OrderStatusComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(order_status_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule
+	]
 })
 export class OrderStatusModule { }

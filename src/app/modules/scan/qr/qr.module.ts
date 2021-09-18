@@ -8,14 +8,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    QrComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(qr_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		QrComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(qr_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class QrModule { }

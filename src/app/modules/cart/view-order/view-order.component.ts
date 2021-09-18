@@ -14,7 +14,7 @@ export class ViewOrderComponent implements OnInit {
 	item_list: any = []; orderTotal: number;
 	order_list: any = [];
 	restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
-	constructor(private apiService: ApiService, private userService: UserService, private router: Router, private browserService:UserBrowserService) { }
+	constructor(private apiService: ApiService, private userService: UserService, private router: Router, private browserService: UserBrowserService) { }
 
 	ngOnInit() {
 		this.orderTotal = 0;

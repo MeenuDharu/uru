@@ -11,15 +11,15 @@ import { live_order_routes } from './live-order-routing.module';
 
 
 @NgModule({
-  declarations: [LiveOrderComponent],
-  imports: [
-    CommonModule,
-    CommonModule,    
-    RouterModule.forChild(live_order_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatCardModule,
-    IosNotifyModule
-  ]
+	declarations: [LiveOrderComponent],
+	imports: [
+		CommonModule,
+		CommonModule,
+		RouterModule.forChild(live_order_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatCardModule,
+		IosNotifyModule
+	]
 })
 export class LiveOrderModule { }

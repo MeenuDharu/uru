@@ -9,7 +9,7 @@ import { LoadscriptService } from 'src/app/_services/loadscript.service';
 import { environment } from '../../../../environments/environment';
 import { UserBrowserService } from 'src/app/_services/user-browser.service';
 import { CommonService } from 'src/app/_services/common.service';
-import { Location,PlatformLocation  } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import * as _ from "lodash";
 declare let $: any;
 import * as moment from 'moment';
@@ -27,9 +27,9 @@ export class ItemsComponent implements OnInit {
 	@ViewChild('txtArea', { static: true }) txtArea: ElementRef;
 	@ViewChild('lazyImg', { static: true }) lazyImg: ElementRef;
 	restaurant_details: any = JSON.parse(localStorage.getItem('restaurant_details'));
-	deviceStringCat:string;
-	deviceStringLogo:string;
-	deviceStringItem:string;
+	deviceStringCat: string;
+	deviceStringLogo: string;
+	deviceStringItem: string;
 
 	category: any; cart: any;
 	menu_items: any = [];
@@ -57,9 +57,9 @@ export class ItemsComponent implements OnInit {
 
 	awaitingcontent: any;
 	index: any;
-	deviceData:any;
-	isChrome:boolean = false;
-	loaderStatus:boolean = false;
+	deviceData: any;
+	isChrome: boolean = false;
+	loaderStatus: boolean = false;
 
 	@HostListener('window:scroll', ['$event'])
 	@HostListener('window:resize', ['$event'])
@@ -67,25 +67,25 @@ export class ItemsComponent implements OnInit {
 		this.CommonService.scroll_x_pos = window.pageXOffset;
 		this.CommonService.scroll_y_pos = window.pageYOffset;
 		this.CommonService.screen_height = window.innerHeight;
-		this.CommonService.screen_width = window.innerWidth;	
-      //  localStorage.setItem("scroll_y_pos", this.CommonService.scroll_y_pos)
+		this.CommonService.screen_width = window.innerWidth;
+		//  localStorage.setItem("scroll_y_pos", this.CommonService.scroll_y_pos)
 		//console.log("height...................", this.CommonService.scroll_y_pos);
 		//console.log("height...................",)
 	}
-	
+
 	constructor(private router: Router, public userService: UserService, private apiService: ApiService, private menuStorageService: MenuStorageService,
-		private renderer: Renderer2, private loadScript: LoadscriptService, public browserService: UserBrowserService,public CommonService: CommonService, location: PlatformLocation, private _location: Location,) {
-			this.getWindowDetails();
-			// location.onPopState(() => {
-			// 	console.log("category back...............")
-			// 	this.router.navigate(['/menu/categories']);
-			// });		
+		private renderer: Renderer2, private loadScript: LoadscriptService, public browserService: UserBrowserService, public CommonService: CommonService, location: PlatformLocation, private _location: Location,) {
+		this.getWindowDetails();
+		// location.onPopState(() => {
+		// 	console.log("category back...............")
+		// 	this.router.navigate(['/menu/categories']);
+		// });		
 
 
-	
-		 }
-		
-	
+
+	}
+
+
 
 	ngOnInit() {
 		this.loaderStatus = true;
@@ -95,27 +95,23 @@ export class ItemsComponent implements OnInit {
 		//   })
 		// this._location.subscribe(x => {console.log(x); this._location.go('/home')});
 		this.getWindowDetails();
-		if(localStorage.getItem("scroll_y_pos"))
-		{
-			let scrollPos  = Number(localStorage.getItem("scroll_y_pos"))
+		if (localStorage.getItem("scroll_y_pos")) {
+			let scrollPos = Number(localStorage.getItem("scroll_y_pos"))
 			setTimeout(() => { window.scrollTo({ top: scrollPos, behavior: 'smooth' }); }, 500);
 		}
-		
-	
-		if(this.browserService.isMobile())
-		{
+
+
+		if (this.browserService.isMobile()) {
 			this.deviceStringCat = 'small'
 			this.deviceStringLogo = 'small';
 			this.deviceStringItem = 'medium'
 		}
-		else if(this.browserService.isTablet())
-		{
+		else if (this.browserService.isTablet()) {
 			this.deviceStringCat = 'medium'
 			this.deviceStringLogo = 'medium';
 			this.deviceStringItem = 'medium'
 		}
-		else if(this.browserService.isDesktop())
-		{
+		else if (this.browserService.isDesktop()) {
 			this.deviceStringCat = 'medium';
 			this.deviceStringLogo = 'medium';
 			this.deviceStringItem = 'large';
@@ -127,21 +123,16 @@ export class ItemsComponent implements OnInit {
 		this.item_cost_flag = 0;
 		this.itemRepeatFooter = false;
 		this.category = JSON.parse(localStorage.getItem('selected_category'));
-		if(this.category.popup === true)
-		{
-			this.category.associated_dept_sections.filter((i) =>
-			{
-				
-				if(i.selected === true)
-				{
+		if (this.category.popup === true) {
+			this.category.associated_dept_sections.filter((i) => {
+
+				if (i.selected === true) {
 					console.log("sections............", true)
-					localStorage.setItem('selected_section_name',i._id);
-					i.menu_sections.filter((j) =>
-					{
-						if(j.selected === true)
-						{
-							localStorage.setItem('selected_tag_name',j._id);
-        					localStorage.setItem('selected_tag_header',j.header);
+					localStorage.setItem('selected_section_name', i._id);
+					i.menu_sections.filter((j) => {
+						if (j.selected === true) {
+							localStorage.setItem('selected_tag_name', j._id);
+							localStorage.setItem('selected_tag_header', j.header);
 						}
 
 					})
@@ -155,7 +146,7 @@ export class ItemsComponent implements OnInit {
 			console.log("item response...", result);
 			// console.log("shimmer....", this.shimmerList);
 			if (result.status) {
-				console.log("response....", result);				
+				console.log("response....", result);
 				// result.item_list.forEach(element => {
 				// 	let str = element.imageUrl
 				// 	var elems = str.split("/");
@@ -163,9 +154,9 @@ export class ItemsComponent implements OnInit {
 				// 	element.imageUrl = elems.join("/")
 				// 	// if(element.is_inclusive_tax)
 				// 	// {
-                //     //  element.selling_price = 
+				//     //  element.selling_price = 
 				// 	// }
-					
+
 				// });
 				let menuItem = result.item_list
 				// let menuItem1 = result.item_list.filter((j) => 
@@ -189,19 +180,19 @@ export class ItemsComponent implements OnInit {
 				// 		}
 				// 	 })
 				// 	}
-			 
+
 				// });
-			
-			
-				
+
+
+
 				this.menu_items = menuItem;
-					this.menu_items.forEach(function(item) {
-			 item.addons.filter(function(addon){
-				addon.options = addon.options.filter(function(option){
-			  return option.hide_option != true;
-		  }) 
-		  })  
-		});
+				this.menu_items.forEach(function (item) {
+					item.addons.filter(function (addon) {
+						addon.options = addon.options.filter(function (option) {
+							return option.hide_option != true;
+						})
+					})
+				});
 				let cart = JSON.parse(localStorage.getItem('cart'));
 				if (!cart) { cart = []; }
 				for (let i = 0; i < this.menu_items.length; i++) {
@@ -256,8 +247,8 @@ export class ItemsComponent implements OnInit {
 		}
 		this.item = JSON.parse(localStorage.getItem('selected_item'));
 		console.log("item..............", this.item)
-	
-		
+
+
 		// console.log(this.item)
 		if (this.item !== null) {
 			this.item.sold_price = this.item.selling_price;
@@ -367,59 +358,52 @@ export class ItemsComponent implements OnInit {
 	//     observer.observe(images);  
 	//     // Intersection Observer Test.....
 	// }
-	itemdisp(x,y)
-	{
-if(x === 'hidden')
-{
-	return false;
-}
-else if(x === 'unavailable')
-{
-    // var Time = date2.getTime() - date1.getTime(); 
-    // var Days = Time / (1000 * 3600 * 24); //Diference in Days
-	var time1 =  y.split(" ")
-	var date1 =  moment().format("YYYY-MM-DD")+ " "+ time1[1];
-	let r_date: any = moment(new Date(), 'mm : ss');
-	let d_date: any = moment(new Date(date1), 'mm:ss');
-	//let r_date: any = moment(new Date(), 'mm : ss');			
-	let duration = d_date.diff(r_date, 'seconds');	
-	//console.log("time1........", duration);
-	if(duration>0)
-	{
-
-		setInterval(() => {												
-			var date1 =  moment().format("YYYY-MM-DD")+ " "+ time1[1];
+	itemdisp(x, y) {
+		if (x === 'hidden') {
+			return false;
+		}
+		else if (x === 'unavailable') {
+			// var Time = date2.getTime() - date1.getTime(); 
+			// var Days = Time / (1000 * 3600 * 24); //Diference in Days
+			var time1 = y.split(" ")
+			var date1 = moment().format("YYYY-MM-DD") + " " + time1[1];
 			let r_date: any = moment(new Date(), 'mm : ss');
 			let d_date: any = moment(new Date(date1), 'mm:ss');
+			//let r_date: any = moment(new Date(), 'mm : ss');			
 			let duration = d_date.diff(r_date, 'seconds');
-			
-			if(duration < 0) {
-				clearInterval();
-				return true;
-			} else{
-				clearInterval();
-				return false;				
+			//console.log("time1........", duration);
+			if (duration > 0) {
+
+				setInterval(() => {
+					var date1 = moment().format("YYYY-MM-DD") + " " + time1[1];
+					let r_date: any = moment(new Date(), 'mm : ss');
+					let d_date: any = moment(new Date(date1), 'mm:ss');
+					let duration = d_date.diff(r_date, 'seconds');
+
+					if (duration < 0) {
+						clearInterval();
+						return true;
+					} else {
+						clearInterval();
+						return false;
+					}
+
+				}, 1000);
+
+
 			}
-			
-		}, 1000);	
-		
+			else {
+				return false
+			}
 
-	}
-	else
-	{
-		return false
-	}
-	
-}
-else
-{
-	return true;
-}
+		}
+		else {
+			return true;
+		}
 	}
 
 
-	viewOrder()
-	{
+	viewOrder() {
 		this.loaderStatus = true;
 		localStorage.setItem("scroll_y_pos", this.CommonService.scroll_y_pos);
 		this.router.navigate(['/cart/list']);
@@ -730,7 +714,7 @@ else
 				let addons = this.item.addons;
 
 				this.show_cust_popup = true;
-                this.scrollModalTop();
+				this.scrollModalTop();
 				for (let i = 0; i < addons.length; i++) {
 					if (addons[i].type == 'exclusive')
 						this.onSelectOption(addons[i], addons[i].options[0], i, 0);
@@ -1073,7 +1057,7 @@ else
 		if (addons.length) {
 			this.show_cust_popup = true;
 			// this.showAddToOrder = true;
-		this.scrollModalTop();
+			this.scrollModalTop();
 
 		} else {
 			this.show_cust_popup = false;
@@ -1102,14 +1086,14 @@ else
 
 	scrollModalTop() {
 		setTimeout(() => {
-		  $('.modal-body').each(function(index, element) {
-			let className = 'modal-body'+(index+1);
-			element.classList.add(className);
-			$("."+className).scrollTop(0);
-		  });
+			$('.modal-body').each(function (index, element) {
+				let className = 'modal-body' + (index + 1);
+				element.classList.add(className);
+				$("." + className).scrollTop(0);
+			});
 		}, 500);
-	  }
-	
+	}
+
 	// onConfirm(alertmodal) {
 	//   console.log("selected item....", this.item);      
 	//   console.log("addon list...", this.addonList); 
