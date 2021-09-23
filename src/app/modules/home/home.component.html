@@ -76,6 +76,16 @@
 		<div class="row clearfix p-l-5 p-r-5" id="welcome-content"
 			[ngClass]="userService.placed_order_status ? 'matcard-mb80' : ''">
 			<div class="col-md-12 no-pad m-t-160">
+
+				<!-- <div class="row">
+					<div class="col-xs-12 col-12 col-md-4 form-group mb-3" >
+						<input type="text"
+							   placeholder="Datepicker"
+							   class="form-control"
+							   bsDatepicker>
+					</div>
+				</div> -->
+				
 				<h1><a>Welcome <span *ngIf="userService.user_name">{{ userService.user_name }}</span></a></h1>
 				<div class="p1 p-b-20">Start by selecting your desired option</div>
 			</div>
@@ -472,7 +482,7 @@
 		<div class="modal-content mat-elevation-z2">
 			<div class="modal-header">
 				<div align="right" class="p-r-10">
-					<a (click)="newUserModal.hide();clearInt(); userService.usableLink==true">
+					<a (click)="newUserModal.hide();clearInt(); userService.usableLink==true; userService.isDobFieldVisible=false">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
 							fill="#b1b1b1">
 							<path
@@ -497,6 +507,27 @@
 							(keyup)="onKeyUp($event)" (focus)='onKeyPress($event)' [readonly]="isReadonly"
 							[disabled]="isReadonly" autocomplete="off">
 					</div>
+
+					<div class="form-group m-b-18" *ngIf="userService.isDobFieldVisible">
+						<label for="dob" class="login-label">Date Of Birth</label>
+						<input type="date" name="dob" [(ngModel)]="userDob" #dob="ngModel" required class="form-control p-l-45 font-bold c-black font-14"
+						style="display: flex;" (change)="onKeyUpDob($event)" [readonly]="isReadonly" [disabled]="isReadonly" autocomplete="off">
+					</div>
+
+					<!-- <div class="form-group m-b-18" *ngIf="userService.isDobFieldVisible">
+						<label for="dob" class="login-label">Date of Birth</label>
+						<input type="text" name="dob" [(ngModel)]="userDob" #dob="ngModel" bsDatepicker required class="form-control p-l-45 font-bold c-black font-14"
+						(change)="onKeyUpDob($event)" [readonly]="isReadonly" [disabled]="isReadonly" autocomplete="off">
+					</div> -->
+
+
+					<!-- <div class="form-group m-b-18" *ngIf="dobBool">
+						<label for="dob" class="login-label">DOB</label>
+						<input matInput [matDatepicker]="picker" name="dob" [(ngModel)]="userDob" #dob="ngModel" required
+						 [readonly]="isReadonly" [disabled]="isReadonly" (change)="onKeyUpDob($event)" class="form-control p-l-45 font-bold c-black font-14">
+						<mat-datepicker-toggle matPrefix [for]="picker" style="position: absolute; top: 6px; right: 245px;"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					  </div> -->
 
 					<div align="center" *ngIf="userService.error_msg">
 						<div class="error-msg p-b-20">{{userService.error_msg}}</div>

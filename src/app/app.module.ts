@@ -118,7 +118,7 @@ export function getAuthServiceConfigs() {
 		SocketIoModule.forRoot(config),
 		DeviceDetectorModule.forRoot(),
 		RouterModule.forRoot(routes, { useHash: true }),
-		LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset })
+		LazyLoadImageModule.forRoot({ preset: intersectionObserverPreset }),
 	],
 	providers: [
 		{ provide: AuthServiceConfig, useFactory: getAuthServiceConfigs },

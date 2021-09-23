@@ -100,6 +100,7 @@ export class HomeComponent implements OnInit {
 	isDepart: boolean;
 	valet_det_sta: any;
 	popupBanner: any;
+	userDob: any;
 
 	@ViewChild('closeValett', { static: true }) closeValett: ElementRef;
 	@ViewChild('openValetOpenModal', { static: true }) openValetOpenModal: ElementRef;
@@ -797,6 +798,7 @@ export class HomeComponent implements OnInit {
 	OnKeyDown(element) {
 		//  console.log(element.target.value.length)
 	}
+
 	onKeyUp(element) {
 		let length = element.target.value.length; //this will have the length of the text entered in the input box
 		//console.log(element.target.value.length);
@@ -824,7 +826,8 @@ export class HomeComponent implements OnInit {
 					this.userService.continueBtn = true;
 				}
 				else {
-					this.userService.loginSocialDisable = false;
+					this.userService.isDobFieldVisible = true;
+					// this.userService.loginSocialDisable = false;
 					this.isReadonly = false;
 				}
 
@@ -833,6 +836,18 @@ export class HomeComponent implements OnInit {
 		else {
 			this.userService.loginSocialDisable = true
 		}
+	}
+
+	onKeyUpDob(element) {
+		let value = element.target.value;
+		console.log(value);
+		if(value) {
+			this.userService.loginSocialDisable = false;
+			console.log('newvalue ', moment(this.userDob).format('DD-MM-YYYY'));
+		} else {
+			this.userService.loginSocialDisable = true;
+		}
+		
 	}
 
 
@@ -1042,6 +1057,8 @@ export class HomeComponent implements OnInit {
 		}
 		else {
 			this.mobile_num = "";
+			this.userDob = "";
+			this.userService.isDobFieldVisible = false;
 			this.userService.continueBtn = false;
 			this.userService.loginSocialDisable = true;
 			this.isReadonly = false;
@@ -1080,6 +1097,8 @@ export class HomeComponent implements OnInit {
 		else {
 			serviceModal.hide();
 			this.mobile_num = "";
+			this.userDob = "";
+			this.userService.isDobFieldVisible = false;
 			this.userService.continueBtn = false;
 			this.userService.loginSocialDisable = true;
 			this.isReadonly = false;
@@ -1296,6 +1315,8 @@ export class HomeComponent implements OnInit {
 			else {
 				this.page_redirect = routingName;
 				this.mobile_num = "";
+				this.userDob = "";
+				this.userService.isDobFieldVisible = false;
 				this.userService.continueBtn = false;
 				this.userService.loginSocialDisable = true;
 				this.isReadonly = false;
@@ -1367,6 +1388,7 @@ export class HomeComponent implements OnInit {
 				name: userData.name,
 				email: userData.email,
 				mobile: userData.mobile,
+				dob: moment(this.userDob).format('DD-MM-YYYY'),
 				email_confirmed: true,
 				photo_url: userData.photoUrl,
 				third_party_provider: userData.provider,
@@ -1380,6 +1402,7 @@ export class HomeComponent implements OnInit {
 				count: 0,
 
 			}
+			console.log('Social Sign in User data ', sendUserData);
 			this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
 				console.log('userResp1....', result);
 				if (result.status) {

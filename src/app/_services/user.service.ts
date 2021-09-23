@@ -47,6 +47,7 @@ export class UserService {
 	grandTotal:any = 0;
 	discount:any = 0;
 	error_msg:any;	
+	isDobFieldVisible: boolean = false;
 	loginSocialDisable:boolean = true;
 	continueBtn:boolean = false;
 	loginDetails:any={};

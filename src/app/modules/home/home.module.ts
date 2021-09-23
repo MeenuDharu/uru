@@ -16,6 +16,7 @@ import { ProgressBarModule } from "angular-progress-bar"
 import { CountdownModule } from 'ngx-countdown';
 import { HomeSwiperDirective } from './directives/home-swiper.directive';
 import { PopupSwiperDirective } from './directives/popup-swiper.directive';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 @NgModule({
 	declarations: [
 		HomeComponent,
@@ -31,7 +32,8 @@ import { PopupSwiperDirective } from './directives/popup-swiper.directive';
 		IosNotifyModule, SharedModule,
 		ProgressBarModule,
 		CountdownModule,
-		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule,
+		BsDatepickerModule.forRoot()
 	]
 })
 export class HomeModule { }
