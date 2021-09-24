@@ -75,6 +75,7 @@ export class QrComponent implements OnInit {
 			// access code details
 			let code = encodeURI(params['code']);
 			console.log("qrcode.............", code);
+			if(!localStorage.getItem("access_code") || localStorage.getItem("access_code") === code) {
 			this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": code, baseURL: environment.baseUrl }).subscribe(result => {
 				console.log("result of qr code............", result)
 				if (result.status) {
@@ -250,6 +251,9 @@ export class QrComponent implements OnInit {
 			}, err => {
 				console.log("error of qr code...................", err)
 			});
+			} else {
+				this.router.navigate(['/']);
+			}
 		});
 	}
 
