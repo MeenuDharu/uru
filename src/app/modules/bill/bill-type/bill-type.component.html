@@ -6,8 +6,14 @@
 <nav class="navbar theme-bg head-bg-purple animate fadeIn nav-height" id="nav-fade">
 	<div class="container-fluid no-pad h-100">
 		<div class="navbar-header col-md-12 no-pad no-margin h-100">
-
-			<span class="headtext p-l-20">
+			<span class="svg-icon p-l-20">
+				<a routerLink="/bill/view" class="p-r-10">
+					<svg xmlns="http://www.w3.org/2000/svg" class="nav-back-arrow" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
+					</svg>
+				</a>
+			</span>
+			<span class="headtext">
 				<span class="w-100">
 					<h3 class="h3-style">BILL SETTLEMENT</h3>
 				</span>
@@ -40,184 +46,192 @@
 
 <!-- Pre loader End -->
 
+<div style="height: calc(100vh - 190px);">
+	<section class="content animate fadeIn" data-wow-delay="400ms">
+		<!-- <div class="row clearfix p-l-5 p-r-5 p-t-40 cart-overflow" id="vieworder"> -->
+		<div class="row clearfix p-l-5 p-r-5 p-t-10" id="vieworder">
 
-<section class="content animate fadeIn wrapper" data-wow-delay="400ms">
-	<!-- <div class="row clearfix p-l-5 p-r-5 p-t-40 cart-overflow" id="vieworder"> -->
-	<div class="row clearfix p-l-5 p-r-5 p-t-10" id="vieworder">
+			<!-- Your Share -->
+			<div *ngIf="my_share_bill && !userService.has_unassigned_item">
+				<div class="col-xs-12">
+					<div class="col-xs-8 no-pad pull-left">
+						<div class="md-radio col-grey" style="margin:0px">
+							<input id="my_share" type="radio" [(ngModel)]="bill_type" value="my_share" name="bill"><label
+								for="my_share">Your Share</label>
+						</div>
+					</div>
+					<div class="col-xs-4 no-pad" align="right"></div>
+				</div>
 
-		<!-- Your Share -->
-		<div *ngIf="my_share_bill && !userService.has_unassigned_item">
+				<div class="col-xs-12">
+					<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="my_share">
+						<label for="my_share" class="m-b-0 w-100" style="font-weight:800;">Pay for what you ordered</label>
+					</div>
+					<div class="col-xs-4 pull-right" align="right"></div>
+				</div>
+
+				<div class="col-xs-12">
+					<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left">
+						<label for="my_share" class="m-b-0 w-100">{{ my_share_bill.user_name }}'s tab</label>
+					</div>
+					<div class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold pull-right" align="right">
+						<label for="my_share" class="m-b-0 w-100">
+							<span *ngIf="userService.myshare_billTotal_gst != 0"> {{ (userService.myshare_billTotal_gst) |
+								currency:"INR": true: '1.0-0' }}</span>
+							<span *ngIf="userService.myshare_billTotal_gst == 0">{{ (userService.myshare_billTotal_gst) |
+								currency:"INR" : true: '1.0-0'}}</span>
+						</label>
+
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="my_share_bill && !userService.has_unassigned_item" class="col-xs-12">
+				<div class="center-div50 opacity5">
+					<hr>
+				</div>
+			</div>
+			<!-- #Your Share -->
+
+			<!-- Dutch -->
 			<div class="col-xs-12">
 				<div class="col-xs-8 no-pad pull-left">
 					<div class="md-radio col-grey" style="margin:0px">
-						<input id="my_share" type="radio" [(ngModel)]="bill_type" value="my_share" name="bill"><label
-							for="my_share">Your Share</label>
+						<input id="split" type="radio" [(ngModel)]="bill_type" value="split_equal" name="bill"><label
+							for="split">
+							Go Dutch</label>
+					</div>
+				</div>
+				<div class="col-xs-4 no-pad" align="right"></div>
+			</div>
+
+			<div class="col-xs-12 p-l-15 p-r-15">
+				<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="split">
+					<label for="split" class="m-b-0" style="font-weight:800;">Share the cost equally</label>
+				</div>
+				<div class="col-xs-4 pull-right" align="right"></div>
+			</div>
+
+			<div class="col-xs-12">
+				<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left" for="split">
+					<label for="split" class="m-b-0">Members</label>
+				</div>
+
+
+
+				<div *ngIf="bill_type === 'split_equal'" class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold"
+					align="right">
+					<div class="col-md-12 valign-center no-pad">
+						<div class="col-md-2 pull-left no-pad">
+							<!-- <div (click)="onRemoveItem(i);"> -->
+							<span *ngIf="split_count > 2" (click)="decUserCount()">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+									fill="#cacaca">
+									<path d="M19 13H5v-2h14v2z"></path>
+								</svg>
+							</span>
+						</div>
+						<div class="col-md-4 pull-left">
+							<div class="item-btnbggrey item-count2">{{ split_count }}</div>
+						</div>
+						<div class="col-md-2 no-pad pull-left">
+							<span (click)="incUserCount()">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+									fill="#212121">
+									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+								</svg>
+							</span>
+						</div>
+
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="col-xs-12">
+				<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left">
+					<label for="split" class="m-b-0 w-100">Amount payable</label>
+				</div>
+				<div *ngIf="bill_type === 'split_equal'"
+					class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold pull-right" align="right">
+					<label for="split" class="m-b-0 w-100"> {{ split_share_gst | currency:"INR": true: '1.0-0' }}</label>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<div class="center-div50 opacity5">
+					<hr>
+				</div>
+			</div>
+			<!-- #Dutch -->
+
+			<!-- Table Total -->
+			<div class="col-xs-12">
+				<div class="col-xs-8 no-pad pull-left">
+					<div class="md-radio col-grey" style="margin:0px">
+						<input id="total" type="radio" [(ngModel)]="bill_type" value="total" name="bill"><label for="total">
+							Table Total</label>
 					</div>
 				</div>
 				<div class="col-xs-4 no-pad" align="right"></div>
 			</div>
 
 			<div class="col-xs-12">
-				<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="my_share">
-					<label for="my_share" class="m-b-0 w-100" style="font-weight:800;">Pay for what you ordered</label>
-				</div>
-				<div class="col-xs-4 pull-right" align="right"></div>
+				<label for="total" style="font-weight:800;" class="m-b-0">
+					<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="total">
+						Pay the whole table's bill
+					</div>
+					<div class="col-xs-4 pull-right" align="right"></div>
+				</label>
 			</div>
 
 			<div class="col-xs-12">
+
 				<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left">
-					<label for="my_share" class="m-b-0 w-100">{{ my_share_bill.user_name }}'s tab</label>
+					<label for="total" class="m-b-0 w-100">
+						Amount payable</label>
 				</div>
+
 				<div class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold pull-right" align="right">
-					<label for="my_share" class="m-b-0 w-100">
-						<span *ngIf="userService.myshare_billTotal_gst != 0"> {{ (userService.myshare_billTotal_gst) |
-							currency:"INR": true: '1.0-0' }}</span>
-						<span *ngIf="userService.myshare_billTotal_gst == 0">{{ (userService.myshare_billTotal_gst) |
-							currency:"INR" : true: '1.0-0'}}</span>
-					</label>
-
-				</div>
-			</div>
-		</div>
-
-		<div *ngIf="my_share_bill && !userService.has_unassigned_item" class="col-xs-12">
-			<div class="center-div50 opacity5">
-				<hr>
-			</div>
-		</div>
-		<!-- #Your Share -->
-
-		<!-- Dutch -->
-		<div class="col-xs-12">
-			<div class="col-xs-8 no-pad pull-left">
-				<div class="md-radio col-grey" style="margin:0px">
-					<input id="split" type="radio" [(ngModel)]="bill_type" value="split_equal" name="bill"><label
-						for="split">
-						Go Dutch</label>
-				</div>
-			</div>
-			<div class="col-xs-4 no-pad" align="right"></div>
-		</div>
-
-		<div class="col-xs-12 p-l-15 p-r-15">
-			<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="split">
-				<label for="split" class="m-b-0" style="font-weight:800;">Share the cost equally</label>
-			</div>
-			<div class="col-xs-4 pull-right" align="right"></div>
-		</div>
-
-		<div class="col-xs-12">
-			<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left" for="split">
-				<label for="split" class="m-b-0">Members</label>
-			</div>
-
-
-
-			<div *ngIf="bill_type === 'split_equal'" class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold"
-				align="right">
-				<div class="col-md-12 valign-center no-pad">
-					<div class="col-md-2 pull-left no-pad">
-						<!-- <div (click)="onRemoveItem(i);"> -->
-						<span *ngIf="split_count > 2" (click)="decUserCount()">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-								fill="#cacaca">
-								<path d="M19 13H5v-2h14v2z"></path>
-							</svg>
-						</span>
-					</div>
-					<div class="col-md-4 pull-left">
-						<div class="item-btnbggrey item-count2">{{ split_count }}</div>
-					</div>
-					<div class="col-md-2 no-pad pull-left">
-						<span (click)="incUserCount()">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-								fill="#212121">
-								<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-							</svg>
-						</span>
-					</div>
-
+					<label for="total" class="m-b-0  w-100"> {{ ( (userService.grandTotal )) | currency:"INR": true: '1.0-0'
+						}} </label>
 				</div>
 			</div>
 
-
-		</div>
-
-		<div class="col-xs-12">
-			<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left">
-				<label for="split" class="m-b-0 w-100">Amount payable</label>
-			</div>
-			<div *ngIf="bill_type === 'split_equal'"
-				class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold pull-right" align="right">
-				<label for="split" class="m-b-0 w-100"> {{ split_share_gst | currency:"INR": true: '1.0-0' }}</label>
-			</div>
-		</div>
-
-		<div class="col-xs-12">
-			<div class="center-div50 opacity5">
-				<hr>
-			</div>
-		</div>
-		<!-- #Dutch -->
-
-		<!-- Table Total -->
-		<div class="col-xs-12">
-			<div class="col-xs-8 no-pad pull-left">
-				<div class="md-radio col-grey" style="margin:0px">
-					<input id="total" type="radio" [(ngModel)]="bill_type" value="total" name="bill"><label for="total">
-						Table Total</label>
+			<div class="col-xs-12">
+				<div class="center-div50 opacity5">
+					<hr>
 				</div>
 			</div>
-			<div class="col-xs-4 no-pad" align="right"></div>
+			<!-- #Table Total -->
+
+
 		</div>
+	</section>
 
-		<div class="col-xs-12">
-			<label for="total" style="font-weight:800;" class="m-b-0">
-				<div class="col-xs-12 p-l-30 col-grey opacity6 pull-left" for="total">
-					Pay the whole table's bill
-				</div>
-				<div class="col-xs-4 pull-right" align="right"></div>
-			</label>
+	<div (click)="billConfirmModal.show()" class="bill-foot slide-in-bottom text-right no-pad">
+		<div class="w-100 p-r-15 p-b-0 pull-right link font-bold">
+			<span class=""><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18" viewBox="0 0 24 24" width="18" fill="#FFF"><path d="M0,0h24v24H0V0z" fill="none"/><g><path d="M19.5,3.5L18,2l-1.5,1.5L15,2l-1.5,1.5L12,2l-1.5,1.5L9,2L7.5,3.5L6,2v14H3v3c0,1.66,1.34,3,3,3h12c1.66,0,3-1.34,3-3V2 L19.5,3.5z M19,19c0,0.55-0.45,1-1,1s-1-0.45-1-1v-3H8V5h11V19z"/><rect height="2" width="6" x="9" y="7"/><rect height="2" width="2" x="16" y="7"/><rect height="2" width="6" x="9" y="10"/><rect height="2" width="2" x="16" y="10"/></g></svg></span>
+			<span><button class="bg-transparent lt-sp-1_5">CONFIRM</button></span>
 		</div>
-
-		<div class="col-xs-12">
-
-			<div class="col-xs-6 p-t-20 p-l-30 font-12 font-bold col-black pull-left">
-				<label for="total" class="m-b-0 w-100">
-					Amount payable</label>
-			</div>
-
-			<div class="col-xs-6 no-rightpad p-t-20 col-black font-15 font-bold pull-right" align="right">
-				<label for="total" class="m-b-0  w-100"> {{ ( (userService.grandTotal )) | currency:"INR": true: '1.0-0'
-					}} </label>
-			</div>
-		</div>
-
-		<div class="col-xs-12">
-			<div class="center-div50 opacity5">
-				<hr>
-			</div>
-		</div>
-		<!-- #Table Total -->
-
-
 	</div>
-</section>
+</div>
 <!-- Footer -->
-<footer class="page-footer ">
+<footer class="page-footer" [ngClass]="'pad-bot-40'">
 	<div class="footer1 col-black30">Government taxes extra as applicable.</div>
 	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div>
-	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered
+	<div class="col-black30 font-semibold footer"><a class="col-black" href="https://dinamic.io/" target="_blank"><span>Powered
 				by</span><img src="assets/images/footer-logo.svg"></a></div>
 </footer>
 <!-- Footer -->
 <!--Footer-->
-<div class="col-xs-12 no-rightpad p-t-15 p-b-15 p-r-5" align="right" style="position: fixed;bottom:100px">
+<!-- <div class="col-xs-12 no-rightpad p-t-15 p-b-15 p-r-5" align="right" style="position: fixed;bottom:100px"> -->
 	<!-- <div class="col-xs-12 no-rightpad p-t-15 p-b-15 p-r-5" align="right"> -->
-	<button type="button" (click)="billConfirmModal.show()" class="btn btn-link waves-effect">CONFIRM</button>
+	<!-- <button type="button" (click)="billConfirmModal.show()" class="btn btn-link waves-effect">CONFIRM</button> -->
 	<!-- <button type="button"  (click)="paymentModal.show()" class="btn btn-link waves-effect">CONFIRM ON LINE</button> -->
-	<button type="button" (click)="onViewBill()" class="btn btn-link btn-cancel waves-effect">CANCEL</button>
-</div>
+	<!-- <button type="button" (click)="onViewBill()" class="btn btn-link btn-cancel waves-effect">CANCEL</button> -->
+<!-- </div> -->
 <!--#Footer-->
 
 <!-- Bill Confirm Modal -->

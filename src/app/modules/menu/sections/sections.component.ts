@@ -804,6 +804,11 @@ export class SectionsComponent implements OnInit {
 		this.router.navigate(['/menu/items'])
 	}
 
+	goToOrderStatus() {
+		this.router.navigate(['/order-status']);
+		localStorage.setItem("viewStatus", "awaiting")
+	}
+
 	onWaiterCall(userModal, serviceModal) {
 		this.page_redirect = null;
 		this.selected_quick_option = null;
