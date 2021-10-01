@@ -978,7 +978,7 @@ export class HomeComponent implements OnInit {
 				this.photo_url = userData.photoUrl;
 				newOTPModal.hide();
 				this.loaderStatus = false;
-				if (userData.user_type === 'existing_user') {
+				// if (userData.user_type === 'existing_user') {
 					this.apiService.GET_BILL().subscribe(result => {
 						console.log('oms bills.....', result);
 						if (result.status) {
@@ -1010,7 +1010,7 @@ export class HomeComponent implements OnInit {
 								this.onServiceConfirm(this.selected_quick_option);
 						}
 					})
-				}
+				// }
 
 			}
 			else this.signupForm.error_msg = result.message;

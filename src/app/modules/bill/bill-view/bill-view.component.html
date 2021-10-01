@@ -37,9 +37,9 @@
 </div>
 
 
-<div *ngIf="!loaderStatus" style="height: calc(100vh - 180px);">
+<!-- <div *ngIf="!loaderStatus" style="height: calc(100vh - 185px);"> -->
 	<!-- order list -->
-	<section class="content animate fadeIn wrapper " *ngIf="userService.order_list_bill_page.length"
+	<section class="content animate fadeIn wrapper" *ngIf="userService.order_list_bill_page.length"
 		data-wow-delay="400ms">
 		<div class="row clearfix" id="cart-summary">
 			<div class="col-md-12 p-r-20 p-l-20 p-t-20 animate fadeIn"
@@ -242,7 +242,7 @@
       <span class="p-r-5">{{ userService.billItems }} item<span *ngIf="userService.billItems > 1">s</span></span> - <span class="p-l-5">{{ userService.confirmed_orderlist_for_bills[0].bill_cost_gst | currency:"INR" }}</span>
     </div> -->
 		<div class="w-100 p-r-15 p-b-0 pull-right link font-bold" [ngClass]="disableBtn ? 'adisabled' : ''">
-			<span class="p-r-10">
+			<span class="">
 				<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" class="btn-svg-theme"
 					height="18" viewBox="0 0 24 24" width="18" fill="#FFF">
 					<path d="M0,0h24v24H0V0z" fill="none" />
@@ -315,12 +315,15 @@
 				<span class="p-l-5">VIEW STATUS</span></a>
 		</div>
 	</div>
-</div>
+<!-- </div> -->
 <!-- Footer -->
-<footer class="page-footer ">
+<footer class="page-footer"
+[ngClass]= "(userService.placed_order_status && userService.order_list_bill_page.length && locationBased) ? 'pad-bot-100' :
+			(userService.order_list_bill_page.length && locationBased && !userService.placed_order_status) ||
+			(userService.placed_order_status && userService.order_list_bill_page.length == 0 && locationBased) ? 'pad-bot-40' : ''" >
 	<div class="footer1 col-black30">Government taxes extra as applicable.</div>
 	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div>
-	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered
+	<div class="col-black30 font-semibold footer"><a class="col-black" href="https://dinamic.io/" target="_blank"><span>Powered
 				by</span><img src="assets/images/footer-logo.svg"></a></div>
 </footer>
 <!-- Footer -->
