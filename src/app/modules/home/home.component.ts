@@ -851,7 +851,8 @@ export class HomeComponent implements OnInit {
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 			'smsType': environment.smsType,
-			'smsUrl': environment.smsUrl
+			'smsUrl': environment.smsUrl,
+			'smsApiStatus': environment.smsApiStatus
 		}
 
 		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
@@ -859,14 +860,22 @@ export class HomeComponent implements OnInit {
 			// this.timeLeft = 60;
 			// this.timeLeftString = '00 : 60';
 			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ? 
+				this.signinVerify(newOTPModal) : 
+				newOTPModal.show();
 			this.customer_id = userResp.customer_id;
 		})
-
-		newUserModal.hide();
-		this.mobileShow = false;
-		this.otpForm.otp = "";
-		this.sendOTP = true;
-		newOTPModal.show();
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 
 
 	}
@@ -879,7 +888,7 @@ export class HomeComponent implements OnInit {
 			'customer_id': this.customer_id,
 			'otp_status': 'verified',
 			'type': 'otpverify',
-			'otp': String(this.otpForm.otp),
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id
 		}
