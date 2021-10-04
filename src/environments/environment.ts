@@ -32,7 +32,8 @@
       smsType :'production',
       smsUrl:'@www.mob.dinamic.io',
       password: false,
-      
+      smsApiStatus: false
+
       //razorpay_redirect_url: "http://localhost:4200/#/bill/confirm",
     //ws_url: 'https://www.dinamic.io:4000',
     //ws_url: 'https://mob.dinamic.io/api',
