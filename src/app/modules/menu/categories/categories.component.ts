@@ -507,17 +507,17 @@ export class CategoriesComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		let catInd = localStorage.getItem('catIndex');
-		console.log("catInx...............", catInd)
-		if (catInd) {
-			if (Number(catInd) > 0) {
-				let ids = Number(catInd) - 1;
-				let idscr = 'scrollTo' + ids;
-				let scr_element = document.getElementById(idscr);
-				scr_element.scrollIntoView();
-			}
-			// {behavior: "smooth", block: "start", inline: "nearest"}
-		}
+		// let catInd = localStorage.getItem('catIndex');
+		// console.log("catInx...............", catInd)
+		// if (catInd) {
+		// 	if (Number(catInd) > 0) {
+		// 		let ids = Number(catInd) - 1;
+		// 		let idscr = 'scrollTo' + ids;
+		// 		let scr_element = document.getElementById(idscr);
+		// 		scr_element.scrollIntoView();
+		// 	}
+		// 	// {behavior: "smooth", block: "start", inline: "nearest"}
+		// }
 	}
 	newCategory() {
 		this.restaurantDetails.menu_category.filter((i) => {
