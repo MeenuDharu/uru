@@ -11,14 +11,14 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [CompletedOrderComponent],
-  imports: [
-    CommonModule,    
-    RouterModule.forChild(completed_order_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatCardModule,
-    IosNotifyModule
-  ]
+	declarations: [CompletedOrderComponent],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(completed_order_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatCardModule,
+		IosNotifyModule
+	]
 })
 export class CompletedOrderModule { }

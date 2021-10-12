@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../_services/api.service';
 import { UserService } from 'src/app/_services/user.service';
@@ -14,7 +14,7 @@ import { WindowRef } from '../../../_services/winref.service';
 import { environment } from '../../../../environments/environment'
 import { DynamicAssetLoaderService } from '../../../_services/dynamic-asset-loader.service';
 import { UserBrowserService } from 'src/app/_services/user-browser.service';
-import * as moment from 'moment'; 
+import * as moment from 'moment';
 @Component({
 	selector: 'app-bill-confirm',
 	templateUrl: './bill-confirm.component.html',
@@ -39,25 +39,25 @@ export class BillConfirmComponent implements OnInit {
 	config: any = {};
 	billListDisp: boolean = false;
 	valet_det_sta: any;
-	service_charge:any = 0;
-	razorpayOptions: any =  {}
-	userDetails:any;
-	payOnlineStatus:boolean;
-	re_request:boolean = false;
-	val:number;
-	restaurantDetails:any = JSON.parse(localStorage.getItem('restaurant_details'));
-	disableBtn:boolean = false
+	service_charge: any = 0;
+	razorpayOptions: any = {}
+	userDetails: any;
+	payOnlineStatus: boolean;
+	re_request: boolean = false;
+	val: number;
+	restaurantDetails: any = JSON.parse(localStorage.getItem('restaurant_details'));
+	disableBtn: boolean = false
 
 	@ViewChild('cd', { static: false }) private countdown: CountdownComponent;
 	@ViewChild('closeValett', { static: true }) closeValett: ElementRef;
 	@ViewChild('openValetOpenModal', { static: true }) openValetOpenModal: ElementRef;
-	@ViewChild('razorpayForm', {static: true}) razorpayForm: ElementRef;
+	@ViewChild('razorpayForm', { static: true }) razorpayForm: ElementRef;
 	// @ViewChild('closeValet',  { static: true }) closeValet: ElementRef;
-	razorpay_redirect_url:string;
-	razorpayUrl:String;
-	cancelUrl:String;
-	
-	constructor(public commonService: CommonService, private router: Router, private apiService: ApiService, private loadScript: LoadscriptService, public userService: UserService, private socket: Socket, location: PlatformLocation, private cookieService: CookieService, private winRef: WindowRef, private assetLoader: DynamicAssetLoaderService,private browserService: UserBrowserService, private cp: CurrencyPipe,private snackBar: SnackbarService) {
+	razorpay_redirect_url: string;
+	razorpayUrl: String;
+	cancelUrl: String;
+
+	constructor(public commonService: CommonService, private router: Router, private apiService: ApiService, private loadScript: LoadscriptService, public userService: UserService, private socket: Socket, location: PlatformLocation, private cookieService: CookieService, private winRef: WindowRef, private assetLoader: DynamicAssetLoaderService, private browserService: UserBrowserService, private cp: CurrencyPipe, private snackBar: SnackbarService) {
 		location.onPopState(() => {
 			console.log('pressed back in add!!!!!');
 			//this.router.navigateByUrl(‘/multicomponent’);
@@ -69,7 +69,7 @@ export class BillConfirmComponent implements OnInit {
 		history.pushState(null, document.title, location.href);
 		window.addEventListener('popstate', function (event) {
 			history.pushState(null, document.title, location.href);
-				});
+		});
 		this.razorpayUrl = environment.razorpay_payment_url;
 		this.cancelUrl = environment.cancel_url;
 		console.log("cancelUrl...............", this.cancelUrl);
@@ -83,14 +83,14 @@ export class BillConfirmComponent implements OnInit {
 		this.loadScript.load('material-icons').then(data => {
 			console.log('font awesome reference added....');
 		}).catch(error => console.log('err...', error));
-	   
+
 
 		if (this.user_details) {
 			let a = this.user_details;
 			let sendData = {
-				dinamic_user_id:a.dinamic_user_id,
-				access_code :localStorage.getItem("access_code"),
-				pos_branch_id:this.restaurantDetails.branch_id
+				dinamic_user_id: a.dinamic_user_id,
+				access_code: localStorage.getItem("access_code"),
+				pos_branch_id: this.restaurantDetails.branch_id
 			}
 			this.apiService.GET_VALET_DETAILS(sendData).subscribe(result => {
 				console.log('valet result....', result);
@@ -106,80 +106,74 @@ export class BillConfirmComponent implements OnInit {
 						localStorage.setItem(result.data.valet_status, "valet_staus")
 						this.valet_status = result.data.valet_status;
 						let valet_delivery = result.data.delivery_time;
-					    console.log('valet_delivery.....', this.commonService.valetStatus)
+						console.log('valet_delivery.....', this.commonService.valetStatus)
 						if (valet_delivery) {
 							this.commonService.deliveryTime = Number(valet_delivery);
-							this.userService.vehicle.delivery_time   =  Number(result.data.delivery_time) ;
+							this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
 						}
-						
-		
-		
-			
+
+
+
+
 						if (valet_delivery) {
 							this.commonService.deliveryTime = Number(valet_delivery);
 						}
-					//	let timer_config = JSON.parse(localStorage.getItem('timerConfig'));
+						//	let timer_config = JSON.parse(localStorage.getItem('timerConfig'));
 						// console.log('timer_config....', timer_config);
-						
-							if (this.valet_status) {
-								if (this.valet_status == 'on_hold') {								
-									this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
-									this.userService.vehicle.valet_delay = Number(result.data.delay)
-									let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-									let r_date: any = moment(new Date(), 'mm : ss');			
-									let duration = d_date.diff(r_date, 'seconds');
-									//console.log("event duration.............", duration)
-									if(duration>0)
-									{
+
+						if (this.valet_status) {
+							if (this.valet_status == 'on_hold') {
+								this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
+								this.userService.vehicle.valet_delay = Number(result.data.delay)
+								let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+								let r_date: any = moment(new Date(), 'mm : ss');
+								let duration = d_date.diff(r_date, 'seconds');
+								//console.log("event duration.............", duration)
+								if (duration > 0) {
 									this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };
-									}
-									else
-									{
-										this.commonService.timerConfig = { leftTime: 0, format: 'mm:ss', notify: 0 };
-										this.commonService.valetStatus = 'awaiting';
-									}
-									
-								} else if (this.valet_status == 'vehicle_ready') {
-									this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
-									this.userService.vehicle.valet_delay = Number(result.data.delay)
-									let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-									let r_date: any = moment(new Date(), 'mm : ss');			
-									let duration = d_date.diff(r_date, 'seconds');
-									//console.log("event.............", duration)
-									
-		
-									console.log("event.............", duration	)
-									   if(duration>0)
-									   {
-									this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };
-									   }
-									   else
-									{
-										this.commonService.timerConfig = { leftTime: 0, format: 'mm:ss', notify: 0 };
-									}
+								}
+								else {
+									this.commonService.timerConfig = { leftTime: 0, format: 'mm:ss', notify: 0 };
+									this.commonService.valetStatus = 'awaiting';
 								}
 
+							} else if (this.valet_status == 'vehicle_ready') {
+								this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
+								this.userService.vehicle.valet_delay = Number(result.data.delay)
+								let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+								let r_date: any = moment(new Date(), 'mm : ss');
+								let duration = d_date.diff(r_date, 'seconds');
+								//console.log("event.............", duration)
+
+
+								console.log("event.............", duration)
+								if (duration > 0) {
+									this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };
+								}
+								else {
+									this.commonService.timerConfig = { leftTime: 0, format: 'mm:ss', notify: 0 };
+								}
 							}
 
+						}
 
-					
 
 
-				
+
+
+
 						if (this.valet_status === 'awaiting' || this.valet_status === 'on_hold' || this.valet_status === 'confirmed' || this.valet_status === 'vehicle_ready' || this.valet_status === 'vehicle_re_ready' || this.valet_status === 're_confirmed' || this.valet_status === 'vehicle_parked' || this.valet_status === 'delivered' || this.valet_status === 're_request') {
-							if(this.valet_status == 're_request')
-							{
+							if (this.valet_status == 're_request') {
 								this.commonService.valetStatus = 'awaiting'
 							}
-							else
-							{
+							else {
 								this.commonService.valetStatus = this.valet_status;
 							}
-							
+
 							document.getElementById("openValetStatusOpenModal").click();
 						}
-					this.status = true
-					//return this.status;
+						this.status = true
+						//return this.status;
 					}
 				}
 				else {
@@ -191,12 +185,11 @@ export class BillConfirmComponent implements OnInit {
 		}
 
 		//razorpayOptions
-	    console.log("status...........", this.status)
+		console.log("status...........", this.status)
 
-		this.apiService.PAYMENT_GATEWAY_DETAILS({access_code: localStorage.getItem('access_code')}).subscribe(result => {
+		this.apiService.PAYMENT_GATEWAY_DETAILS({ access_code: localStorage.getItem('access_code') }).subscribe(result => {
 			console.log("Payment Dtails..................", result);
-			if(result.data.status === 'active')
-			{
+			if (result.data.status === 'active') {
 				console.log("Payment Data.................")
 				this.payOnlineStatus = true
 				// this.razorpayOptions = {
@@ -208,30 +201,28 @@ export class BillConfirmComponent implements OnInit {
 				// 	 } }
 				// 	}
 
-					this.razorpayOptions.key = result.key_id;
-					this.razorpayOptions.store_name = result.data.name;
-					this.razorpayOptions.description = result.data.description;
-					this.razorpayOptions.userBaseURL = environment.userBaseURL;
-					this.razorpayOptions.restaurentId = this.restaurant_details.company_id;
-					this.razorpayOptions.branchId = this.restaurant_details.branch_id;
-					this.razorpayOptions.tableId = this.restaurant_details.table_id;
-					
-					if(JSON.parse(localStorage.getItem('user_details')))
-					{
-						this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-						this.razorpayOptions.customer_name = this.userDetails.name;
-						this.razorpayOptions.customer_email = this.userDetails.email;
-						this.razorpayOptions.customer_mobile = this.userDetails.mobile;
-						this.razorpayOptions.prefill = { "name": this.userDetails.name, "email": this.userDetails.email, "contact": this.userDetails.mobile };
-					}
+				this.razorpayOptions.key = result.key_id;
+				this.razorpayOptions.store_name = result.data.name;
+				this.razorpayOptions.description = result.data.description;
+				this.razorpayOptions.userBaseURL = environment.userBaseURL;
+				this.razorpayOptions.restaurentId = this.restaurant_details.company_id;
+				this.razorpayOptions.branchId = this.restaurant_details.branch_id;
+				this.razorpayOptions.tableId = this.restaurant_details.table_id;
+
+				if (JSON.parse(localStorage.getItem('user_details'))) {
+					this.userDetails = JSON.parse(localStorage.getItem('user_details'));
+					this.razorpayOptions.customer_name = this.userDetails.name;
+					this.razorpayOptions.customer_email = this.userDetails.email;
+					this.razorpayOptions.customer_mobile = this.userDetails.mobile;
+					this.razorpayOptions.prefill = { "name": this.userDetails.name, "email": this.userDetails.email, "contact": this.userDetails.mobile };
+				}
 			}
-			else
-			{
+			else {
 				this.payOnlineStatus = false;
 			}
-			});
+		});
 
-		
+
 		console.log("table engaged bill confirm............")
 		// this.socket.emit('table_engaged', this.restaurant_details.table_id);  // what is it s purpose? // nan chumma emit panni pathen data disconnect agudhla
 		this.apiService.GET_BILL().subscribe(result => {
@@ -241,10 +232,10 @@ export class BillConfirmComponent implements OnInit {
 				let billType = result.bills.bill_type;
 				let billList = result.bills.bills;
 				this.userService.bill_List = result.bills.bills;
-                this.userService.bill_type = result.bills.bill_type;
+				this.userService.bill_type = result.bills.bill_type;
 				this.userService.bills = result.bills;
 
-				console.log("bills start..........",  result.bills)
+				console.log("bills start..........", result.bills)
 				this.userService.order_id = result.bills._id;
 				this.userService.order_number = result.bills.order_id;
 				console.log("oreder number.................", this.userService.order_number)
@@ -254,68 +245,61 @@ export class BillConfirmComponent implements OnInit {
 				console.log("userBill...........", userBill)
 				if (this.userService.bill_List.length) {
 					// this.userService.bill_type = this.userService.bill_List.bill_type
-					
-					
-					this.userService.totalBasicBillCost = this.userService.bill_List.reduce((a, b) => a + b.bill_cost, 0); 	
-					let all_bills_paid = this.userService.bill_List.filter((i) => i.bill_status != 'paid');	
+
+
+					this.userService.totalBasicBillCost = this.userService.bill_List.reduce((a, b) => a + b.bill_cost, 0);
+					let all_bills_paid = this.userService.bill_List.filter((i) => i.bill_status != 'paid');
 					console.log("this.userService.totalBasicBillCost................", this.userService.totalBasicBillCost)
-					if(all_bills_paid.length)
-					{
+					if (all_bills_paid.length) {
 						this.userService.all_bills_paid = false;
 						this.userService.payStatusText = 'PAY';
 					}
-					else
-					{
+					else {
 						this.userService.all_bills_paid = true;
 						this.userService.payStatusText = 'PAID';
 					}
 					console.log("all_bils_paid...........", all_bills_paid)
-                    for(let i=0; i<this.userService.bill_List.length; i++)			
-						{						
+					for (let i = 0; i < this.userService.bill_List.length; i++) {
 						// (price of the item / total price) * discount
 
 						//this.userService.bill_List.bill_cost = Number(this.userService.bill_List[i].bill_cost);
 						//this.discount = result.orders.order_discount;
-					
-						
-						console.log("my_service_charge ************ ",this.userService.my_service_charge);
 
-					
-						this.userService.bill_List[i].service_charge_amount =  this.userService.bill_List[i].service_charge_amount ? this.userService.bill_List[i].service_charge_amount : 0 ;
 
-						if(result.bills.order_discount && result.bills.order_discount.discount_type === 'amount' && result.bills.order_discount.discount_number)
-						{
-							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost)/Number(this.userService.totalBasicBillCost))*Number(result.bills.order_discount.discount_number);
-							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost-this.userService.bill_List[i].user_discount)+this.userService.bill_List[i].bill_tax_amount+this.userService.bill_List[i].service_charge_amount;
+						console.log("my_service_charge ************ ", this.userService.my_service_charge);
+
+
+						this.userService.bill_List[i].service_charge_amount = this.userService.bill_List[i].service_charge_amount ? this.userService.bill_List[i].service_charge_amount : 0;
+
+						if (result.bills.order_discount && result.bills.order_discount.discount_type === 'amount' && result.bills.order_discount.discount_number) {
+							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost) / Number(this.userService.totalBasicBillCost)) * Number(result.bills.order_discount.discount_number);
+							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost - this.userService.bill_List[i].user_discount) + this.userService.bill_List[i].bill_tax_amount + this.userService.bill_List[i].service_charge_amount;
 						}
-						else if(result.bills.order_discount && result.bills.order_discount.discount_type === 'percentage' && result.bills.order_discount.discount_number)
-						{
-							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost))*(Number(result.bills.order_discount.discount_number/100));
-							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost-this.userService.bill_List[i].user_discount)+this.userService.bill_List[i].bill_tax_amount+this.userService.bill_List[i].service_charge_amount;
+						else if (result.bills.order_discount && result.bills.order_discount.discount_type === 'percentage' && result.bills.order_discount.discount_number) {
+							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost)) * (Number(result.bills.order_discount.discount_number / 100));
+							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost - this.userService.bill_List[i].user_discount) + this.userService.bill_List[i].bill_tax_amount + this.userService.bill_List[i].service_charge_amount;
 						}
-						else if(result.bills.order_discount && result.bills.order_discount.discount_type === 'new_value' && result.bills.order_discount.discount_number)
-						{
-							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost)/Number(this.userService.totalBasicBillCost))*Number(this.userService.totalBasicBillCost-result.bills.order_discount.discount_number);
-							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost-this.userService.bill_List[i].user_discount)+this.userService.bill_List[i].bill_tax_amount+this.userService.bill_List[i].service_charge_amount
+						else if (result.bills.order_discount && result.bills.order_discount.discount_type === 'new_value' && result.bills.order_discount.discount_number) {
+							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost) / Number(this.userService.totalBasicBillCost)) * Number(this.userService.totalBasicBillCost - result.bills.order_discount.discount_number);
+							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost - this.userService.bill_List[i].user_discount) + this.userService.bill_List[i].bill_tax_amount + this.userService.bill_List[i].service_charge_amount
 						}
-						else if(result.bills.order_discount && result.bills.order_discount.discount_type === 'flat')
-						{
+						else if (result.bills.order_discount && result.bills.order_discount.discount_type === 'flat') {
 							this.userService.bill_List[i].user_discount = (Number(this.userService.bill_List[i].bill_cost));
-							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost-this.userService.bill_List[i].user_discount)+this.userService.bill_List[i].bill_tax_amount+this.userService.bill_List[i].service_charge_amount;
+							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost - this.userService.bill_List[i].user_discount) + this.userService.bill_List[i].bill_tax_amount + this.userService.bill_List[i].service_charge_amount;
 						}
-						else{
+						else {
 							this.userService.bill_List[i].user_discount = 0;
-							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost-this.userService.bill_List[i].user_discount)+this.userService.bill_List[i].bill_tax_amount+this.userService.bill_List[i].service_charge_amount
-							console.log("Discount Data..................",this.userService.bill_List[i].bill_cost, '+', this.userService.bill_List[i].bill_tax_amount, '+', this.userService.bill_List[i].service_charge_amount)
+							this.userService.bill_List[i].bill_final_cost = (this.userService.bill_List[i].bill_cost - this.userService.bill_List[i].user_discount) + this.userService.bill_List[i].bill_tax_amount + this.userService.bill_List[i].service_charge_amount
+							console.log("Discount Data..................", this.userService.bill_List[i].bill_cost, '+', this.userService.bill_List[i].bill_tax_amount, '+', this.userService.bill_List[i].service_charge_amount)
 						}
 
-                       console.log("user_discount--------------------------",this.userService.bill_List[i].user_discount);
+						console.log("user_discount--------------------------", this.userService.bill_List[i].user_discount);
 
-						}					
-					
-						
-						console.log("service_charge***************************", Number(this.userService.service_charge))
-	
+					}
+
+
+					console.log("service_charge***************************", Number(this.userService.service_charge))
+
 
 					console.log("this.userService.tax_total", this.userService.tax_total)
 
@@ -325,33 +309,30 @@ export class BillConfirmComponent implements OnInit {
 					this.userService.totalFinalBillCost = this.userService.bill_List.reduce((a, b) => a + b.bill_final_cost, 0);
 					this.userService.billListLength = this.userService.bill_List.length;
 					this.userService.itemListLength = this.userService.bill_List.reduce((a, b) => a + b.item_list.length, 0);
-					console.log("length.............",this.userService.itemListLength )
-					
-					if(result.bills.bill_type === 'split_equal')
-					{
-						this.userService.itemListLength = this.userService.itemListLength/result.bills.bill_count
+					console.log("length.............", this.userService.itemListLength)
+
+					if (result.bills.bill_type === 'split_equal') {
+						this.userService.itemListLength = this.userService.itemListLength / result.bills.bill_count
 					}
-					
+
 
 					let restaurant_details = JSON.parse(localStorage.getItem("restaurant_details"))
-						console.log("service charge..............", restaurant_details.service_charge)
-						if(localStorage.getItem("service_status") === "false")
-						{
+					console.log("service charge..............", restaurant_details.service_charge)
+					if (localStorage.getItem("service_status") === "false") {
+						this.userService.service_charge = 0;
+						this.userService.my_service_charge = 0;
+					}
+					else {
+						if (restaurant_details.service_charge != '0') {
+							let service_charge = Number(restaurant_details.service_charge) / 100
+							this.userService.service_charge = (service_charge * this.userService.totalFinalBillCost);
+							console.log("service Charge...........................", this.userService.service_charge);
+							this.userService.my_service_charge = (Number(this.userService.bill_List.bill_cost) / Number(this.userService.totalBasicBillCost)) * Number(this.userService.service_charge);
+						}
+						else {
 							this.userService.service_charge = 0;
-							this.userService.my_service_charge = 0;
 						}
-						else
-						{
-							if (restaurant_details.service_charge != '0') {
-								let service_charge = Number(restaurant_details.service_charge) / 100								
-								this.userService.service_charge = (service_charge * this.userService.totalFinalBillCost);
-								console.log("service Charge...........................", this.userService.service_charge);
-								this.userService.my_service_charge = (Number(this.userService.bill_List.bill_cost)/Number(this.userService.totalBasicBillCost))*Number(this.userService.service_charge);
-							}
-							else {
-								this.userService.service_charge = 0;
-							}
-						}
+					}
 
 					console.log("totalFinalBillCost...........................", this.userService.totalFinalBillCost);
 					console.log("Total_billcost................", this.userService.totalBillCost_withtax);
@@ -385,34 +366,34 @@ export class BillConfirmComponent implements OnInit {
 						this.userService.billConfirmText = 'Total Payment';
 						this.userService.showBillAmount = true;
 						this.userService.payButtonStatus = true;
-					//	this.userService.payStatusText = 'PAY';
-					if (result.bills.bill_type === "my_share") {
-						this.userService.bill_type_text = 'My Share';
-					}
-					else if (result.bills.bill_type === "split_equal") {
-						this.userService.bill_type_text = 'Go Dutch';
-					}
-					else if (result.bills.bill_type === "split_by_item") {
-						this.userService.bill_type_text = 'Split By Item';
-					}
-					else if (result.bills.bill_type === "total") {
-						this.userService.bill_type_text = 'Table Total';
-					}
-					else {
-						this.userService.bill_type_text = 'Bill Split - ' + result.bills.bill_type;
-					}
+						//	this.userService.payStatusText = 'PAY';
+						if (result.bills.bill_type === "my_share") {
+							this.userService.bill_type_text = 'My Share';
+						}
+						else if (result.bills.bill_type === "split_equal") {
+							this.userService.bill_type_text = 'Go Dutch';
+						}
+						else if (result.bills.bill_type === "split_by_item") {
+							this.userService.bill_type_text = 'Split By Item';
+						}
+						else if (result.bills.bill_type === "total") {
+							this.userService.bill_type_text = 'Table Total';
+						}
+						else {
+							this.userService.bill_type_text = 'Bill Split - ' + result.bills.bill_type;
+						}
 
-					
+
 					}
 
 					else if (userBill.bill_status == 'split_by_item') {
-					//	this.userService.payStatusText = 'PAY';
+						//	this.userService.payStatusText = 'PAY';
 						this.userService.billConfirmText = 'Total Payment';
 						this.userService.showBillAmount = false;
 						this.userService.payButtonStatus = false;
 						this.userService.bill_type_text = "Bill Split - Split By Item"
 					}
-					else  {
+					else {
 						this.userService.billConfirmText = 'Total amount paid';
 						this.userService.showBillAmount = true;
 						this.userService.showValetAgain = true;
@@ -456,23 +437,33 @@ export class BillConfirmComponent implements OnInit {
 
 					//this.socket.disconnect();
 					let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
-					if(restaurant_det.order_type === 'in_house')
-					{
-					this.socket.emit('leave_table', restaurant_det.table_id);
-					}
-					else
-					{
-					this.socket.emit('close_take_away',localStorage.getItem('pos_order_id'));	
-					}
 					// this.socket.emit('leave_valet', '123456'); 
-					localStorage.clear();
-					sessionStorage.clear();
-					this.cookieService.deleteAll('/', '.dinamic.io', true, 'Strict')
+					this.apiService.CONFIRMED_ORDERS().subscribe((result) => {
+						console.log('Confirmed Orders...... ', result);
+						if (result.status) {
+							this.router.navigate(['/bill/view']);
+						} else {
+							this.apiService.PLACED_ORDERS().subscribe((result) => {
+								console.log('Placed Orders...... ', result);
+								if (result.status) {
+									this.router.navigate(['/order-status']);
+								} else {
+									if (restaurant_det.order_type === 'in_house') {
+										this.socket.emit('leave_table', restaurant_det.table_id);
+									}
+									else {
+										this.socket.emit('close_take_away', localStorage.getItem('pos_order_id'));
+									}
+									localStorage.clear();
+									sessionStorage.clear();
+									this.cookieService.deleteAll('/', '.dinamic.io', true, 'Strict')
 
-					this.router.navigate(['/']);
+									this.router.navigate(['/']);
+								}
+							});
+						}
+					});
 				}
-				
-
 
 			}
 			// setTimeout(() => { this.loaderStatus = false; }, 500);
@@ -499,9 +490,9 @@ export class BillConfirmComponent implements OnInit {
 		if (this.user_details) {
 			let a = this.user_details;
 			let sendData = {
-				dinamic_user_id:a.dinamic_user_id,
-				access_code :localStorage.getItem("access_code"),
-				pos_branch_id:this.restaurantDetails.branch_id
+				dinamic_user_id: a.dinamic_user_id,
+				access_code: localStorage.getItem("access_code"),
+				pos_branch_id: this.restaurantDetails.branch_id
 			}
 			this.apiService.GET_VALET_DETAILS(sendData).subscribe(result => {
 				console.log('valet result....', result);
@@ -551,8 +542,8 @@ export class BillConfirmComponent implements OnInit {
 							this.commonService.valetStatus = this.valet_status;
 							this.openStatusPop()
 						}
-					this.status = true
-					//return this.status;
+						this.status = true
+						//return this.status;
 					}
 				}
 				else {
@@ -600,13 +591,11 @@ export class BillConfirmComponent implements OnInit {
 		this.userService.showOrderAgain = false;
 		this.loaderStatus = true;
 		let restaurant_det = JSON.parse(localStorage.getItem('restaurant_details'))
-		if(restaurant_det.order_type === 'in_house')
-		{
-		this.socket.emit('leave_table', restaurant_det.table_id);
+		if (restaurant_det.order_type === 'in_house') {
+			this.socket.emit('leave_table', restaurant_det.table_id);
 		}
-		else
-		{
-		this.socket.emit('close_take_away',localStorage.getItem('pos_order_id'));	
+		else {
+			this.socket.emit('close_take_away', localStorage.getItem('pos_order_id'));
 		}
 		localStorage.clear();
 		sessionStorage.clear();
@@ -619,64 +608,64 @@ export class BillConfirmComponent implements OnInit {
 	onBillPay(x) {
 		console.log('user details.....', this.user_details);
 		console.log('bill details....', x.disableBtn);
-		
-		let amount = this.cp.transform( x.bill_final_cost, '', '', '1.0-0')
+
+		let amount = this.cp.transform(x.bill_final_cost, '', '', '1.0-0')
 		console.log("amount..................", amount)
-		let val  = Number(amount);
-	   console.log("payonline", val);
+		let val = Number(amount);
+		console.log("payonline", val);
 
 		let orderData = {
 			"order_details": {
 				"order_type": JSON.parse(localStorage.getItem('restaurant_details')).order_type,
 				"item_details": JSON.parse(localStorage.getItem('cart')),
 			},
-			"cart_total":  amount,
+			"cart_total": amount,
 			"amount": amount,
 			"email": this.user_details.email,
 			"name": this.user_details.dinamic_user_name,
 			"mobile": this.user_details.mobile,
-			"bill_id":  x._id,
+			"bill_id": x._id,
 			"order_number": x._id,
-			"pos_branch_id":this.restaurant_details.branch_id,
-			"access_code" : localStorage.getItem("access_code")
+			"pos_branch_id": this.restaurant_details.branch_id,
+			"access_code": localStorage.getItem("access_code")
 		};
 
 		console.log("orderdata.........", orderData)
 		console.log("environment paymentLink .........", environment.paymentLink)
-		
+
 		this.apiService.CONFIRM_PAYMENT(orderData).subscribe(results => {
 			console.log('response....', results);
 			if (results.status) {
 				let payment_det = {
 					user_id: JSON.parse(localStorage.getItem('user_details')).dinamic_user_id,
 					order_id: results.data.order_id,
-					bill_id:results.data.order_id,
-					payment_request_id: results.data.razorpay_response.id,					
+					bill_id: results.data.order_id,
+					payment_request_id: results.data.razorpay_response.id,
 					user_name: JSON.parse(localStorage.getItem('user_details')).dinamic_user_name,
-					amount:amount,
+					amount: amount,
 					email: JSON.parse(localStorage.getItem('user_details')).email,
-					payment_status:'pending',
-					pos_branch_id:this.restaurant_details.branch_id,
-					access_code : localStorage.getItem("access_code")
+					payment_status: 'pending',
+					pos_branch_id: this.restaurant_details.branch_id,
+					access_code: localStorage.getItem("access_code")
 				}
 
-                console.log("Pament det............", payment_det)
+				console.log("Pament det............", payment_det)
 				this.apiService.SAVE_PAYMENT(payment_det).subscribe(result => {
-					console.log("payment response.....",  result.payment_details._id);
-					if(result.status){
+					console.log("payment response.....", result.payment_details._id);
+					if (result.status) {
 						this.razorpayOptions.my_order_id = results.data.order_id;
-						this.razorpayOptions.my_payment_id = result.payment_details._id ;
-						this.razorpayOptions.order_type = this.restaurant_details.order_type; 
+						this.razorpayOptions.my_payment_id = result.payment_details._id;
+						this.razorpayOptions.order_type = this.restaurant_details.order_type;
 						this.razorpayOptions.razorpay_order_id = results.data.razorpay_response.id;
-						this.razorpay_redirect_url =  environment.paymentLink+"user/bill/getpaymentrequeststatus/"+this.restaurant_details.branch_id+'/'+ result.payment_details._id;			
+						this.razorpay_redirect_url = environment.paymentLink + "user/bill/getpaymentrequeststatus/" + this.restaurant_details.branch_id + '/' + result.payment_details._id;
 						setTimeout(_ => this.razorpayForm.nativeElement.submit());
 					}
-					
-					
-					});
 
 
-			
+				});
+
+
+
 
 
 				// let razoypayOrderId = results.data.razorpay_response.id;
@@ -693,7 +682,7 @@ export class BillConfirmComponent implements OnInit {
 				// this.razorpayOptions.order_id = razoypayOrderId;
 				// // open razorpay modal
 				// new this.winRef.nativeWindow.Razorpay(this.razorpayOptions).open();
-				
+
 			} else {
 				console.log('response...', results)
 			}
@@ -705,17 +694,15 @@ export class BillConfirmComponent implements OnInit {
 
 	onValet(modalName) {
 
-		if(this.status)
-		{
+		if (this.status) {
 			modalName.show()
 		}
-		else
-		{
+		else {
 			this.loaderStatus = true;
 			if (localStorage.getItem('application_type') == 'ios') this.router.navigate(['/valet-ios']);
-			else this.router.navigate(['/valet-android']);         
+			else this.router.navigate(['/valet-android']);
 		}
-		
+
 	}
 
 
@@ -723,82 +710,79 @@ export class BillConfirmComponent implements OnInit {
 
 
 	handleEvent(event) {
-		let dtime = this.userService.vehicle.valet_delay;	
+		let dtime = this.userService.vehicle.valet_delay;
 		let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-		let r_date: any = moment(new Date(), 'mm : ss');			
+		let r_date: any = moment(new Date(), 'mm : ss');
 		let duration = d_date.diff(r_date, 'seconds');
-		
-		if(duration>0)	
-		{
+
+		if (duration > 0) {
 			if (event.action == 'start') {
-				this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };		
-				let a = event.left/1000;			
-				// console.log('aaaaa',timer_config)
-				this.progressValue = dtime;
-				this.userService.progressPerc = 100;
-	}
-	else if (event.action == 'notify') {
-		if (event.left > 0) {
-			let a = event.left/1000;
-			let b = this.progressValue - a;
-			let c = Math.round((a / this.progressValue) * 100);
-			//console.log("event.............",  a, "---------------", this.progressValue)
-			this.userService.progressPerc = c;
-
-		} else {
-
-			this.userService.progressPerc = 0;
-			this.commonService.valetStatus = 'awaiting';
-		}
-
-		sessionStorage.setItem("timer", event.left);
-	} else if (event.action == 'done') {
-		sessionStorage.removeItem('timer');
-		this.commonService.valetStatus = 'awaiting';
-		this.userService.progressPerc = 0;
-		//this.commonService.valetStatus = 'awaiting';
-		localStorage.setItem('valet_status', this.commonService.valetStatus);
-	}
-		}
-		else
-		{
-			this.commonService.valetStatus = 'awaiting';
-		this.userService.progressPerc = 0;
-		//this.commonService.valetStatus = 'awaiting';
-	
-		localStorage.setItem('valet_status', this.commonService.valetStatus);
-		}
-
-	}
-
-
-	handleEventOne(event) {
-		let dtime =  this.userService.vehicle.valet_delay;
-		let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-		let r_date: any = moment(new Date(), 'mm : ss');			
-		let duration = d_date.diff(r_date, 'seconds');
-		if(duration>0)
-		{
-			
-			if (event.action == 'start') {	
-				this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };		
-				let a = event.left/1000;
+				this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };
+				let a = event.left / 1000;
 				// console.log('aaaaa',timer_config)
 				this.progressValue = dtime;
 				this.userService.progressPerc = 100;
 			}
 			else if (event.action == 'notify') {
 				if (event.left > 0) {
-					let a = event.left/1000;
+					let a = event.left / 1000;
+					let b = this.progressValue - a;
+					let c = Math.round((a / this.progressValue) * 100);
+					//console.log("event.............",  a, "---------------", this.progressValue)
+					this.userService.progressPerc = c;
+
+				} else {
+
+					this.userService.progressPerc = 0;
+					this.commonService.valetStatus = 'awaiting';
+				}
+
+				sessionStorage.setItem("timer", event.left);
+			} else if (event.action == 'done') {
+				sessionStorage.removeItem('timer');
+				this.commonService.valetStatus = 'awaiting';
+				this.userService.progressPerc = 0;
+				//this.commonService.valetStatus = 'awaiting';
+				localStorage.setItem('valet_status', this.commonService.valetStatus);
+			}
+		}
+		else {
+			this.commonService.valetStatus = 'awaiting';
+			this.userService.progressPerc = 0;
+			//this.commonService.valetStatus = 'awaiting';
+
+			localStorage.setItem('valet_status', this.commonService.valetStatus);
+		}
+
+	}
+
+
+	handleEventOne(event) {
+		let dtime = this.userService.vehicle.valet_delay;
+		let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+		let r_date: any = moment(new Date(), 'mm : ss');
+		let duration = d_date.diff(r_date, 'seconds');
+		if (duration > 0) {
+
+			if (event.action == 'start') {
+				this.commonService.timerConfig = { leftTime: duration, format: 'mm:ss', notify: 0 };
+				let a = event.left / 1000;
+				// console.log('aaaaa',timer_config)
+				this.progressValue = dtime;
+				this.userService.progressPerc = 100;
+			}
+			else if (event.action == 'notify') {
+				if (event.left > 0) {
+					let a = event.left / 1000;
 					//console.log("event.left............", event.left)
 					let b = this.progressValue - a;
 					let c = Math.round((a / this.progressValue) * 100);
 					this.userService.progressPerc = c;
 				} else {
-	
+
 					this.userService.progressPerc = 0;
 				}
-	
+
 				sessionStorage.setItem("timer", event.left);
 			} else if (event.action == 'done') {
 				sessionStorage.removeItem('timer');
@@ -807,25 +791,25 @@ export class BillConfirmComponent implements OnInit {
 				// localStorage.setItem('valet_status', this.commonService.valetStatus);
 			}
 		}
-		else{
+		else {
 			this.userService.progressPerc = 0;
-		}	
-		
-		
+		}
+
+
 
 	}
 
 
 
-	
+
 
 
 	ngAfterViewInit() {
 		this.assetLoader.load('checkout').then(data => {
-       console.log("checkout");	
-		 }).catch(error => console.log("err", error));
-	   }
-	 
+			console.log("checkout");
+		}).catch(error => console.log("err", error));
+	}
+
 
 	setPlusFive() {
 		let d = this.plusDate(new Date(), 5);
@@ -916,15 +900,15 @@ export class BillConfirmComponent implements OnInit {
 
 		// this.serial_number = this.commonService.valet_details.serial_number
 		// this.delayTime = '5';
-		
+
 		// this.openPop();
-	
+
 		this.re_request = true;
 		//localStorage.setItem('valet_details', JSON.stringify(result.data));
 		this.router.navigate(['/valet/status'])
-			
+
 		//this.router.navigate(['/valet/status'])
-		
+
 	}
 
 	radioChange(event) {
@@ -963,57 +947,57 @@ export class BillConfirmComponent implements OnInit {
 
 	getTimer() {
 		//console.log("timer Event..............", event)
-		
-		 
-		let dtime = localStorage.getItem("valet_delay") ;
-		this.userService.vehicle.delivery_time   =  Number(localStorage.getItem("valet_delivery")) ;
+
+
+		let dtime = localStorage.getItem("valet_delay");
+		this.userService.vehicle.delivery_time = Number(localStorage.getItem("valet_delivery"));
 		this.userService.vehicle.is_expired = false;
-		
-			let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-			let r_date: any = moment(new Date(), 'mm : ss');			
-			let duration = d_date.diff(r_date, 'seconds');				
-			let minutes = Math.floor(duration / 60);			
-			
 
-				if(duration > 0) {
-					
-						setInterval(() => {												
-							let d_date  = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-							r_date = moment(new Date(), 'mm : ss');
-							duration = d_date.diff(r_date, 'seconds');
-							let a = Number(dtime);
+		let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+		let r_date: any = moment(new Date(), 'mm : ss');
+		let duration = d_date.diff(r_date, 'seconds');
+		let minutes = Math.floor(duration / 60);
 
-							let minutes = Math.floor((duration / 60));								        
-							let seconds = duration - minutes * 60;
-							
-							if(duration < 0) {								
-									this.userService.progressPerc = 0;
-									this.userService.vehicle.time = '00:00';
-									this.userService.vehicle.is_expired = true;																
-								//	this.commonService.valetStatus = 'awaiting';
-									clearInterval()	
-							} else{
-								let c = Math.round((duration / a) * 100);
-								this.userService.progressPerc = c;
-								let helper = String(minutes).padStart(2, '0') + " : "+ String(seconds).padStart(2, '0');
-								this.userService.vehicle.time = helper;	
-								clearInterval()
-							}
-							
-						}, 1000);	
-				}else{
-					// setTimeout(() => {
-					// 	this.userService.progressPerc = 0;
-					// 	this.userService.vehicle.time = '00:00';																
-					// 	this.commonService.valetStatus = 'awaiting';
-					// }, 100);		
+
+		if (duration > 0) {
+
+			setInterval(() => {
+				let d_date = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+				r_date = moment(new Date(), 'mm : ss');
+				duration = d_date.diff(r_date, 'seconds');
+				let a = Number(dtime);
+
+				let minutes = Math.floor((duration / 60));
+				let seconds = duration - minutes * 60;
+
+				if (duration < 0) {
+					this.userService.progressPerc = 0;
+					this.userService.vehicle.time = '00:00';
+					this.userService.vehicle.is_expired = true;
+					//	this.commonService.valetStatus = 'awaiting';
+					clearInterval()
+				} else {
+					let c = Math.round((duration / a) * 100);
+					this.userService.progressPerc = c;
+					let helper = String(minutes).padStart(2, '0') + " : " + String(seconds).padStart(2, '0');
+					this.userService.vehicle.time = helper;
+					clearInterval()
 				}
-		
-       
-    }
+
+			}, 1000);
+		} else {
+			// setTimeout(() => {
+			// 	this.userService.progressPerc = 0;
+			// 	this.userService.vehicle.time = '00:00';																
+			// 	this.commonService.valetStatus = 'awaiting';
+			// }, 100);		
+		}
 
 
-	onWaiterCall(serviceModal) {		
+	}
+
+
+	onWaiterCall(serviceModal) {
 		this.selected_quick_option = null;
 		let quickOptions = this.restaurant_details.quick_options;
 
@@ -1038,7 +1022,7 @@ export class BillConfirmComponent implements OnInit {
 
 		}
 		else {
-			serviceModal.hide();		
+			serviceModal.hide();
 		}
 	}
 	onServiceConfirm(selectedQuickOption) {
@@ -1048,15 +1032,13 @@ export class BillConfirmComponent implements OnInit {
 			// }
 			let type_id;
 			let order_type;
-			if(this.restaurant_details.order_type === 'in_house')
-			{
-			type_id = this.restaurant_details.table_id;
-			order_type = this.restaurant_details.order_type
+			if (this.restaurant_details.order_type === 'in_house') {
+				type_id = this.restaurant_details.table_id;
+				order_type = this.restaurant_details.order_type
 			}
-			else
-			{
+			else {
 				type_id = localStorage.getItem("pos_order_id");
-				order_type = this.restaurant_details.order_type;	
+				order_type = this.restaurant_details.order_type;
 			}
 
 			let sendData = {
@@ -1065,10 +1047,10 @@ export class BillConfirmComponent implements OnInit {
 					name: selectedQuickOption.name,
 					quantity: 1,
 					free_service: true,
-					called_on: "12/02/2015"	
+					called_on: "12/02/2015"
 				}],
 				order_type: order_type,
-				type_id : type_id	
+				type_id: type_id
 
 			};
 			console.log("quickservice senddata............", sendData)
@@ -1089,55 +1071,55 @@ export class BillConfirmComponent implements OnInit {
 
 	getTimer1() {
 		//console.log("timer Event..............", event)
-		
-		 
-		let dtime = localStorage.getItem("valet_delay") ;
-		this.userService.vehicle.delivery_time   =  Number(localStorage.getItem("valet_delivery")) ;
-		
-			let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-			let r_date: any = moment(new Date(), 'mm : ss');			
-			let duration = d_date.diff(r_date, 'seconds');				
-			let minutes = Math.floor(duration / 60);			
-			
 
-			//console.log("duration.............", dtime)
+
+		let dtime = localStorage.getItem("valet_delay");
+		this.userService.vehicle.delivery_time = Number(localStorage.getItem("valet_delivery"));
+
+		let d_date: any = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+		let r_date: any = moment(new Date(), 'mm : ss');
+		let duration = d_date.diff(r_date, 'seconds');
+		let minutes = Math.floor(duration / 60);
+
+
+		//console.log("duration.............", dtime)
 		//	if(this.commonService.valetStatus === 'on_hold' || this.commonService.valetStatus === 'vehicle_ready')
 		//	{
-				if(duration > 0) {
-					
-						const inter = setInterval(() => {												
-							let d_date  = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
-							r_date = moment(new Date(), 'mm : ss');
-							duration = d_date.diff(r_date, 'seconds');
-							let a = Number(dtime);
-							//let b = a*60							
-							let minutes = Math.floor((duration / 60));								        
-							let seconds = duration - minutes * 60;
-							//console.log("duration.................", duration)
-							
-							if(duration < 0) {								
-									this.userService.progressPerc = 0;
-									this.userService.vehicle.time = '00:00';																
-								
-				
-							} else{
-								//this.userService.progressPerc = 0;
-								let c = Math.round((duration / a) * 100);
-								this.userService.progressPerc = c;
-								let helper = String(minutes).padStart(2, '0') + " : "+ String(seconds).padStart(2, '0');
-								this.userService.vehicle.time = helper;	
-								clearInterval(inter)
-							}
-							
-						}, 1000);
-					
-				
-					
+		if (duration > 0) {
+
+			const inter = setInterval(() => {
+				let d_date = moment(new Date(this.userService.vehicle.delivery_time), 'mm:ss');
+				r_date = moment(new Date(), 'mm : ss');
+				duration = d_date.diff(r_date, 'seconds');
+				let a = Number(dtime);
+				//let b = a*60							
+				let minutes = Math.floor((duration / 60));
+				let seconds = duration - minutes * 60;
+				//console.log("duration.................", duration)
+
+				if (duration < 0) {
+					this.userService.progressPerc = 0;
+					this.userService.vehicle.time = '00:00';
+
+
+				} else {
+					//this.userService.progressPerc = 0;
+					let c = Math.round((duration / a) * 100);
+					this.userService.progressPerc = c;
+					let helper = String(minutes).padStart(2, '0') + " : " + String(seconds).padStart(2, '0');
+					this.userService.vehicle.time = helper;
+					clearInterval(inter)
 				}
-			
-         
-       
-    }
+
+			}, 1000);
+
+
+
+		}
+
+
+
+	}
 
 
 }

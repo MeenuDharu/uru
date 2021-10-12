@@ -28,7 +28,7 @@
 	<!--#Topbar-->
 
 
-	<div *ngIf="loaderStatus" id="loader" class="pr__dark  preloader"  style="z-index: 9999;" >
+	<div *ngIf="loaderStatus" id="loader" class="pr__dark  preloader" style="z-index: 9999;">
 		<span class="progress">
 			<div class="mobile-preloader">
 				<div class="pre-container">
@@ -53,7 +53,8 @@
 				<div
 					style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items: center;justify-content: center;width:100%">
 					<div class="w-100" style="color:#fff">
-						<p align="center"><img src="assets/images/qr-code.svg" class="img-responsive" *ngIf="hasDevices" ></p>
+						<p align="center"><img src="assets/images/qr-code.svg" class="img-responsive"
+								*ngIf="hasDevices"></p>
 						<div class="stage p-r-15 p-t-10"><span class="p-r-30 col-white opacity8">Scanning code</span>
 							<div class="dot-flashing"></div>
 						</div>
@@ -88,7 +89,7 @@
 
 	<!--Bottom footer-->
 	<div style="width: 100%;height:160px;position:fixed;bottom:0">
-		<div class="bg-purple h-100" align="center">
+		<div class="theme-btn h-100" align="center">
 			<div class="center-div100 valign-center" align="center">
 				<div class="center-div15 p-t-10" align="center">
 					<p class="scanner-bottom1" align="center"></p>
@@ -155,7 +156,7 @@
 
 		<!-- Modal content-->
 		<div class="modal-content mat-elevation-z2">
-			<div class="modal-header head-bg-purple">
+			<div class="modal-header theme-bg head-bg-purple">
 				<div class="col-xs-12 no-pad">
 					<div class="col-xs-9 word-brk pull-left">
 						<h3 class="modal-title" id="defaultModalLabel">Valet</h3>
@@ -253,7 +254,9 @@
 						<span class="p-r-5 p-t-2">
 							<!-- <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#fff">
   <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg> -->
-							<i class="material-icons">check</i></span> CONFIRM </a></div>
+							<i class="material-icons">check</i>
+						</span> CONFIRM </a>
+				</div>
 
 				<div class="col-md-12 p-l-20 p-r-20" data-dismiss="modal" *ngIf="!confirm_click" align="center">
 					<!-- *ngIf="!showAddToOrder" -->
@@ -261,7 +264,8 @@
 						style="border:none;justify-content:center;">
 						<span class="p-r-5 p-t-2">
 
-							<i class="material-icons">check</i></span> CONFIRM </a></div>
+							<i class="material-icons">check</i></span> CONFIRM </a>
+				</div>
 
 			</div>
 		</div>

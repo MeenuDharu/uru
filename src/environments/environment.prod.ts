@@ -24,6 +24,7 @@ export const environment = {
     redirect_url:"https://care.dinamic.io/",
     razorpay_payment_url: "https://api.razorpay.com/v1/checkout/embedded",
     smsType :'production',
-    smsUrl:'@care.dinamic.io',
-    password:false
+    smsUrl:'@www.care.dinamic.io',
+    password:false,
+    smsApiStatus: false
 };

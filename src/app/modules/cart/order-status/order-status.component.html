@@ -1,11 +1,12 @@
 <app-ios-notify></app-ios-notify>
 
-<nav class="navbar head-bg-purple animate fadeIn nav-height" id="nav-fade">
+<nav class="navbar theme-bg head-bg-purple animate fadeIn nav-height" id="nav-fade">
 	<div class="container-fluid no-pad h-100">
 		<div class="navbar-header col-md-12 no-pad no-margin h-100">
 			<span class="svg-icon p-l-20">
 				<a routerLink="/menu/items" class="p-r-10">
-					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="#fff">
+					<svg xmlns="http://www.w3.org/2000/svg" class="nav-back-arrow" width="22" height="22"
+						viewBox="0 0 18 18" fill="#fff">
 						<path d="M15 8.25H5.87l4.19-4.19L9 3 3 9l6 6 1.06-1.06-4.19-4.19H15v-1.5z"></path>
 					</svg>
 				</a>
@@ -21,7 +22,7 @@
 <!-- Awaiting Confirmation -->
 <div *ngIf="userService.showAwaiting" class="wrapper">
 	<section class="animate fadeIn page-body" data-wow-delay="400ms">
-		<div  class="col-md-12" [ngClass]="isChrome ? 'screenbg-webp' : 'screenbg'">
+		<div class="col-md-12" [ngClass]="isChrome ? 'screenbg-webp' : 'screenbg'">
 			<div style="position:relative;" class="pad50 m-t-55 m-b-30" align="center">
 				<img src="assets/images/awaiting-icon.svg" class="img-responsive">
 			</div>
@@ -48,8 +49,7 @@
 				</div>
 
 				<div class="col-xs-12 p-t-15" align="center">
-					<button type="button" style="width:100%"
-						class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+					<button type="button" style="width:100%" class="btn theme-btn mat-elevation-z2 btnstylenew"
 						routerLink="/menu/categories"><span class="font-bold font-16 p-l-5 text-upper">Back to
 							Menu</span>
 					</button>
@@ -81,7 +81,7 @@
 
 
 <!-- Order Confirmed -->
-<div *ngIf="!userService.showAwaiting" class="wrapper"> 
+<div *ngIf="!userService.showAwaiting" class="wrapper">
 	<section *ngIf="!userService.confirmationStatus" class="animate fadeIn page-body" data-wow-delay="400ms">
 		<div id="screenbg" class="col-md-12">
 			<div style="position:relative;" class="pad50 m-t-55 m-b-30" align="center">
@@ -104,14 +104,14 @@
 				</div>
 				<div class="col-xs-12 p-t-40" align="center">
 					<button type="button" style="width:100%"
-						class="btn bg-white text-purple mat-elevation-z2 btnstylenew" (click)="viewOrderItems('awaiting')" ><span
-							class="font-bold font-16 p-l-5 text-upper">VIEW ORDER ITEMS</span>
+						class="btn bg-white text-purple mat-elevation-z2 btnstylenew"
+						(click)="viewOrderItems('awaiting')"><span class="font-bold font-16 p-l-5 text-upper">VIEW ORDER
+							ITEMS</span>
 					</button>
 				</div>
 
 				<div class="col-xs-12 p-t-15" align="center">
-					<button type="button" style="width:100%"
-						class="btn bg-purple text-white mat-elevation-z2 btnstylenew"
+					<button type="button" style="width:100%" class="btn theme-btn mat-elevation-z2 btnstylenew"
 						routerLink="/menu/categories"><span class="font-bold font-16 p-l-5 text-upper">Back to
 							Menu</span>
 					</button>
@@ -158,13 +158,14 @@
 				</div>
 				<div class="col-xs-12 p-t-40" align="center">
 					<button type="button" style="width:100%"
-						class="btn bg-white text-purple mat-elevation-z2 btnstylenew"  (click)="viewOrderItems('confirmed')" ><span
-							class="font-bold font-16 p-l-5 text-upper">VIEW ORDER ITEMS</span>
+						class="btn bg-white text-purple mat-elevation-z2 btnstylenew"
+						(click)="viewOrderItems('confirmed')"><span class="font-bold font-16 p-l-5 text-upper">VIEW
+							ORDER ITEMS</span>
 					</button>
 				</div>
 				<div class="col-xs-12 p-t-15" align="center">
-					<button type="button" style="width:100%"
-						class="btn bg-purple text-white mat-elevation-z2 btnstylenew" routerLink="/menu/categories">
+					<button type="button" style="width:100%" class="btn theme-btn mat-elevation-z2 btnstylenew"
+						routerLink="/menu/categories">
 						<span class="font-bold font-16 p-l-5 text-upper">Back to Menu</span>
 					</button>
 				</div>
@@ -181,8 +182,9 @@
 </div>
 <!-- Footer -->
 <footer class="page-footer ">
-	<div class="footer1 col-black30">Government taxes extra as applicable.</div> 
-	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div> 
-	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered by</span><img src="assets/images/footer-logo.svg" ></a></div>
+	<div class="footer1 col-black30">Government taxes extra as applicable.</div>
+	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div>
+	<div class="col-black30 font-semibold footer"><a class="col-black" href="https://dinamic.io/" target="_blank"><span>Powered
+				by</span><img src="assets/images/footer-logo.svg"></a></div>
 </footer>
-  <!-- Footer -->
+<!-- Footer -->

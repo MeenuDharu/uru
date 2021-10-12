@@ -11,16 +11,16 @@ import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 
 
 @NgModule({
-  declarations: [
-    BillViewComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(bill_view_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule, MatCardModule,
-    IosNotifyModule
-  ]
+	declarations: [
+		BillViewComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(bill_view_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule, MatCardModule,
+		IosNotifyModule
+	]
 })
 export class BillViewModule { }

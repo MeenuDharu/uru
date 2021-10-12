@@ -9,27 +9,27 @@ import { MatProgressSpinnerModule } from '@angular/material';
 import { IosNotifyComponent } from '../../ios-notify/ios-notify.component';
 import { IosNotifyModule } from '../../ios-notify/ios-notify.module';
 import { CountdownModule } from 'ngx-countdown';
-import {ProgressBarModule} from "angular-progress-bar"
-import {CurrencyPipe} from '@angular/common'
+import { ProgressBarModule } from "angular-progress-bar"
+import { CurrencyPipe } from '@angular/common'
 //import { LogoImgBrokenDirective } from 'src/app/_directives/logo-img-broken.directive';
 import { SharedModule } from '../../shared/shared.module';
 @NgModule({
-  declarations: [
-    BillConfirmComponent,
-  
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(bill_confirm_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatProgressSpinnerModule,
-    IosNotifyModule,
-    ProgressBarModule,
-    CountdownModule,
-    SharedModule
+	declarations: [
+		BillConfirmComponent,
 
-  ],
-  providers: [CurrencyPipe]
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(bill_confirm_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatProgressSpinnerModule,
+		IosNotifyModule,
+		ProgressBarModule,
+		CountdownModule,
+		SharedModule
+
+	],
+	providers: [CurrencyPipe]
 })
 export class BillConfirmModule { }

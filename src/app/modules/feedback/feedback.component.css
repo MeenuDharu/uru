@@ -26,7 +26,8 @@
     border-radius: 50%;
     border: 2px solid #000;
     background-color: transparent;
-    transition: all 0.15s ease-in-out;
+    /* transition: all 0.15s ease-in-out; */
+    
   }
   
   .radio-item input[type=radio]:checked + label::before {
@@ -41,7 +42,7 @@
     font-weight: bold;
     border: 2px solid #000;
     background-color: transparent;
-    transition: all 0.15s ease-in-out;
+    /* transition: all 0.15s ease-in-out; */
   }
 
   .radio-item input[type=radio]:checked + label:after {

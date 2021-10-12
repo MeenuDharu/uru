@@ -13,16 +13,16 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
 
 
 @NgModule({
-  declarations: [
-    ItemCustomizationComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(item_customization_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    MatFormFieldModule , MatInputModule
-  ]
+	declarations: [
+		ItemCustomizationComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(item_customization_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+		MatFormFieldModule, MatInputModule
+	]
 })
 export class ItemCustomizationModule { }

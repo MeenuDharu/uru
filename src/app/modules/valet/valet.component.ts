@@ -5,14 +5,7 @@ import { CommonService } from './../../_services/common.service';
 import { detect } from 'detect-browser'
 import { LoadscriptService } from 'src/app/_services/loadscript.service';
 
-
-
-
-
-
-
 const browser = detect();
-
 
 @Component({
 	selector: 'app-valet',

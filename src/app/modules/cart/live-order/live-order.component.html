@@ -17,14 +17,15 @@
 	</div>
 </nav>
 
-<div *ngIf="loaderStatus" id="loader" class="pr__dark"  [ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
+<div *ngIf="loaderStatus" id="loader" class="pr__dark"
+	[ngClass]="browserService.isChrome ? 'preloader-webp' : 'preloader'">
 	<span class="progress">
 		<div class="mobile-preloader">
-				<div class="pre-container w-100">
+			<div class="pre-container w-100">
 				<div class="logo-circle">
 					<div class="center">
 						<img src="assets/images/Dinamic_Logo.svg">
-					</div>					
+					</div>
 				</div>
 				<div class="preloader-content"> <b>Our Staff Are Fully Vaccinated<br>#FeelSafeBeSafe</b> </div>
 			</div>
@@ -46,10 +47,10 @@
 					</div>
 					<div class="col-xs-4 no-pad" align="right">
 						<div class="col-md-12 no-pad">
-							<div class="col-md-4 pull-left no-rightpad"><span
-									class="item-btnbggrey item-count">{{ x.quantity }}</span></div>
-							<div class="col-md-8 pull-right no-pad"><span
-									class="font-15 font-bold500 opacity8">{{ (x.sold_price * x.quantity) }}</span></div>
+							<div class="col-md-4 pull-left no-rightpad"><span class="item-btnbggrey item-count">{{
+									x.quantity }}</span></div>
+							<div class="col-md-8 pull-right no-pad"><span class="font-15 font-bold500 opacity8">{{
+									(x.sold_price * x.quantity) }}</span></div>
 						</div>
 					</div>
 					<div *ngFor="let y of x.applied_addons;" class="col-xs-12">
@@ -65,8 +66,8 @@
 						<span class="font-15 font-bold500">Total </span>
 						<span class="font-12">(Inclusive of taxes)</span>
 					</div>
-					<div class="col-xs-4 no-pad" align="right"><span
-							class="font-15 font-bold500">{{ grand_total | currency:"INR"  }}</span>
+					<div class="col-xs-4 no-pad" align="right"><span class="font-15 font-bold500">{{ grand_total |
+							currency:"INR" }}</span>
 					</div>
 				</div>
 				<div class="clearfix">&nbsp;</div>

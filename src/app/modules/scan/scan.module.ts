@@ -8,14 +8,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    ScanComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(scan_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		ScanComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(scan_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class ScanModule { }

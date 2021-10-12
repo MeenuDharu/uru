@@ -8,14 +8,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    NfcComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(nfc_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		NfcComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(nfc_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class NfcModule { }

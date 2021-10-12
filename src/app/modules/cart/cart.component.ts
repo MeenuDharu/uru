@@ -5,13 +5,13 @@ import { ApiService } from '../../_services/api.service';
 import { SnackbarService } from '../../_services/snackbar.service';
 import { MenuStorageService } from '../../_services/menu-storage.service';
 import { AuthService, GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
-import {DeviceDetectorService} from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 // import { Razorpay } from 'https://checkout.razorpay.com/v1/checkout.js';
 import { WindowRef } from '../../_services/winref.service';
 import { LoadscriptService } from 'src/app/_services/loadscript.service';
 import { environment } from '../../../environments/environment';
 import { UserBrowserService } from 'src/app/_services/user-browser.service';
-import { Location,PlatformLocation  } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 
 
 import * as _ from "lodash";
@@ -28,9 +28,9 @@ import { Socket } from 'ngx-socket-io';
 })
 export class CartComponent implements OnInit {
 	public layout: any = 'alphanumeric';
-	razorpayOptions: any ;
-	serviceStatus:any ;
-	rzp:any;
+	razorpayOptions: any;
+	serviceStatus: any;
+	rzp: any;
 	@ViewChild('openModal', { static: true }) openModal: ElementRef;
 	@ViewChild('confirmModal', { static: true }) confirmModal: ElementRef;
 	@ViewChild('triggerModal', { static: true }) triggerModal: ElementRef;
@@ -41,9 +41,9 @@ export class CartComponent implements OnInit {
 	showlabel: boolean = true;
 	paymentFailed: boolean;
 	order_id: string;
-	resendOTP:boolean = false;
-	sendOTP:boolean = true;	
-	photo_url:string;
+	resendOTP: boolean = false;
+	sendOTP: boolean = true;
+	photo_url: string;
 	cartItems; cartTotal; tax; cartIncTax; cartTax: any;
 	userDetails: any; customer_id: any;
 	signupForm: any = {}; otpForm: any = {}; loginForm: any = {}; forgotForm: any = {};
@@ -67,8 +67,8 @@ export class CartComponent implements OnInit {
 	illchoose: boolean = false;
 	passwordMismatch: boolean = false;
 	interval: any;
-	timeLeft: number = 60;
-	timeLeftString: String = '00 : 60';
+	timeLeft: number = 30;
+	timeLeftString: String = '00 : 30';
 	mob_num_exist: boolean = false;
 	exist_email: String = '';
 	social_data: any;
@@ -84,45 +84,42 @@ export class CartComponent implements OnInit {
 	payment_url: any;
 	otpMobile: any
 	mobileShow: boolean = false;
-	deviceData:any;
-	isChrome:boolean = false;
-	loaderStatus:boolean;
-	payOnlineStatus:boolean;
-	socialLogo:boolean = false;
-	keyId:string;
-	modalLogo:boolean = false;
-	isReadonly:boolean = false;
-	user_name:any;
+	deviceData: any;
+	isChrome: boolean = false;
+	loaderStatus: boolean;
+	payOnlineStatus: boolean;
+	socialLogo: boolean = false;
+	keyId: string;
+	modalLogo: boolean = false;
+	isReadonly: boolean = false;
+	user_name: any;
 	constructor(private router: Router, private winRef: WindowRef, private route: ActivatedRoute, public userService: UserService,
 		private socialAuthService: AuthService, private apiService: ApiService, public snackBar: SnackbarService, private menuStorageService: MenuStorageService,
-		private loadScript: LoadscriptService, private socket: Socket, private deviceService: DeviceDetectorService, private browserService :UserBrowserService, private location: PlatformLocation) { 
-			location.onPopState(() => {
-				console.log("category back...............")
-				this.router.navigate(['/menu/items']);
-			});	
-		}
-		restaurantDetails:any = JSON.parse(localStorage.getItem('restaurant_details'));
-		customer_editable_sc:any = this.restaurantDetails.customer_editable_sc;
+		private loadScript: LoadscriptService, private socket: Socket, private deviceService: DeviceDetectorService, private browserService: UserBrowserService, private location: PlatformLocation) {
+		location.onPopState(() => {
+			console.log("category back...............")
+			this.router.navigate(['/menu/items']);
+		});
+	}
+	restaurantDetails: any = JSON.parse(localStorage.getItem('restaurant_details'));
+	customer_editable_sc: any = this.restaurantDetails.customer_editable_sc;
 	ngOnInit() {
 		//this.hideConfirmOrder = true;
-		if(JSON.parse(localStorage.getItem('user_details')))
-				{
-					this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-					
-				}
+		if (JSON.parse(localStorage.getItem('user_details'))) {
+			this.userDetails = JSON.parse(localStorage.getItem('user_details'));
 
-		
+		}
+
+
 		this.deviceData = this.deviceService.getDeviceInfo();
-		
-		if(this.deviceData.browser === 'Chrome')
-		{
-		this.isChrome = true;
+
+		if (this.deviceData.browser === 'Chrome') {
+			this.isChrome = true;
 		}
-		else
-		{
-		this.isChrome = false;
+		else {
+			this.isChrome = false;
 		}
-		
+
 		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'))
 		if (restaurant_details.order_type == 'take_aways') {
 			this.take_aways = true;
@@ -132,7 +129,7 @@ export class CartComponent implements OnInit {
 			this.take_aways = false;
 			this.serviceStatus = true;
 		}
-		
+
 
 		this.loadScript.load('font-awesome', 'material-icons').then(data => {
 			console.log('font awesome reference added....');
@@ -144,30 +141,28 @@ export class CartComponent implements OnInit {
 		this.itemRepeatFooter = false;
 		// this.triggerModal.nativeElement.click();
 		// console.log(JSON.parse(localStorage.getItem('user_details')));
-		this.apiService.PAYMENT_GATEWAY_DETAILS({access_code: localStorage.getItem('access_code')}).subscribe(result => {
-		console.log("Payment Dtails..................", result);
-		if(result.data.status === 'active')
-		{
-			console.log("payment..................")
-			this.payOnlineStatus = true;
-			this.keyId = result.key_id;
-			this.razorpayOptions = {
-				"key": this.keyId,
-				"name": "DiNAMIC",
-				"description": "Restaurant Application",
-				"modal": { "ondismiss": () => { } }
+		this.apiService.PAYMENT_GATEWAY_DETAILS({ access_code: localStorage.getItem('access_code') }).subscribe(result => {
+			console.log("Payment Dtails..................", result);
+			if (result.data.status === 'active') {
+				console.log("payment..................")
+				this.payOnlineStatus = true;
+				this.keyId = result.key_id;
+				this.razorpayOptions = {
+					"key": this.keyId,
+					"name": "DiNAMIC",
+					"description": "Restaurant Application",
+					"modal": { "ondismiss": () => { } }
 				}
-				
-					
-				
-		}
-		else
-		{
-			this.payOnlineStatus = false;
-		}
+
+
+
+			}
+			else {
+				this.payOnlineStatus = false;
+			}
 		});
-	
-	
+
+
 		this.cart = JSON.parse(localStorage.getItem('cart'));
 		if (!this.cart) { this.cart = []; }
 		let cartDetails = this.userService.CART_DETAILS();
@@ -175,7 +170,7 @@ export class CartComponent implements OnInit {
 
 
 		// this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst/100));
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
@@ -184,7 +179,7 @@ export class CartComponent implements OnInit {
 
 		console.log("service charge..............", restaurant_details.service_charge)
 		if (restaurant_details.service_charge != '0') {
-			
+
 			let service_charge = Number(restaurant_details.service_charge) / 100
 			console.log("service charge1..............", cartDetails.cart_total)
 			this.userService.service_charge = (service_charge * cartDetails.cart_total);
@@ -214,7 +209,7 @@ export class CartComponent implements OnInit {
 				// }).catch(error => console.log("err", error));
 				this.apiService.PLACED_ORDERS().subscribe(result => {
 					console.log("placed orders....", result);
-					
+
 					if (result.status) {
 						if (result.orders.order_list.length) {
 							this.userService.order_number = result.orders.order_number;
@@ -276,7 +271,7 @@ export class CartComponent implements OnInit {
 
 				this.apiService.GET_BILL().subscribe(result => {
 					console.log('oms bills.....', result);
-				
+
 					if (result.status) {
 
 						let bills = result.bills.bills;
@@ -297,13 +292,13 @@ export class CartComponent implements OnInit {
 			} else {
 				this.userService.placed_order_status = false;
 			}
-			
+
 		} else {
 			this.loadScript.load('instamojo').then(data => {
 				console.log('instamojo reference added....');
 			}).catch(error => console.log('err...', error));
 			this.userService.placed_order_status = false;
-			
+
 		}
 
 
@@ -321,31 +316,28 @@ export class CartComponent implements OnInit {
 		});
 		console.log("loader Status..........", this.hideConfirmOrder)
 
-		
+
 		//this.loaderStatus = false;
 		this.hideConfirmOrder = false;
-	
+
 	}
 
-   loaderTrueStatus()
-   {
-	   this.loaderStatus = true;	  
-	   console.log("loader true................")
-   }
-   loaderFalseStatus(x,y)
-   {
-	   if(x===y)
-	   {
-		this.hideConfirmOrder = false;
-		//this.loaderStatus = false;
-		console.log(x,"-------------",y)
-	   }
-	 
-	   console.log("loader false................")
-   }
+	loaderTrueStatus() {
+		this.loaderStatus = true;
+		console.log("loader true................")
+	}
+	loaderFalseStatus(x, y) {
+		if (x === y) {
+			this.hideConfirmOrder = false;
+			//this.loaderStatus = false;
+			console.log(x, "-------------", y)
+		}
+
+		console.log("loader false................")
+	}
 	ngAfterViewInit() {
 		// this.triggerModal.nativeElement.click();
-		
+
 		if (localStorage.getItem('payment_status') == 'raised') {
 			// this.paymentFailed = true;
 			// JSON.parse(localStorage.getItem('restaurant_details')).order_type
@@ -382,13 +374,13 @@ export class CartComponent implements OnInit {
 		this.mobileShow = false
 		// this.mobile_num="+91 "+this.otpMobile;
 	}
-	checkValue(event: any){
+	checkValue(event: any) {
 		this.cart = JSON.parse(localStorage.getItem('cart'));
 		if (!this.cart) { this.cart = []; }
 		let cartDetails = this.userService.CART_DETAILS();
 		console.log("cart Details......................", cartDetails);
 		// this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst/100));
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
@@ -397,39 +389,37 @@ export class CartComponent implements OnInit {
 
 		console.log(event);
 		console.log(event.target.checked)
-		if(event.target.checked)
-		{
-	this.serviceStatus =  true;
-	console.log("service charge..............", this.restaurantDetails.service_charge)
-	if (this.restaurantDetails.service_charge != '0') {
-		
-		let service_charge = Number(this.restaurantDetails.service_charge) / 100
-		console.log("service charge1..............", cartDetails.cart_total)
-		this.userService.service_charge = (service_charge * cartDetails.cart_total);
-		console.log("service Charge...........................", this.userService.service_charge)
-	}
-	else {
-		this.userService.service_charge = 0;
-	}
+		if (event.target.checked) {
+			this.serviceStatus = true;
+			console.log("service charge..............", this.restaurantDetails.service_charge)
+			if (this.restaurantDetails.service_charge != '0') {
+
+				let service_charge = Number(this.restaurantDetails.service_charge) / 100
+				console.log("service charge1..............", cartDetails.cart_total)
+				this.userService.service_charge = (service_charge * cartDetails.cart_total);
+				console.log("service Charge...........................", this.userService.service_charge)
+			}
+			else {
+				this.userService.service_charge = 0;
+			}
 
 
-		}
-		else
-		{
-		  this.serviceStatus = false;
-		  if (this.restaurantDetails.service_charge != '0') {
-		
-			let service_charge = Number(this.restaurantDetails.service_charge) / 100
-			console.log("service charge1..............", cartDetails.cart_total)
-			this.userService.service_charge = 0;
-			console.log("service Charge...........................", this.userService.service_charge)
 		}
 		else {
-			this.userService.service_charge = 0;
+			this.serviceStatus = false;
+			if (this.restaurantDetails.service_charge != '0') {
+
+				let service_charge = Number(this.restaurantDetails.service_charge) / 100
+				console.log("service charge1..............", cartDetails.cart_total)
+				this.userService.service_charge = 0;
+				console.log("service Charge...........................", this.userService.service_charge)
+			}
+			else {
+				this.userService.service_charge = 0;
+			}
 		}
-		}
-	
-	 }
+
+	}
 
 	payOnline() {
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
@@ -440,7 +430,7 @@ export class CartComponent implements OnInit {
 		let cartDetails = this.userService.CART_DETAILS();
 		console.log("cart Details......................", cartDetails);
 		// this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst/100));
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
@@ -457,9 +447,9 @@ export class CartComponent implements OnInit {
 			this.userService.service_charge = 0;
 		}
 
-		console.log("payonline", this.userDetails);		
+		console.log("payonline", this.userDetails);
 		console.log("take_away3 userservice......................");
-	    let order_id;
+		let order_id;
 		if (localStorage.getItem('order_again')) {
 			//console.log("new pos id")
 			let orderId = this.orderIdGenerator();
@@ -468,48 +458,46 @@ export class CartComponent implements OnInit {
 			console.log("order again......................")
 			localStorage.setItem("pos_order_id", orderId);
 			order_id = orderId;
-		}	
-		else
-		{
+		}
+		else {
 			order_id = localStorage.getItem('pos_order_id');
 			this.socket.emit('take_away', localStorage.getItem('pos_order_id'));
 		}
-	
+
 		let orderData = {
 			"order_details": {
 				"order_type": JSON.parse(localStorage.getItem('restaurant_details')).order_type,
 				"item_details": JSON.parse(localStorage.getItem('cart')),
 			},
-			"cart_total":   Math.round(this.cartTotal + this.cartTax + this.userService.service_charge ),
+			"cart_total": Math.round(this.cartTotal + this.cartTax + this.userService.service_charge),
 			"email": this.userDetails.email,
 			"name": this.userDetails.dinamic_user_name,
 			"mobile": this.userDetails.mobile,
-			"bill_id":  order_id,
+			"bill_id": order_id,
 			"order_number": order_id
 		};
 		console.log("orderdata.........", orderData);
 		console.log('orderData ------------', orderData.order_details);
-	
+
 		localStorage.setItem('order_again', 'new');
 		this.apiService.CONFIRM_PAYMENT(orderData).subscribe(result => {
 			console.log("payment result...........", result)
-			if(result.status)
-			{
+			if (result.status) {
 				// let storeOrderId = result.data.order_id;
 				let razoypayOrderId = result.data.razorpay_response.id;
 				// razorpay response handler
 				this.razorpayOptions.handler = (response) => {
-					let paymentId = response.razorpay_payment_id;					
-					window.location.href = environment.paymentLink+"checkout/payment-confirm?payment_request_id="+paymentId+"&order_id="+orderData.bill_id+"&order_number="+orderData.order_number;				
+					let paymentId = response.razorpay_payment_id;
+					window.location.href = environment.paymentLink + "checkout/payment-confirm?payment_request_id=" + paymentId + "&order_id=" + orderData.bill_id + "&order_number=" + orderData.order_number;
 
 				};
 				this.razorpayOptions.order_id = razoypayOrderId;
 				// open razorpay modal
 				this.rzp = new this.winRef.nativeWindow.Razorpay(this.razorpayOptions);
-                this.rzp.open();
-			//	new this.winRef.nativeWindow.Razorpay(this.razorpayOptions).open();
+				this.rzp.open();
+				//	new this.winRef.nativeWindow.Razorpay(this.razorpayOptions).open();
 			}
-			
+
 			// if (result.status) {
 			// 	//Generate order id here for every order , get and set the token for POS...
 			// 	//set the token - localstorage(user_details).token
@@ -539,14 +527,14 @@ export class CartComponent implements OnInit {
 
 		})
 
-	}	
+	}
 
 
 	onAddItem(index) {
 		this.cart[index].quantity = this.cart[index].quantity + 1;
 		localStorage.setItem('cart', JSON.stringify(this.cart));
 		let cartDetails = this.userService.CART_DETAILS();
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
@@ -557,13 +545,13 @@ export class CartComponent implements OnInit {
 
 	scrollModalTop() {
 		setTimeout(() => {
-		  $('.modal-body').each(function(index, element) {
-			let className = 'modal-body'+(index+1);
-			element.classList.add(className);
-			$("."+className).scrollTop(0);
-		  });
+			$('.modal-body').each(function (index, element) {
+				let className = 'modal-body' + (index + 1);
+				element.classList.add(className);
+				$("." + className).scrollTop(0);
+			});
 		}, 500);
-	  }
+	}
 
 	viewCustomizations(x, customizationmodal, cartId) {
 		this.showAddToOrder = true;
@@ -651,11 +639,11 @@ export class CartComponent implements OnInit {
 		if (!this.cart.length && this.pageType == 'bill')
 			this.router.navigate(['/bill/view']);
 		let cartDetails = this.userService.CART_DETAILS();
-		this.tax =  cartDetails.tax;			
-				this.cartItems = cartDetails.cart_items;
-				this.cartTotal = cartDetails.cart_total;
-				this.cartTax = cartDetails.tax;
-				this.cartIncTax = cartDetails.cart_total + cartDetails.tax;
+		this.tax = cartDetails.tax;
+		this.cartItems = cartDetails.cart_items;
+		this.cartTotal = cartDetails.cart_total;
+		this.cartTax = cartDetails.tax;
+		this.cartIncTax = cartDetails.cart_total + cartDetails.tax;
 	}
 
 	// socialSignIn(modalName, socialPlatform: string,askmobilemodal) {
@@ -707,7 +695,7 @@ export class CartComponent implements OnInit {
 	// 		this.apiService.CHECK_MOBILE_SOCIAL_LOGIN(sendData).subscribe(result => {
 	// 			modalName.hide();
 	// 			if (result.status) {
-					
+
 	// 				console.log("1...............")
 	// 				this.social_data = userData;
 	// 				this.social_data['mobile'] = result.mobile;
@@ -764,7 +752,7 @@ export class CartComponent implements OnInit {
 	// 					}
 	// 					else this.signupForm.error_msg = result.message;
 	// 				});
-				
+
 	// 			} else {
 	// 				console.log("8...............");
 	// 				this.hideConfirmOrder = false;
@@ -779,7 +767,7 @@ export class CartComponent implements OnInit {
 	// 		this.hideConfirmOrder = false;
 	// 		console.log("Google err1............", err);
 	// 		this.userService.usableLink= true;
-			
+
 	// 	});
 
 	// }
@@ -799,30 +787,27 @@ export class CartComponent implements OnInit {
 		clearInterval(this.interval);
 	}
 
-	goBack(m1,m2)
-	{
-		if(this.enterEmailField)
-		{
-		m1.hide();
-		this.closeLogin()
-		m2.show()
+	goBack(m1, m2) {
+		if (this.enterEmailField) {
+			m1.hide();
+			this.closeLogin()
+			m2.show()
 		}
-		else if(this.enterNameField && this.enterPasswordField && this.confirmPasswordField)
-		{
-		this.enterEmailField = true;
-		this.enterOtpField = false;
-		this.enterNameField = true;
-		this.enterPasswordField = false;
-		this.confirmPasswordField = false;
-		this.pleasewait = false;
-		this.loginForm.confirm_password = "";
-		this.loginForm.password=""
-		this.mob_num_exist = false
+		else if (this.enterNameField && this.enterPasswordField && this.confirmPasswordField) {
+			this.enterEmailField = true;
+			this.enterOtpField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = false;
+			this.confirmPasswordField = false;
+			this.pleasewait = false;
+			this.loginForm.confirm_password = "";
+			this.loginForm.password = ""
+			this.mob_num_exist = false
 		}
-		
-		
-					
-				
+
+
+
+
 	}
 
 	userRegister(closeModal, openModal) {
@@ -849,12 +834,12 @@ export class CartComponent implements OnInit {
 				this.userDetails = localStorage.getItem('user_details');
 				modalName.hide();
 				//confirmModal.show();
-				 this.onConfirm();
+				this.onConfirm();
 			}
-			else{
+			else {
 				this.otpForm.error_msg = result.message;
 				this.loaderStatus = false;
-			   }
+			}
 		});
 	}
 
@@ -893,7 +878,7 @@ export class CartComponent implements OnInit {
 				this.menuStorageService.REPEAT_ITEM_IN_CART(itemObject.item.cart_id);
 
 				let cartDetails = this.userService.CART_DETAILS();
-				this.tax =  cartDetails.tax;			
+				this.tax = cartDetails.tax;
 				this.cartItems = cartDetails.cart_items;
 				this.cartTotal = cartDetails.cart_total;
 				this.cartTax = cartDetails.tax;
@@ -937,9 +922,9 @@ export class CartComponent implements OnInit {
 				this.cartItems = cartDetails.cart_items;
 				this.cartTotal = cartDetails.cart_total;
 				this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst / 100));
-				this.cartIncTax = this.cartTotal + cartDetails.tax;			
-				this.cartTax = cartDetails.tax;				
-				
+				this.cartIncTax = this.cartTotal + cartDetails.tax;
+				this.cartTax = cartDetails.tax;
+
 				// this.router.navigate(['/menu/items']);
 				this.closeCustomization.nativeElement.click();
 
@@ -1127,23 +1112,23 @@ export class CartComponent implements OnInit {
 
 			let cartDetails = this.userService.CART_DETAILS();
 
-			this.tax =  cartDetails.tax;			
+			this.tax = cartDetails.tax;
 			this.cartItems = cartDetails.cart_items;
 			this.cartTotal = cartDetails.cart_total;
 			this.cartTax = cartDetails.tax;
 			this.cartIncTax = cartDetails.cart_total + cartDetails.tax;
 			console.log("service charge remove..............", this.restaurantDetails.service_charge)
-		if (this.restaurantDetails.service_charge != '0') {
-			
-			let service_charge = Number(this.restaurantDetails.service_charge) / 100
-			console.log("service charge1..............", cartDetails.cart_total)
-			this.userService.service_charge = (service_charge * cartDetails.cart_total);
-			console.log("service Charge...........................", this.userService.service_charge)
-		}
-		else {
-			this.userService.service_charge = 0;
-		}
-			
+			if (this.restaurantDetails.service_charge != '0') {
+
+				let service_charge = Number(this.restaurantDetails.service_charge) / 100
+				console.log("service charge1..............", cartDetails.cart_total)
+				this.userService.service_charge = (service_charge * cartDetails.cart_total);
+				console.log("service Charge...........................", this.userService.service_charge)
+			}
+			else {
+				this.userService.service_charge = 0;
+			}
+
 		}
 	}
 
@@ -1174,16 +1159,16 @@ export class CartComponent implements OnInit {
 
 		/** tax calc */
 
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
 		this.cartIncTax = cartDetails.cart_total + cartDetails.tax;
 		//this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst/100));
-	
+
 		console.log("service charge remove..............", this.restaurantDetails.service_charge)
 		if (this.restaurantDetails.service_charge != '0') {
-			
+
 			let service_charge = Number(this.restaurantDetails.service_charge) / 100
 			console.log("service charge1..............", cartDetails.cart_total)
 			this.userService.service_charge = (service_charge * cartDetails.cart_total);
@@ -1192,7 +1177,7 @@ export class CartComponent implements OnInit {
 		else {
 			this.userService.service_charge = 0;
 		}
-		
+
 		this.cart = JSON.parse(localStorage.getItem('cart'));
 		console.log()
 		this.menu_items.forEach(element => {
@@ -1375,12 +1360,12 @@ export class CartComponent implements OnInit {
 		console.log("Confirm")
 		// this.hideConfirmOrder = true;
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-		let serviceTax = 0;		
+		let serviceTax = 0;
 		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 
 		let scharge = restaurant_details.service_tax;
-		let  service_per;
-		if (this.serviceStatus) {					
+		let service_per;
+		if (this.serviceStatus) {
 			let service_charge = Number(restaurant_details.service_charge) / 100;
 			service_per = restaurant_details.service_charge;
 			console.log("service charge1..............", this.cartTotal)
@@ -1389,15 +1374,15 @@ export class CartComponent implements OnInit {
 		}
 		else {
 			serviceTax = 0;
-		    service_per = 0
+			service_per = 0
 		}
 
 		let orderData = {
 			"order_details": {
 				"order_type": JSON.parse(localStorage.getItem('restaurant_details')).order_type,
 				"item_details": JSON.parse(localStorage.getItem('cart')),
-				"is_applied_service_charge":this.serviceStatus,
-				"service_charge_percentage":service_per
+				"is_applied_service_charge": this.serviceStatus,
+				"service_charge_percentage": service_per
 			},
 			"cart_total": this.cartTotal + serviceTax,
 			"email": this.userDetails.email,
@@ -1405,7 +1390,7 @@ export class CartComponent implements OnInit {
 			"mobile": this.userDetails.mobile,
 			"phone": this.userDetails.mobile,
 			"buyer_name": this.userDetails.name,
-			"serviceStatus":this.serviceStatus
+			"serviceStatus": this.serviceStatus
 		};
 
 		console.log("confirm order in onconfirm", orderData)
@@ -1466,13 +1451,13 @@ export class CartComponent implements OnInit {
 
 	}
 
-	onConfirmInsta(confirmModal, triggerModal) {	
+	onConfirmInsta(confirmModal, triggerModal) {
 		this.loaderStatus = true;
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-		let serviceTax = 0;		
+		let serviceTax = 0;
 		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
-        let service_per;
-		if (this.serviceStatus) {					
+		let service_per;
+		if (this.serviceStatus) {
 			let service_charge = Number(restaurant_details.service_charge) / 100
 			console.log("service charge1..............", this.cartTotal)
 			serviceTax = (service_charge * this.cartTotal);
@@ -1483,13 +1468,13 @@ export class CartComponent implements OnInit {
 			service_per = 0;
 		}
 
-		console.log("cart Total..........", this.cartTotal,"serviceTax.......",serviceTax);
+		console.log("cart Total..........", this.cartTotal, "serviceTax.......", serviceTax);
 		let orderData = {
 			"order_details": {
 				"order_type": JSON.parse(localStorage.getItem('restaurant_details')).order_type,
-				"item_details": JSON.parse(localStorage.getItem('cart')),				
-				"is_applied_service_charge":this.serviceStatus,
-				"service_charge_percentage":service_per
+				"item_details": JSON.parse(localStorage.getItem('cart')),
+				"is_applied_service_charge": this.serviceStatus,
+				"service_charge_percentage": service_per
 			},
 			"cart_total": this.cartTotal + serviceTax,
 			"email": this.userDetails.email,
@@ -1497,7 +1482,7 @@ export class CartComponent implements OnInit {
 			"mobile": this.userDetails.mobile,
 			"phone": this.userDetails.mobile,
 			"buyer_name": this.userDetails.name,
-			"serviceStatus":this.serviceStatus
+			"serviceStatus": this.serviceStatus
 		};
 		console.log("order Data...................", orderData)
 
@@ -1520,7 +1505,7 @@ export class CartComponent implements OnInit {
 						this.router.navigate(['bill/confirm']);
 					} else {
 						this.userService.showOrderNow = false;
-						
+
 						this.apiService.CONFIRM_ORDER(orderData).subscribe(result => {
 							if (result.status) {
 								this.loaderStatus = false;
@@ -1556,8 +1541,8 @@ export class CartComponent implements OnInit {
 				}
 			})
 
-		} 
-		else {		
+		}
+		else {
 			this.take_aways = true;
 			this.apiService.CONFIRM_PAYMENT(orderData).subscribe(result => {
 				this.hideConfirmOrder = false;
@@ -1666,7 +1651,7 @@ export class CartComponent implements OnInit {
 					this.timeLeftString = '00 : ' + this.timeLeft;
 				}
 				//this.sendOTP = true;
-console.log("Timer...........")
+				console.log("Timer...........")
 			} else {
 				//this.sendOTP = false;
 				this.resendOTP = true;
@@ -1678,7 +1663,7 @@ console.log("Timer...........")
 					// this.apiService.OTP_EXPIRATION({ customer_id: this.customer_id }).subscribe(result => {
 					// 	console.log("OTP Expiration....", result);
 					// 	clearInterval(this.interval);
-						
+
 
 					// })
 					clearInterval(this.interval);
@@ -1691,11 +1676,11 @@ console.log("Timer...........")
 
 	resend_otp() {
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-		console.log("resend_otp.........",this.mobile_num);	
+		console.log("resend_otp.........", this.mobile_num);
 		this.apiService.RESEND_OTP({ email: this.userDetails.email, mobile: this.mobile_num }).subscribe(result => {
 			console.log("Resend OTP...", result);
-			this.timeLeft = 60;
-			this.timeLeftString = '00 : 60';
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
 
 			this.startTimer();
 		})
@@ -1703,37 +1688,37 @@ console.log("Timer...........")
 
 	send_otp(modal1, modal2) {
 		this.userService.disableBtn = true;
-		this.otpForm.otp  = "";
+		this.otpForm.otp = "";
 		this.mobileShow = false;
-		console.log("send_otp Form............",this.mobile_num)	
+		console.log("send_otp Form............", this.mobile_num)
 		//modal2.show();
 		//modal1.hide();
-		this.timeLeft = 60;
-		this.timeLeftString = '00 : 60';
+		this.timeLeft = 30;
+		this.timeLeftString = '00 : 30';
 		this.startTimer();
 
-		this.userDetails = JSON.parse(localStorage.getItem('user_details'));		
+		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
 		this.apiService.SEND_OTP({ email: this.userDetails.email, mobile: this.mobile_num }).subscribe(result => {
 			console.log("send OTP...", result);
 			this.userService.disableBtn = false;
 			if (result.status)
 				modal2.show();
 			modal1.hide();
-			this.timeLeft = 60;
-			this.timeLeftString = '00 : 60';
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
 			this.startTimer();
 		})
 	}
 
 	mob_otp_validate(modal) {
 		this.userDetails = JSON.parse(localStorage.getItem('user_details'));
-		let restaurant_details= JSON.parse(localStorage.getItem('restaurant_details'));
+		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 		this.cart = JSON.parse(localStorage.getItem('cart'));
 		if (!this.cart) { this.cart = []; }
 		let cartDetails = this.userService.CART_DETAILS();
 		console.log("cart Details......................", cartDetails);
 		// this.tax = Math.round(cartDetails.cart_total * (this.userService.restaurant_gst/100));
-		this.tax =  cartDetails.tax;			
+		this.tax = cartDetails.tax;
 		this.cartItems = cartDetails.cart_items;
 		this.cartTotal = cartDetails.cart_total;
 		this.cartTax = cartDetails.tax;
@@ -1751,11 +1736,10 @@ console.log("Timer...........")
 					this.socket.emit('take_away', orderId);
 					console.log("order again......................")
 					localStorage.setItem("pos_order_id", orderId);
-		            order_id = orderId;
-		
-				}	
-				else
-				{
+					order_id = orderId;
+
+				}
+				else {
 					order_id = localStorage.getItem('pos_order_id');
 					this.socket.emit('take_away', localStorage.getItem('pos_order_id'));
 				}
@@ -1768,71 +1752,70 @@ console.log("Timer...........")
 						"cart_total": Math.round(this.cartIncTax + (this.cartTotal * (restaurant_details.service_tax / 100))),
 						"order_id": order_id
 					},
-					
+
 					"user_name": JSON.parse(localStorage.getItem('user_details')).dinamic_user_name
 
 				};
 				console.log("order data take away ..........", orderData)
-				console.log("order_id...................",order_id)
+				console.log("order_id...................", order_id)
 				localStorage.setItem('order_again', 'new');
 				this.apiService.CONFIRM_ORDER(orderData).subscribe(result => {
 					console.log("payment result...................", result)
-				if (result.status) {
-					this.snackBar.OPEN('Your order has been placed.', 'Close');
-					localStorage.setItem('order_status', 'raised');
-					if (orderData.order_details.order_type == 'in_house') {
-						this.router.navigate(['/bill/confirm']);
-					} else {
-						localStorage.setItem('payment_status', 'paid');
-						localStorage.removeItem('cart');
-						let payment_det = {
-							user_id: JSON.parse(localStorage.getItem('user_details')).dinamic_user_id,
-							order_id: order_id,
-							order_number:order_id,							
-							payment_status: 'success',
-							"payment_details": {status:'captured', mode : 'cash'} ,
-							user_name: JSON.parse(localStorage.getItem('user_details')).dinamic_user_name
-						}
-						this.apiService.SAVE_PAYMENT(payment_det).subscribe(result => {						
-							if(result)
-							{
-								this.apiService.GET_ALL_MY_ORDERS().subscribe(result => {
-									console.log("All my orders1.....", result);
-										if (result.orders) {										
+					if (result.status) {
+						this.snackBar.OPEN('Your order has been placed.', 'Close');
+						localStorage.setItem('order_status', 'raised');
+						if (orderData.order_details.order_type == 'in_house') {
+							this.router.navigate(['/bill/confirm']);
+						} else {
+							localStorage.setItem('payment_status', 'paid');
+							localStorage.removeItem('cart');
+							let payment_det = {
+								user_id: JSON.parse(localStorage.getItem('user_details')).dinamic_user_id,
+								order_id: order_id,
+								order_number: order_id,
+								payment_status: 'success',
+								"payment_details": { status: 'captured', mode: 'cash' },
+								user_name: JSON.parse(localStorage.getItem('user_details')).dinamic_user_name
+							}
+							this.apiService.SAVE_PAYMENT(payment_det).subscribe(result => {
+								if (result) {
+									this.apiService.GET_ALL_MY_ORDERS().subscribe(result => {
+										console.log("All my orders1.....", result);
+										if (result.orders) {
 											this.userService.live_orders = [];
 											result.orders.forEach(element => {
 												if (element.is_live) {
-													this.userService.live_orders.push(element);						
-												} else {				
+													this.userService.live_orders.push(element);
+												} else {
 													this.userService.completed_orders.push(element);
 												}
 											});
-							
+
 										}
 									})
-	
-								
-									this.router.navigate(['/myorder']);
-							}
-						});
-						
-					}
 
-					
-				}
-				else {
-					console.log('response', result);
-				}
-			});
+
+									this.router.navigate(['/myorder']);
+								}
+							});
+
+						}
+
+
+					}
+					else {
+						console.log('response', result);
+					}
+				});
 
 
 				modal.hide();
 				this.router.navigate(['/myorder']);
 			}
-			else 
-			{
-			this.otpForm.otp = "";
-			this.otpForm.error_msg = result.message;}
+			else {
+				this.otpForm.otp = "";
+				this.otpForm.error_msg = result.message;
+			}
 		});
 	}
 	orderIdGenerator() {
@@ -1880,8 +1863,8 @@ console.log("Timer...........")
 				this.cart = JSON.parse(localStorage.getItem('cart'));
 
 
-				
-				this.tax =  cartDetails.tax;			
+
+				this.tax = cartDetails.tax;
 				this.cartItems = cartDetails.cart_items;
 				this.cartTotal = cartDetails.cart_total;
 				this.cartTax = cartDetails.tax;
@@ -2032,11 +2015,11 @@ console.log("Timer...........")
 						let selected_an = []
 						for (let q = 0; q < mand_and_lim_addons[p].options.length; q++) {
 
-								this.addonList.filter(tt => {
-									if (tt._id == mand_and_lim_addons[p].options[q]._id) {
-										selected_an.push(tt);
-									}
-								});
+							this.addonList.filter(tt => {
+								if (tt._id == mand_and_lim_addons[p].options[q]._id) {
+									selected_an.push(tt);
+								}
+							});
 
 						}
 						// console.log('##########', selected_an) 
@@ -2089,21 +2072,20 @@ console.log("Timer...........")
 		}
 		this.item_cost_flag = this.item.sold_price;
 	}
-	onConfirmPassVal(event)
-	{
-	
-			 console.log("password and confirm");
-			 
-			if (this.loginForm.password !== this.loginForm.confirm_password) {
-				console.log("Mismatch password....");
-				this.passwordMismatch = true;
+	onConfirmPassVal(event) {
 
-			} else {
-				this.passwordMismatch = false;
-				this.userService.pass_error = "";
+		console.log("password and confirm");
+
+		if (this.loginForm.password !== this.loginForm.confirm_password) {
+			console.log("Mismatch password....");
+			this.passwordMismatch = true;
+
+		} else {
+			this.passwordMismatch = false;
+			this.userService.pass_error = "";
 			//	this.loaderStatus = true;
-			}
-	
+		}
+
 
 	}
 
@@ -2113,81 +2095,78 @@ console.log("Timer...........")
 		this.passwordMismatch = true;
 		if (this.loginForm.name) {
 			// console.log("password and confirm");
-					this.enterEmailField = false;
-					this.enterOtpField = false;
-					this.enterNameField = true;				
-					this.enterPasswordField = true;
-					this.confirmPasswordField = true;
-					this.mob_num_exist = false;
-			
-				this.userService.pass_error = ""
-				this.passwordMismatch = false;
-				this.loaderStatus = true;
-				//this.pleasewait = true;
-				if(environment.password === false)
-				{
-					this.loginForm.password = '123456'
-					this.loginForm.confirm_password = '123456'
-				}
-				
-				let newSignupForm = {
-					'email': this.loginForm.username,
-					'name': this.loginForm.name,
-					'surname': this.loginForm.surname,
-					'mobile': this.loginForm.mobile,
-					'password': this.loginForm.password,
-					'confirm_password': this.loginForm.confirm_password,
-					"company_id":this.restaurant_details.company_id,
-					"branch":{"branch_id":this.restaurant_details.branch_id, count:0},
-					"smsType":environment.smsType,
-					'smsUrl' : environment.smsUrl
-				}
+			this.enterEmailField = false;
+			this.enterOtpField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = true;
+			this.confirmPasswordField = true;
+			this.mob_num_exist = false;
 
-				console.log("Signup Details...", newSignupForm)
+			this.userService.pass_error = ""
+			this.passwordMismatch = false;
+			this.loaderStatus = true;
+			//this.pleasewait = true;
+			if (environment.password === false) {
+				this.loginForm.password = '123456'
+				this.loginForm.confirm_password = '123456'
+			}
 
-				this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
-					//  this.signupForm.submit = false;
-					if (result.status) {
+			let newSignupForm = {
+				'email': this.loginForm.username,
+				'name': this.loginForm.name,
+				'surname': this.loginForm.surname,
+				'mobile': this.loginForm.mobile,
+				'password': this.loginForm.password,
+				'confirm_password': this.loginForm.confirm_password,
+				"company_id": this.restaurant_details.company_id,
+				"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
+				"smsType": environment.smsType,
+				'smsUrl': environment.smsUrl
+			}
+
+			console.log("Signup Details...", newSignupForm)
+
+			this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
+				//  this.signupForm.submit = false;
+				if (result.status) {
 					//	this.pleasewait = false;
-						this.loaderStatus = false;
-						this.customer_id = result.customer_id;
-						this.user_name =  result.name; 
-						let sendData = {
-							"user": this.customer_id,
-							"company_id":this.restaurant_details.company_id,
-							"branch_id":this.restaurant_details.branch_id,
-							"userBaseURL":environment.userBaseURL
+					this.loaderStatus = false;
+					this.customer_id = result.customer_id;
+					this.user_name = result.name;
+					let sendData = {
+						"user": this.customer_id,
+						"company_id": this.restaurant_details.company_id,
+						"branch_id": this.restaurant_details.branch_id,
+						"userBaseURL": environment.userBaseURL
+					}
+					this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
+						console.log("mail result...", result);
+						if (result.status) {
+							this.loaderStatus = false;
+
 						}
-						this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
-							console.log("mail result...", result);
-							if(result.status)
-							{
-								this.loaderStatus = false;
+						else {
+							this.loaderStatus = false;
+						}
 
-							}
-							else
-							{
-								this.loaderStatus = false;
-							}
-				
-						})
-					
-						this.enterPasswordField = false;
-						this.confirmPasswordField = false;
-						this.enterNameField = false;	
-						this.mob_num_exist = false;
-						this.enterOtpField = true;
-					}
-					else {
-						console.log('response', result);
-						this.loaderStatus = false;
-						//this.pleasewait = false;						
-						this.loginForm.error_msg = result.message;
-						this.signupForm.error_msg = result.message;
-					}
-				});
+					})
 
-			
+					this.enterPasswordField = false;
+					this.confirmPasswordField = false;
+					this.enterNameField = false;
+					this.mob_num_exist = false;
+					this.enterOtpField = true;
+				}
+				else {
+					console.log('response', result);
+					this.loaderStatus = false;
+					//this.pleasewait = false;						
+					this.loginForm.error_msg = result.message;
+					this.signupForm.error_msg = result.message;
+				}
+			});
+
+
 
 		}
 		else if (this.loginForm.password) {
@@ -2198,15 +2177,15 @@ console.log("Timer...........")
 					this.userDetails = JSON.parse(localStorage.getItem('user_details'));
 					modalName.hide();
 					// confirmModal.show();
-					this.onConfirm();       
+					this.onConfirm();
 				}
 				else this.loginForm.error_msg = result.message;
 			});
 
 		}
-		else if (this.loginForm.username) {					
-					
-			this.enterEmailField = false;				
+		else if (this.loginForm.username) {
+
+			this.enterEmailField = false;
 			this.enterNameField = true;
 			this.enterPasswordField = true;
 			this.confirmPasswordField = true;
@@ -2215,8 +2194,8 @@ console.log("Timer...........")
 			this.loginForm.name = "";
 			this.loginForm.password = "";
 
-	
-}
+
+		}
 
 	}
 
@@ -2236,90 +2215,85 @@ console.log("Timer...........")
 
 
 
-	addUserMobile(askmobilemodal,otpModal) {
+	addUserMobile(askmobilemodal, otpModal) {
 		// console.log("mobile number", this.mobile_num);
-				this.social_data['mobile'] = this.mobile_num;
-				let userData = this.social_data;
-				console.log('user social login details....', userData);
-				console.log("social data...", userData);
-			
-				// let userDetails = JSON.parse(localStorage.getItem("user_details"))
-				// console.log("userDetails.............", userDetails)
-		
-				let sendUserData = {
-					'name': userData.name,
-					'surname': '',
-					'mobile': userData.mobile,
-					'email': userData.email,
-					'password': '13579',					
-					'email_confirmed': true,				
-				}
+		this.social_data['mobile'] = this.mobile_num;
+		let userData = this.social_data;
+		console.log('user social login details....', userData);
+		console.log("social data...", userData);
 
-				this.userService.SAVE_SOCIAL_USER(sendUserData).then((userResp: any) => {
-					console.log('userResp1....', userResp);
-					this.timeLeft = 60;
-					this.timeLeftString = '00 : 60';
-					this.startTimer();
-					this.customer_id=userResp.customer_id;
-				})
-				
-			
-			
-				this.otpForm.otp = "";
-				this.mobileShow = false;
-				this.sendOTP = true;
-				askmobilemodal.hide();
-				otpModal.show();
-			
+		// let userDetails = JSON.parse(localStorage.getItem("user_details"))
+		// console.log("userDetails.............", userDetails)
+
+		let sendUserData = {
+			'name': userData.name,
+			'surname': '',
+			'mobile': userData.mobile,
+			'email': userData.email,
+			'password': '13579',
+			'email_confirmed': true,
+		}
+
+		this.userService.SAVE_SOCIAL_USER(sendUserData).then((userResp: any) => {
+			console.log('userResp1....', userResp);
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
+			this.startTimer();
+			this.customer_id = userResp.customer_id;
+		})
+
+
+
+		this.otpForm.otp = "";
+		this.mobileShow = false;
+		this.sendOTP = true;
+		askmobilemodal.hide();
+		otpModal.show();
+
 	}
 
 
 
-	social_mob_otp_validate(otpModal,confirmModal)
-	{
+	social_mob_otp_validate(otpModal, confirmModal) {
 		this.sendOTP = false;
 		this.apiService.SOCIALMOB_OTP_VALIDATE({ customer_id: this.customer_id, otp: this.otpForm.otp }).subscribe((result: any) => {
 			console.log("result", result);
-			
-			if(result.status)
-			{		
-				clearInterval(this.interval);	
+
+			if (result.status) {
+				clearInterval(this.interval);
 				this.social_data['mobile'] = result.mobile;
-				let userData = this.social_data;		
-				this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {					
+				let userData = this.social_data;
+				this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {
 					if (result.status) {
 						this.userDetails = JSON.parse(localStorage.getItem('user_details'));
 						this.userService.user_name = this.userDetails.name;
 						this.photo_url = this.userDetails.photo_url;
 						let sendUserData = {
-							'name': userData.name,							
+							'name': userData.name,
 							'mobile': userData.mobile,
-							'email': userData.email,							
+							'email': userData.email,
 							'activation': true
 						}
 						this.apiService.UPDATE_SOCIAL_LOGIN_USER(sendUserData).then((userResp: any) => {
 							console.log('userResp....', userResp);
-							if(result.status)
-							{
+							if (result.status) {
 								this.userDetails = JSON.parse(localStorage.getItem('user_details'));
 								otpModal.hide();
 								confirmModal.show();
 								//this.onConfirm();
 							}
-							else
-							{
+							else {
 								this.sendOTP = true;
 								this.resendOTP = true;
 							}
 						})
 						otpModal.hide();
-					
+
 					}
 					else this.signupForm.error_msg = result.message;
 				});
 			}
-			else
-			{
+			else {
 
 				this.otpForm.error_msg = result.message;
 				this.sendOTP = true;
@@ -2328,39 +2302,38 @@ console.log("Timer...........")
 		})
 	}
 
-	social_resend_otp()
-	{
+	social_resend_otp() {
 		let userData = this.social_data;
 		console.log('user social login details....', userData);
 		console.log("social data...", userData);
-		this.userService.disableBtn = true;	
+		this.userService.disableBtn = true;
 		//	console.log('social login.....', result);		
-				let userDetails = JSON.parse(localStorage.getItem("user_details"))
-				console.log("userDetails.............", userDetails)
-			//	this.user_name = userDetails.name;
-				//this.photo_url = userDetails.photo_url;
-				//this.ngOnInit();
-				// Save Social Login User.....
+		let userDetails = JSON.parse(localStorage.getItem("user_details"))
+		console.log("userDetails.............", userDetails)
+		//	this.user_name = userDetails.name;
+		//this.photo_url = userDetails.photo_url;
+		//this.ngOnInit();
+		// Save Social Login User.....
 
-				let sendUserData = {
-					'name': userData.name,
-					'surname': '',
-					'mobile': userData.mobile,
-					'email': userData.email,
-					'password': '13579',					
-					'email_confirmed': true,
-				
-				}
-				this.userService.SAVE_SOCIAL_USER(sendUserData).then((userResp: any) => {
-					this.sendOTP = true;
-					this.resendOTP = false;					
-					console.log('userResp....', userResp);
-					this.timeLeft = 60;
-					this.timeLeftString = '00 : 60';
-					this.startTimer();
-					this.customer_id=userResp.customer_id;
-				})
-			
+		let sendUserData = {
+			'name': userData.name,
+			'surname': '',
+			'mobile': userData.mobile,
+			'email': userData.email,
+			'password': '13579',
+			'email_confirmed': true,
+
+		}
+		this.userService.SAVE_SOCIAL_USER(sendUserData).then((userResp: any) => {
+			this.sendOTP = true;
+			this.resendOTP = false;
+			console.log('userResp....', userResp);
+			this.timeLeft = 30;
+			this.timeLeftString = '00 : 30';
+			this.startTimer();
+			this.customer_id = userResp.customer_id;
+		})
+
 
 	}
 
@@ -2500,120 +2473,119 @@ console.log("Timer...........")
 		this.userService.error_msg = "";
 		console.log(event.target.value.length)
 
-	 };
+	};
 
-	 OnKeyDown(element)
-	 {
-   //  console.log(element.target.value.length)
-	 }
-	
-	 onKeyUp(element){	
-		let length = element.target.value.length ; //this will have the length of the text entered in the input box
+	OnKeyDown(element) {
+		//  console.log(element.target.value.length)
+	}
+
+	onKeyUp(element) {
+		let length = element.target.value.length; //this will have the length of the text entered in the input box
 		//console.log(element.target.value.length);
 		this.userService.continueBtn = false;
 		this.userService.loginSocialDisable = true;
-			
-		if(length === 10)
-		{
-			
+
+		if (length === 10) {
+
 			let sendData =
 			{
-				mobile : element.target.value,
-				type:'checkmobile',
-				company_id:this.restaurant_details.company_id,
-				branch_id:this.restaurant_details.branch_id,
-				user_type:'existing_user'
+				mobile: element.target.value,
+				type: 'checkmobile',
+				company_id: this.restaurant_details.company_id,
+				branch_id: this.restaurant_details.branch_id,
+				user_type: 'existing_user'
 			}
 			this.isReadonly = true;
-			console.log("keyup data..........",sendData);
+			console.log("keyup data..........", sendData);
 			this.apiService.CHECK_MOBILE_LOGIN(sendData).subscribe(result => {
-			console.log("result Mobile..............", result);		
-				if(result.data && result.data.activation === true)
-				{
+				console.log("result Mobile..............", result);
+				if (result.data && result.data.activation === true) {
 					this.userService.loginDetails = result.data;
 					this.isReadonly = false;
 					this.customer_id = result.data._id;
-					this.userService.continueBtn = true;					
+					this.userService.continueBtn = true;
 				}
-				else{
+				else {
 					this.userService.loginSocialDisable = false;
 					this.isReadonly = false;
 				}
 
 			})
 		}
-		else
-		{
-			this.userService.loginSocialDisable = true	
+		else {
+			this.userService.loginSocialDisable = true
 		}
-	  }
+	}
 
 
-	  continueSignin(newUserModal,newOTPModal)
-	  {
+	continueSignin(newUserModal, newOTPModal) {
 		// newUSerModal.hide() ;
 		// newOTPModal.show();
-	//	this.social_data['mobile'] = this.mobile_num;
-	
-		let userData = this.social_data;	
-				let sendUserData = {				
-					'mobile': this.mobile_num,
-					'customer_id' : this.customer_id,
-					'otp_status':'sent',
-					'user_type':'existing_user',
-					'type':'sentotp',
-					'company_id':this.restaurant_details.company_id,
-					'branch_id':this.restaurant_details.branch_id,
-					'smsType':environment.smsType,	
-					'smsUrl' : environment.smsUrl
-				}	
+		//	this.social_data['mobile'] = this.mobile_num;
 
-				this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
-					console.log('userResp1....', userResp);
-					// this.timeLeft = 60;
-					// this.timeLeftString = '00 : 60';
-					// this.startTimer();
-					this.customer_id=userResp.customer_id;
-				})
-			
-				newUserModal.hide();
-				this.mobileShow = false;				
-				this.otpForm.otp = "";
-				this.sendOTP = true;
+		let userData = this.social_data;
+		let sendUserData = {
+			'mobile': this.mobile_num,
+			'customer_id': this.customer_id,
+			'otp_status': 'sent',
+			'user_type': 'existing_user',
+			'type': 'sentotp',
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
+			'smsType': environment.smsType,
+			'smsUrl': environment.smsUrl,
+			'smsApiStatus': environment.smsApiStatus
+		}
+
+		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
+			console.log('userResp1....', userResp);
+			// this.timeLeft = 30;
+			// this.timeLeftString = '00 : 30';
+			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ? 
+				this.signinVerify(newOTPModal) :
 				newOTPModal.show();
+			this.customer_id = userResp.customer_id;
+		})
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 
 
-	  }
-	  
-	  signinVerify(newOTPModal)
-	  {
+	}
+
+	signinVerify(newOTPModal) {
 		this.loaderStatus = true;
 		console.log("otp value.........", this.otpForm.otp)
-		let sendUserData = {				
+		let sendUserData = {
 			'mobile': this.mobile_num,
-			'customer_id' : this.customer_id,
-			'otp_status':'verified',
-			'type':'otpverify',
-			'otp': String(this.otpForm.otp),
-			'company_id':this.restaurant_details.company_id,
-			'branch_id':this.restaurant_details.branch_id,	
-
-									
-		}	
-		console.log("senddata............",sendUserData );
+			'customer_id': this.customer_id,
+			'otp_status': 'verified',
+			'type': 'otpverify',
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
+			'company_id': this.restaurant_details.company_id,
+			'branch_id': this.restaurant_details.branch_id,
+		}
+		console.log("senddata............", sendUserData);
 		this.apiService.UPDATE_EXISTING_USER(sendUserData).then(result => {
 			console.log('SAVE_SOCIAL_USER....', result);
-			console.log("result", result);			
-			if(result.status)
-			{
-				if(result.data.user_id)
-				{
+			console.log("result", result);
+			if (result.status) {
+				if (result.data.user_id) {
 					let userData = {
 						id: result.data.user_id,
 						social_unique_id: result.data.user_id,
 						name: result.data.name,
 						email: result.data.email,
-						mobile: result.data.mobile,				
+						mobile: result.data.mobile,
 						provider: result.data.third_party_provider,
 						photoUrl: result.data.photo_url,
 						user_type: result.data.user_type
@@ -2621,27 +2593,25 @@ console.log("Timer...........")
 					console.log("true2..........", userData)
 					this.social_login_user(userData, newOTPModal);
 				}
-			   else
-			   {
-				let userData = {
-					id: result.data._id,
-					social_unique_id: result.data._id,
-					name: result.data.name,
-					email: result.data.email,
-					mobile: result.data.mobile,	
-					email_confirmed: result.data.email_confirmed,			
-					provider: 'Dinamic',					
-					user_type: result.data.user_type,
-					status:result.status
+				else {
+					let userData = {
+						id: result.data._id,
+						social_unique_id: result.data._id,
+						name: result.data.name,
+						email: result.data.email,
+						mobile: result.data.mobile,
+						email_confirmed: result.data.email_confirmed,
+						provider: 'Dinamic',
+						user_type: result.data.user_type,
+						status: result.status
+					}
+					console.log("true1..........", userData)
+					this.email_login_user(userData, newOTPModal);
 				}
-				console.log("true1..........", userData)
-				this.email_login_user(userData, newOTPModal);
-			   }
-				
-				
+
+
 			}
-			else
-			{
+			else {
 
 				this.otpForm.error_msg = result.message;
 				// this.otpForm.otp = "";
@@ -2649,17 +2619,16 @@ console.log("Timer...........")
 				this.resendOTP = true;
 				this.loaderStatus = false;
 			}
-		
+
 		})
-		this.mobileShow = false;				
+		this.mobileShow = false;
 		this.otpForm.otp = "";
 		this.sendOTP = true;
-	//	newOTPModal.hide();
+		//	newOTPModal.hide();
 
-	  }
+	}
 
-	  email_login_user(userData, newOTPModal)
-	  {
+	email_login_user(userData, newOTPModal) {
 		this.userService.LOGIN(userData).then((result: any) => {
 			console.log('user login....', result);
 			if (result.status) {
@@ -2668,82 +2637,80 @@ console.log("Timer...........")
 				//this.loaderStatus = false;				
 				this.onConfirm();
 			}
-			
-			else{
+
+			else {
 				this.loaderStatus = false;
 				this.hideConfirmOrder = false;
 				this.loginForm.error_msg = result.message;
-			} 
+			}
 		});
-	  }
+	}
 
-	  social_login_user(userData, newOTPModal)
-	  {
+	social_login_user(userData, newOTPModal) {
 		this.hideConfirmOrder = true;
 		this.userService.SOCIAL_APP_LOGIN(userData).then((result: any) => {
-			
+
 			if (result.status) {
-				this.userService.user_name =userData.name;
-			    this.photo_url =  userData.photoUrl;
-				   newOTPModal.hide();
-				   this.loaderStatus = false;
-				   if(userData.user_type === 'existing_user')
-				   {
+				this.userService.user_name = userData.name;
+				this.photo_url = userData.photoUrl;
+				newOTPModal.hide();
+				this.loaderStatus = false;
+				if (userData.user_type === 'existing_user') {
 					this.apiService.GET_BILL().subscribe(result => {
 						console.log('oms bills.....', result);
-						if (result.status) {						
+						if (result.status) {
 							this.ngOnInit();
 							let bills = result.bills.bills;
 							let check_currentuser_ordered = bills.filter(ss => ss.orderer_name === userData.name);
 							console.log('bills....', check_currentuser_ordered);
-	
+
 							if (check_currentuser_ordered.length) {
 								this.userService.showOrderNow = true;
 								this.userService.showExit = true;
-							
+
 								if (!this.take_aways) {
 									this.router.navigate(['bill/confirm']);
 								}
 								else {
-	
+
 								}
-	
+
 							} else {
 								this.userService.showOrderNow = false;
 							}
 						} else {
 							this.userService.showOrderNow = false;
-									//askmobilemodal.hide();
-									// this.onConfirm(); 
-									if (this.take_aways) {
-										this.hideConfirmOrder = false;
-										document.getElementById("paymentModal").click();
-									}
-									else {
-										this.onConfirm()
-									}
+							//askmobilemodal.hide();
+							// this.onConfirm(); 
+							if (this.take_aways) {
+								this.hideConfirmOrder = false;
+								document.getElementById("paymentModal").click();
+							}
+							else {
+								this.onConfirm()
+							}
 						}
 					})
-				   }
-				   else{
+				}
+				else {
 					if (this.take_aways) {
 						this.hideConfirmOrder = false;
 						document.getElementById("paymentModal").click();
 					}
 					else {
 						this.onConfirm()
-					} 
-				   }
-				
+					}
+				}
+
 			}
 			else this.signupForm.error_msg = result.message;
 		});
-	  }
+	}
 
-	  socialSignIn(modalName, socialPlatform: string, otpModal) {
+	socialSignIn(modalName, socialPlatform: string, otpModal) {
 		let socialPlatformProvider;
 		this.hideConfirmOrder = true;
-	
+
 		this.userService.usableLink = false;
 		if (socialPlatform == "facebook") {
 			console.log("success2............")
@@ -2753,24 +2720,20 @@ console.log("Timer...........")
 		else if (socialPlatform == "google") {
 			socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
 			console.log("success1............")
-			if(socialPlatformProvider)
-		{
-			console.log("success............")
-		}
-		else
-		{
-			console.log("false............")
-		}
+			if (socialPlatformProvider) {
+				console.log("success............")
+			}
+			else {
+				console.log("false............")
+			}
 
 		}
 
 		console.log("HAndle socialPlatformProvider............", socialPlatformProvider)
-		if(socialPlatformProvider)
-		{
+		if (socialPlatformProvider) {
 			console.log("success............")
 		}
-		else
-		{
+		else {
 			console.log("false............")
 		}
 
@@ -2780,8 +2743,8 @@ console.log("Timer...........")
 			let sendData = {
 				email: userData.email
 			}
-	        this.social_data = userData;
-			
+			this.social_data = userData;
+
 			this.userService.usableLink = true;
 			// this.apiService.CHECK_MOBILE_SOCIAL_LOGIN(sendData).subscribe(result => {
 			// 	console.log("result Login................", result)
@@ -2791,68 +2754,65 @@ console.log("Timer...........")
 
 			// 	} else {
 			// 	//	this.social_data = userData;
-				  
-					console.log("ask_mobile Data", this.social_data)
+
+			console.log("ask_mobile Data", this.social_data)
+			modalName.hide();
+
+			this.social_data['mobile'] = this.mobile_num;
+
+			console.log('user social login details....', this.social_data);
+			console.log("social data...", userData);
+			let sendUserData = {
+				user_id: userData.id,
+				social_unique_id: userData.id,
+				name: userData.name,
+				email: userData.email,
+				mobile: userData.mobile,
+				email_confirmed: true,
+				photo_url: userData.photoUrl,
+				third_party_provider: userData.provider,
+				'password': '13579',
+				social_user: this.social_data,
+				company_id: this.restaurant_details.company_id,
+				branch: { branch_id: this.restaurant_details.branch_id, count: 0 },
+				user_type: 'new_user',
+				smsType: environment.smsType,
+				smsUrl: environment.smsUrl,
+				count: 0
+			}
+			this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
+				console.log('userResp1....', result);
+				if (result.status) {
+					this.customer_id = result.customer_id;
+					this.timeLeft = 30;
+					this.userService.loginDetails = result.data;
 					modalName.hide();
-					
-					this.social_data['mobile'] = this.mobile_num;
-          
-					console.log('user social login details....', this.social_data);
-					console.log("social data...", userData);		
-					let sendUserData = {
-					user_id: userData.id,
-					social_unique_id:userData.id,
-					name: userData.name,
-					email: userData.email,
-					mobile: userData.mobile,
-					email_confirmed: true,
-					photo_url:userData.photoUrl,
-					third_party_provider: userData.provider,
-					'password': '13579',
-					social_user:this.social_data,
-					company_id:this.restaurant_details.company_id,
-					branch:{branch_id:this.restaurant_details.branch_id, count:0},
-					user_type:'new_user',
-					smsType:environment.smsType,
-					smsUrl : environment.smsUrl,
-					count:0													
-					}
-				this.userService.SAVE_SOCIAL_USER(sendUserData).then((result: any) => {
-					console.log('userResp1....', result);
-					if(result.status)
-					{		
-						this.customer_id = result.customer_id;				
-						this.timeLeft = 60;
-						this.userService.loginDetails = result.data;
-						modalName.hide();
-						this.mobileShow = false;
-						this.otpForm.otp = "";
-						this.sendOTP = true;
-						this.hideConfirmOrder = false;
-						otpModal.show();
-					}
-					else
-					{
-						this.loaderStatus = false
-						this.hideConfirmOrder = false;	
-					}
-				})
+					this.mobileShow = false;
+					this.otpForm.otp = "";
+					this.sendOTP = true;
+					this.hideConfirmOrder = false;
+					otpModal.show();
+				}
+				else {
+					this.loaderStatus = false
+					this.hideConfirmOrder = false;
+				}
+			})
 			// 	}
 			// }, err => {
 			// 	console.log("Google err............", err)
 			// })
 		}, err => {
-			this.hideConfirmOrder = false;	
+			this.hideConfirmOrder = false;
 			console.log("Google err1............", err);
-			this.userService.usableLink= true;
+			this.userService.usableLink = true;
 		});
 
 	}
-	OTPCloseModal(modalName)
-	{
-	   modalName.hide();
-	   this.loaderStatus = false;
-	   this.hideConfirmOrder = false;
+	OTPCloseModal(modalName) {
+		modalName.hide();
+		this.loaderStatus = false;
+		this.hideConfirmOrder = false;
 	}
 
 }

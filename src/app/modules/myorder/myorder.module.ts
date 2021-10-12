@@ -10,16 +10,16 @@ import { MatCardModule } from '@angular/material';
 
 
 @NgModule({
-  declarations: [
-    MyorderComponent,
-    UnicodeFilerPipe
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(myorder_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    MatCardModule
-  ]
+	declarations: [
+		MyorderComponent,
+		UnicodeFilerPipe
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(myorder_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		MatCardModule
+	]
 })
 export class MyorderModule { }

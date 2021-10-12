@@ -292,7 +292,7 @@ export class UserService {
 						}
 					}).catch((err) => {
 						console.log("login error........................", err)
-						if (err.status === 401) {
+						if (err.status === 401) {	
 							console.log('error ------------', err);
 		
 							// let openModal: HTMLElement = this.openModal.nativeElement as HTMLElement;

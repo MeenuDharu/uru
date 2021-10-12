@@ -11,16 +11,16 @@ import { MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/mate
 
 
 @NgModule({
-  declarations: [
-    OffersComponent    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(offer_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,
-    MatCardModule, MatFormFieldModule, MatInputModule,
-  ]
+	declarations: [
+		OffersComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(offer_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule,
+		MatCardModule, MatFormFieldModule, MatInputModule,
+	]
 })
 export class OffersModule { }

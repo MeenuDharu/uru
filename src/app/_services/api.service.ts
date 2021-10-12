@@ -185,13 +185,17 @@ export class ApiService {
 			})
 		})
 	};
-	ITEM_LIST(x) {
+	ITEM_LIST(x: any) {
 		let posUrl = JSON.parse(localStorage.getItem('dinamic_details')).pos_base_url;
-		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		var d = new Date();
-		var dayName = new Date().getTime();
-		// console.log("dayName...", dayName);
-		return this.http.get<any>(posUrl + '/detail/items/' + x + '/' + dayName);
+		let d = new Date();
+		let year = d.getFullYear();
+		let month = d.getMonth();
+		let day = d.getDate();
+		let hour = d.getHours();
+		let minute = d.getMinutes();
+		let second = d.getSeconds();
+		let currentDate = new Date(Date.UTC(year, month, day, hour, minute, second)).getTime()
+		return this.http.get<any>(posUrl + '/detail/items/' + x + '/' + currentDate);
 		// return this.http.get<any>(posUrl+'/detail/items/'+x);
 	}
 	CONFIRM_ORDER(x) {

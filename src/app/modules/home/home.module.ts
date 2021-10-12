@@ -12,26 +12,26 @@ import { IosNotifyModule } from '../ios-notify/ios-notify.module';
 import { environment } from 'src/environments/environment.prod';
 //import { LogoImgBrokenDirective } from 'src/app/_directives/logo-img-broken.directive';
 import { SharedModule } from './../shared/shared.module';
-import {ProgressBarModule} from "angular-progress-bar"
+import { ProgressBarModule } from "angular-progress-bar"
 import { CountdownModule } from 'ngx-countdown';
 import { HomeSwiperDirective } from './directives/home-swiper.directive';
 import { PopupSwiperDirective } from './directives/popup-swiper.directive';
 @NgModule({
-  declarations: [
-    HomeComponent,
-    HomeSwiperDirective,
-    PopupSwiperDirective
-  //  LogoImgBrokenDirective    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(home_routes),
-    ModalModule.forRoot(),
-    FormsModule,
-    IosNotifyModule,SharedModule,
-    ProgressBarModule,
-    CountdownModule,
-    MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
-  ]
+	declarations: [
+		HomeComponent,
+		HomeSwiperDirective,
+		PopupSwiperDirective
+		//  LogoImgBrokenDirective    
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(home_routes),
+		ModalModule.forRoot(),
+		FormsModule,
+		IosNotifyModule, SharedModule,
+		ProgressBarModule,
+		CountdownModule,
+		MatProgressSpinnerModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSnackBarModule
+	]
 })
 export class HomeModule { }

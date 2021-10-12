@@ -30,7 +30,7 @@ export class ValetAndroidComponent implements OnInit {
 	valet_details: any;
 	confirm_click: boolean = true;
 	showFetchingDetails: boolean = false;
-	loaderStatus:boolean = false;
+	loaderStatus: boolean = false;
 	constructor(private router: Router, private socket: Socket, private apiService: ApiService, public commonService: CommonService, private loadScript: LoadscriptService) { }
 
 	ngOnInit() {
@@ -61,25 +61,25 @@ export class ValetAndroidComponent implements OnInit {
 	}
 
 	handleQrCodeResult(resultString: string) {
-	    console.log('valet result string........................', resultString);
+		console.log('valet result string........................', resultString);
 		this.showFetchingDetails = true;
 		this.loaderStatus = true;
-		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));	
+		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 		let user_details = JSON.parse(localStorage.getItem('user_details'));
-		let qr = { qr: resultString, userDetails: user_details, access_code:localStorage.getItem("access_code"), pos_branch_id:restaurant_details.branch_id };
+		let qr = { qr: resultString, userDetails: user_details, access_code: localStorage.getItem("access_code"), pos_branch_id: restaurant_details.branch_id };
 
 		this.apiService.VALIDATE_QR_CODE(qr).subscribe(result => {
 			console.log('result....', result);
 			if (result.status) {
 				this.showFetchingDetails = false;
-						
-					//this.router.navigate(['/valet/status']);
-					// let openValetModal: HTMLElement = this.openValetOpenModal.nativeElement as HTMLElement;
-					// openValetModal.click();   
-					this.valet_details = result.data;
-					this.commonService.valet_details = result.data;
-					localStorage.setItem("valet_access",this.commonService.valet_details._id)
-					this.router.navigate(['/valet/status']);			
+
+				//this.router.navigate(['/valet/status']);
+				// let openValetModal: HTMLElement = this.openValetOpenModal.nativeElement as HTMLElement;
+				// openValetModal.click();   
+				this.valet_details = result.data;
+				this.commonService.valet_details = result.data;
+				localStorage.setItem("valet_access", this.commonService.valet_details._id)
+				this.router.navigate(['/valet/status']);
 
 			}
 			else {

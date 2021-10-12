@@ -9,14 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    SocialAuthComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(social_auth_routes),
-    ModalModule.forRoot(),
-    FormsModule
-  ]
+	declarations: [
+		SocialAuthComponent
+	],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(social_auth_routes),
+		ModalModule.forRoot(),
+		FormsModule
+	]
 })
 export class SocialAuthModule { }

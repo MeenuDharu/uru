@@ -46,11 +46,12 @@ export class SocketService {
              * Test
              */
 		this.socket.on('update_cookie', (data) => {
-
 			console.log('update_cookie data ---------', data);
 			if (JSON.parse(localStorage.getItem('user_details'))) {
 				let user_details = JSON.parse(localStorage.getItem('user_details'));
-				this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code": localStorage.getItem('access_code'), baseURL: environment.baseUrl }).subscribe(result => {
+				var code = encodeURI(localStorage.getItem('access_code'));			
+				console.log("qrcode.............", code);
+				this.apiService.ACCESS_CODE_DETAILS({ "id": 'q', "code":code, baseURL: environment.baseUrl }).subscribe(result => {
 					console.log('api call')
 					if (result.status) {
 						console.log('result -------------------------', result);					
