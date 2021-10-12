@@ -84,6 +84,7 @@ export class SectionsComponent implements OnInit {
 	sectionDisp: any;
 	popupBanner: any;
 	popupheader: any;
+	popupSubHeader: any;
 	deviceStringCat: string;
 	deviceStringLogo: string;
 	deviceStringItem: string;
@@ -100,7 +101,6 @@ export class SectionsComponent implements OnInit {
 		public commonService: CommonService, private cookieService: CookieService, private browserService: UserBrowserService) { }
 
 	ngOnInit() {
-
 		//this.loginForm.mobile.length = 0;
 		console.log(this.userService.showExit)
 		//user details
@@ -765,14 +765,25 @@ export class SectionsComponent implements OnInit {
 							});
 							localStorage.setItem('restaurant_details', JSON.stringify(this.restaurant_details));
 							this.popupheader = j.header;
+							this.popupSubHeader = j.subHeader;
 							setTimeout(() => {
-								new Swiper('.carousal_2', {
+							const swiper = new Swiper('.carousal_2', {
+									grabCursor: true,
+									spaceBetween: 20,
 									speed: 800,
-									loop: true,
-									autoplay: {
-										delay: 4000,
-										disableOnInteraction: false
+									loop: false,
+									// autoplay: {
+									// 	delay: 4000,
+									// 	disableOnInteraction: false
+									// },
+									effect: 'fade',
+									fadeEffect: { 
+										crossFade: true,
 									},
+									pagination: {
+										el: ".swiper-pagination",
+										clickable: true,
+									  }
 
 								});
 							}, 500);

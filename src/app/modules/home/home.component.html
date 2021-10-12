@@ -71,7 +71,7 @@
 <!-- Pre loader End -->
 
 <!-- #Top Bar -->
-<section class="content wow fadeIn wrapper" data-wow-delay="400ms">
+<section class="content wow fadeIn wrapper" data-wow-delay="400ms" [ngClass]="restaurant_details.isBanner ? 'mar-with-banner' : 'mar-without-banner'">
 	<div class="container-fluid page-body">
 		<div class="row clearfix p-l-5 p-r-5" id="welcome-content"
 			[ngClass]="userService.placed_order_status ? 'mar-bot-10' : ''">

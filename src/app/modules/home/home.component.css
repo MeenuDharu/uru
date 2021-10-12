@@ -448,3 +448,11 @@ height:90% !important
       
 
     }
+
+  .mar-with-banner {
+    margin: 80px 15px 10px 15px;
+  }
+
+  .mar-without-banner {
+    margin: 65px 15px 10px 15px;
+  }
