@@ -101,7 +101,7 @@ padding-bottom: 60px !important;
   transform: scale(1);
 }
 
-.swiper-slide-active .zoom {
+.zoom {
   animation: breath 2.5s ease-in-out normal forwards;  
 }
 

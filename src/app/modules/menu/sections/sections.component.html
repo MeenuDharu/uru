@@ -677,15 +677,15 @@
 						<div class="modal-header swiper-zoom-container" style="height: 65%; padding: 0 !important;">
 							<div class="h-100 swiper-zoom-container" style="overflow: hidden; padding-bottom: 10px;">
 								<!-- <img src="{{baseUrl+x.img_url}}" class="img-responsive zoom" style="object-fit: fill;"> -->
-								<img src="assets/pdf/popup-image1.jpg" class="img-responsive zoom" style="object-fit: fill;">
+								<img src="assets/pdf/orderFoodPopup.jpg" class="img-responsive zoom" style="object-fit: fill;">
 							</div>
 						</div>
 						<div class="modal-body" style="display: flex; flex-direction: column;">
-							<h3 class="font-bold" style="font-size: 20px !important; margin: 11% 0 0 !important;">
+							<h3 class="font-bold" style="font-size: 20px !important; margin: 8% 0 !important;">
 								{{x.title}}</h3>
-							<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 20px 0 10px 0;">
+							<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 0 0 10px 0;">
 								{{x.description}}</p>
-							<div style="width: 100%; margin-top: 25px;">
+							<div style="width: 100%; margin-top: 25px; position: fixed; bottom: 0;">
 								<button type="button" class="btn theme-btn btn-popup-modal"
 									style="width: 90%; font-weight: 600;"
 									(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
@@ -698,7 +698,7 @@
 			</div>
 
 			<!-- For Single Images -->
-			<!-- <div *ngIf="popupBanner && popupBanner.length==1" class="h-100" style="display: flex; flex-direction: column;">
+			<!-- <div *ngIf="popupBanner && popupBanner.length>1" class="h-100" style="display: flex; flex-direction: column;">
 				<div class="row" style="display: flex; justify-content: flex-end; padding: 5px; margin: 0;">
 					<mat-icon aria-hidden="false" aria-label="cancel icon" class="material-icons-outlined"
 						(click)="departModal.hide();" style="font-size: 35px; width: 35px; height: 35px;">cancel</mat-icon>
@@ -710,10 +710,10 @@
 						</div>
 					</div>
 					<div class="modal-body" style="display: flex; flex-direction: column;">
-						<h3 class="font-bold" style="font-size: 20px !important; margin: 8% 0 0 !important;">
+						<h3 class="font-bold" style="font-size: 20px !important; margin: 5% 0 0 !important;">
 							{{x.title}}
 						</h3>
-						<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 27px 0;">
+						<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 20px 0;">
 							{{x.description}}</p>
 						<div style="width: 100%; margin-top: 25px; position: relative; bottom: 15px;">
 							<button type="button" class="btn theme-btn btn-popup-modal"
