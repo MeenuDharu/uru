@@ -43,10 +43,10 @@
 	</div>
 
 	<!--Center-->
-	<div style="width: 100%;height:calc(100% - 270px);background-color:#ccc">
+	<div style="width: 100%;height:calc(100% - 220px);background-color:#ccc">
 		<section [hidden]="!hasDevices" style="width: 100%; height: 100%">
 			<div class="row m-0 w-100 h-100" style="position:relative" id="landscape">
-				<zxing-scanner style="height:100%" #scanner start="true" [device]="currentDevice"
+				<zxing-scanner style="height:100%;width:100%;" #scanner start="true" [device]="currentDevice"
 					(scanSuccess)="handleQrCodeResult($event)" [formats]="['CODE_39', 'CODE_128', 'QR_CODE']">
 				</zxing-scanner>
 				<!-- <div><img src="images/scanner-bg.jpg"></div> -->

@@ -1726,10 +1726,6 @@ export class HomeComponent implements OnInit {
 			this.loginForm.password = ""
 			this.mob_num_exist = false
 		}
-
-
-
-
 	}
 
 	userLogin(modalName) {
