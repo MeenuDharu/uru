@@ -145,6 +145,18 @@
   .btn-svg-theme-bg {
     fill: var(--primary-button-background) !important;
   }
+  .call-icon-span {
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+  }
+  .call-icon-span:hover {
+    background-color: var(--primary-button-background);
+    color: var(--primary-button-text);
+  }
+  .call-icon-span:hover svg {
+    fill: var(--primary-button-text);
+  }
   /* form#smileys input[type=radio]{-webkit-appearance:none!important;width:25px;height:25px;border:none;cursor:pointer;-webkit-filter:grayscale(85%);filter:grayscale(85%);-webkit-transition:all .2s ease;transition:all .2s ease!important;margin:0}form#smileys input[type=radio]:checked,form#smileys input[type=radio]:checked+label,form#smileys input[type=radio]:hover{-webkit-filter:grayscale(0);filter:grayscale(0);width:40px!important;height:40px!important}form#smileys [type=radio]:checked{-webkit-filter:grayscale(0);filter:grayscale(0);width:40px!important;height:40px!important;position:relative;opacity:1!important;left:0}form #smileys input[type=radio]:focus{outline:0;outline-style:none!important}form#smileys input[type=radio].verypoor{background:url(../images/verypoor.svg) center;background-size:cover!important;outline-style:none;-moz-appearance:none}form#smileys input[type=radio].poor{background:url(../images/poor.svg) center;background-size:cover!important;outline-style:none;-moz-appearance:none}form#smileys input[type=radio].average{background:url(../images/average.svg) center;background-size:cover;outline-style:none;-moz-appearance:none}form#smileys input[type=radio].good{background:url(../images/satisfactory.svg) center;background-size:cover;outline-style:none;-moz-appearance:none}form#smileys input[type=radio].vgood{background:url(../images/verygood.svg) center;background-size:cover;outline-style:none;-moz-appearance:none} */
   
      

@@ -286,6 +286,7 @@ export class ValetStatusComponent implements OnInit {
 	}
 
 	onConfirm() {
+		this.loaderStatus = true;
 		let valet_details = JSON.parse(localStorage.getItem('valet_details'));
 		console.log("valet Details............", valet_details)
 		let serial_no = this.commonService.valet_details.serial_number;

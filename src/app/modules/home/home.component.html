@@ -169,7 +169,7 @@
 			<!-- View Bill -->
 			<!-- <div (click)="onOtherService(userModal, '/bill/view')" class="col-md-12 no-pad"> -->
 			<!-- <div class="col-md-12 no-pad tooltip-bottom" data-tooltip="I’m the tooltip text."></div> -->
-			<div class="col-md-12 no-pad tool">
+			<div class="col-md-12 no-pad tool" style="display: none;">
 				<div class="card" (click)="onOtherService(newUserModal, '/myoder')">
 					<div class="header p_tb25_lr20">
 						<div class="container-fluid no-pad">
@@ -1306,7 +1306,7 @@
 
 
 							<div class="row margin-0" *ngIf="vehicleReReq()">
-								<div class="col-xs-12 " align="center">
+								<div class="col-xs-12 " align="center" style="display: none;">
 									<button type="button" style="width:100%"
 										class="btn bg-white text-purple mat-elevation-z2 btnstylenew"
 										(click)="backToMenu()">

@@ -4,7 +4,7 @@
     //  ws_url: 'https://dinamic.io/mobileapi',
     // Mob server (Testing)
     //  ws_url: 'https://mob.dinamic.io/api', 
-      ws_url: 'http://192.168.0.103:4000', 
+      ws_url: 'http://192.168.0.102:4000', 
      socket_url: 'https://dinamic.io',
      img_url: 'https://dinamic.io/api/',  
      baseUrl:'https://dinamic.io/api',
