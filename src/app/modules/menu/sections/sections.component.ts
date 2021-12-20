@@ -84,6 +84,7 @@ export class SectionsComponent implements OnInit {
 	sectionDisp: any;
 	popupBanner: any;
 	popupheader: any;
+	popupSubHeader: any;
 	deviceStringCat: string;
 	deviceStringLogo: string;
 	deviceStringItem: string;
@@ -100,7 +101,6 @@ export class SectionsComponent implements OnInit {
 		public commonService: CommonService, private cookieService: CookieService, private browserService: UserBrowserService) { }
 
 	ngOnInit() {
-
 		//this.loginForm.mobile.length = 0;
 		console.log(this.userService.showExit)
 		//user details
@@ -765,14 +765,25 @@ export class SectionsComponent implements OnInit {
 							});
 							localStorage.setItem('restaurant_details', JSON.stringify(this.restaurant_details));
 							this.popupheader = j.header;
+							this.popupSubHeader = j.subHeader;
 							setTimeout(() => {
-								new Swiper('.carousal_2', {
+							const swiper = new Swiper('.carousal_2', {
+									grabCursor: true,
+									spaceBetween: 20,
 									speed: 800,
-									loop: true,
-									autoplay: {
-										delay: 4000,
-										disableOnInteraction: false
+									loop: false,
+									// autoplay: {
+									// 	delay: 4000,
+									// 	disableOnInteraction: false
+									// },
+									effect: 'fade',
+									fadeEffect: { 
+										crossFade: true,
 									},
+									pagination: {
+										el: ".swiper-pagination",
+										clickable: true,
+									  }
 
 								});
 							}, 500);
@@ -802,6 +813,11 @@ export class SectionsComponent implements OnInit {
 		let category = data;
 		localStorage.setItem('selected_category', JSON.stringify(category));
 		this.router.navigate(['/menu/items'])
+	}
+
+	goToOrderStatus() {
+		this.router.navigate(['/order-status']);
+		localStorage.setItem("viewStatus", "awaiting")
 	}
 
 	onWaiterCall(userModal, serviceModal) {
@@ -949,7 +965,8 @@ export class SectionsComponent implements OnInit {
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 			'smsType': environment.smsType,
-			'smsUrl': environment.smsUrl
+			'smsUrl': environment.smsUrl,
+			'smsApiStatus': environment.smsApiStatus
 		}
 
 		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
@@ -957,16 +974,22 @@ export class SectionsComponent implements OnInit {
 			// this.timeLeft = 60;
 			// this.timeLeftString = '00 : 60';
 			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ? 
+				this.signinVerify(newOTPModal) :
+				newOTPModal.show();
 			this.customer_id = userResp.customer_id;
 		})
-
-		newUserModal.hide();
-		this.mobileShow = false;
-		this.otpForm.otp = "";
-		this.sendOTP = true;
-		newOTPModal.show();
-
-
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 	}
 
 	signinVerify(newOTPModal) {
@@ -977,7 +1000,7 @@ export class SectionsComponent implements OnInit {
 			'customer_id': this.customer_id,
 			'otp_status': 'verified',
 			'type': 'otpverify',
-			'otp': String(this.otpForm.otp),
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 

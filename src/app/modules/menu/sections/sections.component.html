@@ -166,10 +166,11 @@
 </section>
 
 <!-- Footer -->
-<footer class="page-footer ">
+<footer class="page-footer" [ngClass]="(userService.placed_order_status) ? 'pad-bot-40' : ''">
 	<div class="footer1 col-black30">Government taxes extra as applicable.</div>
 	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div>
-	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered
+	<div class="col-black30 font-semibold footer"><a class="col-black" href="https://dinamic.io/"
+			target="_blank"><span>Powered
 				by</span><img src="assets/images/footer-logo.svg"></a></div>
 </footer>
 <!-- Footer -->
@@ -545,13 +546,21 @@
 <!-- Depart Modal -->
 <button style="display: none;" id="departModal" (click)="departPopup(departModal)">Open Modal</button>
 <!-- Depart Modal -->
-<div bsModal #departModal="bs-modal" class="modal fade custom-modal-yellow-opac-30" [config]="{backdrop: 'static'}"
+<!-- <div bsModal #departModal="bs-modal" class="modal fade custom-modal-yellow-opac-30" [config]="{backdrop: 'static'}"
 	tabindex="-1" role="dialog" aria-labelledby="dialog-login">
-	<div class="modal-dialog h-55 modal-sm" role="document">
+	<div class="modal-dialog h-100 modal-sm" role="document">
 		<div class="modal-content mat-elevation-z2 h-100">
-			<div class="modal-header theme-bg">
-				<div class="row p-l-5 p-r-5">
-					<div class="col-xs-10 col-md-2 font-16 font-bold">{{popupheader}}</div>
+
+			<div class="swiper-container carousal_2" style="height: 65% !important;" *ngIf="popupBanner && popupBanner.length>1">
+				<div class="swiper-wrapper h-100">
+					<div class="swiper-slide h-100" *ngFor="let x of popupBanner; let i=index;">
+						<img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive">
+						<div class="swiper-caption" *ngIf="x.cta_text != ''">
+							<button class="btn btn-popup mat-elevation-z2"
+								(click)="popup_linked_category(x.linked_category)"><span
+									class="font-bold font-16">{{x.cta_text}}</span></button>
+						</div>
+					</div>
 					<div class="col-xs-2 col-md-12" align="right">
 						<a (click)="departModal.hide();">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18"
@@ -561,49 +570,159 @@
 							</svg>
 						</a>
 					</div>
-
-				</div>
-
-			</div>
-
-			<div class="swiper-container carousal_2 h-100" *ngIf="popupBanner && popupBanner.length>1">
-				<div class="swiper-wrapper h-100">
-					<div class="swiper-slide h-100" *ngFor="let x of popupBanner; let i=index;">
-						<img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive p-60">
-						<div class="swiper-caption" *ngIf="x.cta_text != ''">
-							<button class="btn btn-popup mat-elevation-z2"
-								(click)="popup_linked_category(x.linked_category)"><span
-									class="font-bold font-16">{{x.cta_text}}</span></button>
-						</div>
-
-					</div>
 				</div>
 				<ng-container>
 					<div id="primary_pagination" class="swiper-pagination"></div>
-
 				</ng-container>
 			</div>
 
-
-
 			<div *ngIf="popupBanner && popupBanner.length==1">
-
 				<div *ngFor="let x of popupBanner; let i=index;">
 					<img appPopupMgBroken src="{{baseUrl+x.img_url}}" class="img-responsive">
 					<div class="popup-btn-div" *ngIf="x.cta_text != ''">
 						<button class="btn btn-popup font-bold"
 							(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
 					</div>
-
-
-
 				</div>
-
 			</div>
 
+			<div class="modal-header">
+				<div class="row p-l-5 p-r-5">
+					<div class="col-xs-10 col-md-2 font-16 font-bold">{{popupheader}}</div>
+				</div>
+			</div>
 
+		</div>
+	</div>
+</div> -->
 
+<!-- Now working original -->
+<!-- <div bsModal #departModal="bs-modal" role="dialog" class="modal fade" [config]="{backdrop: 'static'}"
+	aria-labelledby="dialog-login">
+	<div class="modal-dialog modal-dialog-centered h-100 modal-sm" role="document" style="padding: 0 !important;">
+		<div class="modal-content mat-elevation-z2 h-100"
+			style="text-align: center; overflow-y: scroll; overflow-x: hidden;">
+			<div class="swiper-container carousal_2" *ngIf="popupBanner && popupBanner.length>1"
+				style="overflow-y: unset; display: flex; flex-direction: column;">
+				<div class="row" style="text-align: right; padding: 5px 25px 0 0;">
+					<mat-icon aria-hidden="false" aria-label="close icon" class="material-icons-outlined"
+						(click)="departModal.hide();">close</mat-icon>
+				</div>
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" *ngFor="let x of popupBanner; let i=index;">
+						<div class="modal-header swiper-zoom-container" style="height: 65%; padding: 0 !important;">
+							<div class="h-100 swiper-zoom-container">
+								<img src="{{baseUrl+x.img_url}}" class="img-responsive" style="object-fit: fill;">
+							</div>
+						</div>
+						<div class="modal-body" style="margin: 35px 0;">
+							<h3 class="font-bold" style="font-size: 20px !important; margin: 11% 0 5% 0 !important;">
+								{{x.title}}</h3>
+							<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 20px 0;">
+								{{x.description}}</p>
+							<div style="width: 100%; margin-top: 30px;">
+								<button type="button" class="btn theme-btn btn-popup-modal"
+									style="width: 90%; font-weight: 600;"
+									(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
 
+			<div *ngIf="popupBanner && popupBanner.length==1" class="h-100">
+				<div class="row" style="text-align: right; padding: 5px 25px 0 0;">
+					<mat-icon aria-hidden="false" aria-label="close icon" class="material-icons-outlined"
+						(click)="departModal.hide();">close</mat-icon>
+				</div>
+				<div class="modal-header" *ngFor="let x of popupBanner; let i=index;"
+					style="height: 65%; padding: 0 !important;">
+					<div class="image-zoom h-100">
+						<img src="{{baseUrl+x.img_url}}" class="img-responsive" style="object-fit: fill;">
+					</div>
+					<div class="modal-body" style="margin: 35px 0;">
+						<h3 class="font-bold" style="font-size: 20px !important; margin: 9% 0 5% 0 !important;">
+							{{x.title}}
+						</h3>
+						<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 20px 0;">{{x.description}}</p>
+						<div style="width: 100%; margin-top: 30px">
+							<button type="button" class="btn theme-btn btn-popup-modal"
+								style="width: 90%; font-weight: 600;"
+								(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div> -->
+
+<!-- Testing the original in flex way --> <!-- Now working original -->
+<div bsModal #departModal="bs-modal" role="dialog" class="modal fade" [config]="{backdrop: 'static'}"
+	aria-labelledby="dialog-login">
+	<div class="modal-dialog modal-dialog-centered h-100 modal-sm" role="document" style="padding: 0 !important;">
+		<div class="modal-content mat-elevation-z2 h-100"
+			style="text-align: center; overflow-y: scroll; overflow-x: hidden;">
+			<div class="swiper-container carousal_2"
+				style="overflow-y: unset; display: flex; flex-direction: column;">
+				<div class="row" style="display: flex; justify-content: flex-end; padding: 5px; margin: 0;">
+					<mat-icon aria-hidden="false" aria-label="cancel icon" class="material-icons-outlined"
+						(click)="departModal.hide();" style="font-size: 35px; width: 35px; height: 35px;">cancel</mat-icon>
+				</div>
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" *ngFor="let x of popupBanner; let i=index;"
+						style="display: flex; flex-direction: column;">
+						<div class="modal-header swiper-zoom-container" style="height: 65%; padding: 0 !important;">
+							<div class="h-100 swiper-zoom-container" style="overflow: hidden; padding-bottom: 10px;">
+								<!-- <img src="{{baseUrl+x.img_url}}" class="img-responsive zoom" style="object-fit: fill;"> -->
+								<img src="assets/pdf/orderFoodPopup.jpg" class="img-responsive zoom" style="object-fit: fill;">
+							</div>
+						</div>
+						<div class="modal-body" style="display: flex; flex-direction: column;">
+							<h3 class="font-bold" style="font-size: 20px !important; margin: 8% 0 !important;">
+								{{x.title}}</h3>
+							<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 0 0 10px 0;">
+								{{x.description}}</p>
+							<div style="width: 100%; margin-top: 25px; position: fixed; bottom: 0;">
+								<button type="button" class="btn theme-btn btn-popup-modal"
+									style="width: 90%; font-weight: 600;"
+									(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="popupBanner && popupBanner.length==1" class="">&nbsp;</div>
+				<div *ngIf="popupBanner && popupBanner.length>1" class="swiper-pagination"></div>
+			</div>
+
+			<!-- For Single Images -->
+			<!-- <div *ngIf="popupBanner && popupBanner.length>1" class="h-100" style="display: flex; flex-direction: column;">
+				<div class="row" style="display: flex; justify-content: flex-end; padding: 5px; margin: 0;">
+					<mat-icon aria-hidden="false" aria-label="cancel icon" class="material-icons-outlined"
+						(click)="departModal.hide();" style="font-size: 35px; width: 35px; height: 35px;">cancel</mat-icon>
+				</div>
+				<ng-container *ngFor="let x of popupBanner; let i=index;">
+					<div class="modal-header" style="height: 65%; padding: 0 !important;">
+						<div class="image-zoom h-100" style="overflow: hidden; padding-bottom: 10px;">
+							<img src="{{baseUrl+x.img_url}}" class="img-responsive zoom" style="object-fit: fill;">
+						</div>
+					</div>
+					<div class="modal-body" style="display: flex; flex-direction: column;">
+						<h3 class="font-bold" style="font-size: 20px !important; margin: 5% 0 0 !important;">
+							{{x.title}}
+						</h3>
+						<p class="" style="font-size: 15px !important; padding: 0 15px; margin: 20px 0;">
+							{{x.description}}</p>
+						<div style="width: 100%; margin-top: 25px; position: relative; bottom: 15px;">
+							<button type="button" class="btn theme-btn btn-popup-modal"
+								style="width: 90%; font-weight: 600;"
+								(click)="popup_linked_category(x.linked_category)">{{x.cta_text}}</button>
+						</div>
+					</div>
+				</ng-container>
+			</div> -->
 		</div>
 	</div>
 </div>

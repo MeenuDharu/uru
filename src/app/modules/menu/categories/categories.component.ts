@@ -78,6 +78,10 @@ export class CategoriesComponent implements OnInit {
 	deviceStringLogo: string;
 	deviceStringItem: string;
 	alterUrl: any;
+	waitersArray: any = [
+		{ name: 'Xavier', mobile: '7090395550' },
+		{ name: 'Alfred', mobile: '8197679388' }
+	];
 
 	@HostListener('window:popstate', ['$event'])
 	onPopState(event) {
@@ -507,17 +511,17 @@ export class CategoriesComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		let catInd = localStorage.getItem('catIndex');
-		console.log("catInx...............", catInd)
-		if (catInd) {
-			if (Number(catInd) > 0) {
-				let ids = Number(catInd) - 1;
-				let idscr = 'scrollTo' + ids;
-				let scr_element = document.getElementById(idscr);
-				scr_element.scrollIntoView();
-			}
-			// {behavior: "smooth", block: "start", inline: "nearest"}
-		}
+		// let catInd = localStorage.getItem('catIndex');
+		// console.log("catInx...............", catInd)
+		// if (catInd) {
+		// 	if (Number(catInd) > 0) {
+		// 		let ids = Number(catInd) - 1;
+		// 		let idscr = 'scrollTo' + ids;
+		// 		let scr_element = document.getElementById(idscr);
+		// 		scr_element.scrollIntoView();
+		// 	}
+		// 	// {behavior: "smooth", block: "start", inline: "nearest"}
+		// }
 	}
 	newCategory() {
 		this.restaurantDetails.menu_category.filter((i) => {
@@ -1060,7 +1064,8 @@ export class CategoriesComponent implements OnInit {
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 			'smsType': environment.smsType,
-			'smsUrl': environment.smsUrl
+			'smsUrl': environment.smsUrl,
+			'smsApiStatus': environment.smsApiStatus
 		}
 
 		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
@@ -1068,14 +1073,22 @@ export class CategoriesComponent implements OnInit {
 			// this.timeLeft = 60;
 			// this.timeLeftString = '00 : 60';
 			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ?
+				this.signinVerify(newOTPModal) :
+				newOTPModal.show()
 			this.customer_id = userResp.customer_id;
 		})
-
-		newUserModal.hide();
-		this.mobileShow = false;
-		this.otpForm.otp = "";
-		this.sendOTP = true;
-		newOTPModal.show();
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 
 
 	}
@@ -1088,7 +1101,7 @@ export class CategoriesComponent implements OnInit {
 			'customer_id': this.customer_id,
 			'otp_status': 'verified',
 			'type': 'otpverify',
-			'otp': String(this.otpForm.otp),
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 

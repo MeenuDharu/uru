@@ -54,7 +54,7 @@
 		<div class="row clearfix p-l-5 p-r-5">
 
 			<div class="col-md-12 no-pad" *ngIf="!take_aways">
-				<h3 class="font-bold col-hgrey">Quick help</h3>
+				<h3 class="font-bold col-hgrey" style="margin-top: 0 !important;">Quick help</h3>
 			</div>
 			<div class="menu-list" *ngIf="!take_aways" [ngClass]="{'nonsticky' : true, 'sticky' : isSticky}">
 				<ul>
@@ -67,11 +67,19 @@
 						</a>
 					</li>
 					<li>
+						<a (click)="callWaiterModal.show();">
+							<span class="material-icons mat-elevation-z2" role="button" tabindex="0">
+								<img src="assets/images/call_manager.png" class="quick-img">
+							</span>
+							<p class="text-capital">Call Manager</p>
+						</a>
+					</li>
+					<li>
 						<a (click)="onOtherService(newUserModal, '/myoder')">
 							<span class="material-icons mat-elevation-z2" role="button" tabindex="0">
 								<img src="assets/images/menu-view-bill.png" class="quick-img">
 							</span>
-							<p class="text-capital">View Bill</p>
+							<p class="text-capital">View Order</p>
 						</a>
 					</li>
 					<li *ngFor="let x of quick_options; let i=index;">
@@ -120,7 +128,7 @@
 								</a>
 
 								<a href="javascript:void(0)" style="cursor:pointer"
-									(click)="downloadPdf('./assets/pdf/PartyPackage2021.pdf','Party Package 2021')"
+									(click)="downloadPdf('./assets/pdf/Celebrations_At_URU.pdf','Celebration Package URU 2021')"
 									class="catedisp w-100" *ngIf="x.name == 'Download Package Details'">
 									<div class="h-100">
 										<div class="col-md-3 col-xs-3 pull-left" style="margin: auto;">
@@ -220,10 +228,13 @@
 	</div>
 </section>
 <!-- Footer -->
-<footer class="page-footer ">
+<footer class="page-footer" [ngClass]="(userService.placed_order_status && cartItems == 0) ? 'pad-bot-40' : 
+				(userService.placed_order_status && cartItems > 0) ? 'pad-bot-100' :
+				(cartItems > 0) ? 'pad-bot-40' : ''">
 	<div class="footer1 col-black30">Government taxes extra as applicable.</div>
 	<div class="footer2 col-black30">We levy {{ restaurant_details.service_charge }}% Service Charge.</div>
-	<div class="col-black30 font-semibold footer"><a href="https://dinamic.io/" target="_blank"><span>Powered
+	<div class="col-black30 font-semibold footer"><a class="col-black" href="https://dinamic.io/"
+			target="_blank"><span>Powered
 				by</span><img src="assets/images/footer-logo.svg"></a></div>
 </footer>
 <!-- Footer -->
@@ -346,6 +357,56 @@
 		<a class="text-purple valign-center"><span><img class="valign-center"
 					src="assets/images/viewstatus-icon.svg"></span>
 			<span class="p-l-5 p-t-2">VIEW STATUS</span></a>
+	</div>
+</div>
+
+<!-- Quick option call waiter modal -->
+<div style="display: none;" id="open-callWaiter-option" (click)="callWaiterModal.show();"></div>
+<div bsModal #callWaiterModal="bs-modal" class="modal fade custom-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+	role="dialog" aria-labelledby="dialog-quick">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content mat-elevation-z2">
+			<div class="modal-header theme-bg">
+				<div class="col-md-12">
+					<h4 class="modal-title" style="text-transform: uppercase;" id="defaultModalLabel">
+						Call Manager</h4>
+				</div>
+			</div>
+			<div class="modal-body p-t-25 p-l-20 p-r-15">
+				<!-- <p style="margin-bottom: 20px;">{{selected_quick_option?.body_content}}</p> -->
+				<div class="card">
+					<div class="clearfix" style="margin-bottom: -8px;">&nbsp;</div>
+					<div class="header" style="padding: 0 15px;" *ngFor="let waiter of waitersArray; let i = index">
+						<div class="container-fluid no-pad"
+							style="display: flex; align-items: center; margin: auto !important; width: 100%;">
+							<a class="catedisp w-100 item-card-theme">
+								<div class="h-100">
+									<div class="h-100"
+										style="display: flex; justify-content: space-between; align-items: center;height: 45px; margin: auto !important;">
+										<h3 class="text-left font-16 text-capital m-0" style="padding: 10px;">{{waiter.name}}</h3>
+											<a href="tel:+91{{waiter.mobile}}" class="call-icon-span">
+												<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#212121">
+													<path d="M0 0h24v24H0V0z" fill="none"/>
+													<path d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z"/>
+												</svg>
+											</a>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="p-l-15 p-r-15" *ngIf="i != waitersArray.length - 1">
+							<hr>
+						</div>
+					</div>
+					<div class="clearfix" style="margin-top: -10px;">&nbsp;</div>
+
+				</div>
+			</div>
+			<div class="modal-footer p-r-10 p-b-10">
+				<button type="button" (click)="callWaiterModal.hide()"
+					class="btn btn-link btn-cancel waves-effect">CANCEL</button>
+			</div>
+		</div>
 	</div>
 </div>
 

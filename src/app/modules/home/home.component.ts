@@ -476,9 +476,9 @@ export class HomeComponent implements OnInit {
 						console.log("home valet", result.data.valet_status)
 						this.commonService.valetStatus = result.data.valet_status;
 
-						this.apiService.GET_BILL().subscribe(result => {
-							console.log("valet bill.......", result)
-						})
+						// this.apiService.GET_BILL().subscribe(result => {
+						// 	console.log("valet bill.......", result)
+						// })
 						//	this.router.navigate(['/bill/confirm']);
 					} else {
 						this.apiService.CANCEL_VALET({ _id: result.data._id }).subscribe(result => {
@@ -866,7 +866,8 @@ export class HomeComponent implements OnInit {
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 			'smsType': environment.smsType,
-			'smsUrl': environment.smsUrl
+			'smsUrl': environment.smsUrl,
+			'smsApiStatus': environment.smsApiStatus
 		}
 
 		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
@@ -874,14 +875,22 @@ export class HomeComponent implements OnInit {
 			// this.timeLeft = 60;
 			// this.timeLeftString = '00 : 60';
 			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ?
+				this.signinVerify(newOTPModal) :
+				newOTPModal.show();
 			this.customer_id = userResp.customer_id;
 		})
-
-		newUserModal.hide();
-		this.mobileShow = false;
-		this.otpForm.otp = "";
-		this.sendOTP = true;
-		newOTPModal.show();
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 
 
 	}
@@ -894,7 +903,7 @@ export class HomeComponent implements OnInit {
 			'customer_id': this.customer_id,
 			'otp_status': 'verified',
 			'type': 'otpverify',
-			'otp': String(this.otpForm.otp),
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id
 		}
@@ -993,39 +1002,39 @@ export class HomeComponent implements OnInit {
 				this.photo_url = userData.photoUrl;
 				newOTPModal.hide();
 				this.loaderStatus = false;
-				if (userData.user_type === 'existing_user') {
-					this.apiService.GET_BILL().subscribe(result => {
-						console.log('oms bills.....', result);
-						if (result.status) {
-							this.ngOnInit();
-							let bills = result.bills.bills;
-							let check_currentuser_ordered = bills.filter(ss => ss.orderer_name === this.user_name);
-							console.log('bills....', check_currentuser_ordered);
+				// if (userData.user_type === 'existing_user') {
+				this.apiService.GET_BILL().subscribe(result => {
+					console.log('oms bills.....', result);
+					if (result.status) {
+						this.ngOnInit();
+						let bills = result.bills.bills;
+						let check_currentuser_ordered = bills.filter(ss => ss.orderer_name === this.user_name);
+						console.log('bills....', check_currentuser_ordered);
 
-							if (check_currentuser_ordered.length) {
-								this.userService.showOrderNow = true;
-								this.userService.showExit = true;
+						if (check_currentuser_ordered.length) {
+							this.userService.showOrderNow = true;
+							this.userService.showExit = true;
 
-								if (!this.take_aways) {
-									this.router.navigate(['bill/confirm']);
-								}
-								else {
-
-								}
-
-							} else {
-								this.userService.showOrderNow = false;
+							if (!this.take_aways) {
+								this.router.navigate(['bill/confirm']);
 							}
+							else {
+
+							}
+
 						} else {
 							this.userService.showOrderNow = false;
-							this.ngOnInit();
-							if (this.page_redirect)
-								this.router.navigate([this.page_redirect]);
-							else if (this.selected_quick_option)
-								this.onServiceConfirm(this.selected_quick_option);
 						}
-					})
-				}
+					} else {
+						this.userService.showOrderNow = false;
+						this.ngOnInit();
+						if (this.page_redirect)
+							this.router.navigate([this.page_redirect]);
+						else if (this.selected_quick_option)
+							this.onServiceConfirm(this.selected_quick_option);
+					}
+				})
+				// }
 
 			}
 			else this.signupForm.error_msg = result.message;
@@ -1199,6 +1208,7 @@ export class HomeComponent implements OnInit {
 	}
 
 	onOtherService(userModal, routingName) {
+		console.log('valet sTatus.....', this.commonService.valetStatus)
 		// localStorage.setItem('close_tooltip','true');  
 		console.log("show exist", this.userService.showExit)
 		this.page_redirect = null;
@@ -1219,8 +1229,18 @@ export class HomeComponent implements OnInit {
 
 			if (routingName == 'valet') {
 				console.log("qwerty.....", localStorage.getItem('application_type'));
-				if (localStorage.getItem('application_type') == 'ios') routingName = '/valet-ios';
-				else routingName = '/valet-android';
+				if (this.commonService.valetStatus) {
+					if (this.commonService.valetStatus === 'delivered') {
+						if (localStorage.getItem('application_type') == 'ios') routingName = '/valet-ios';
+						else routingName = '/valet-android';
+					} else {
+						document.getElementById("openValetStatusOpenModal").click();
+					}
+				} else {
+					if (localStorage.getItem('application_type') == 'ios') routingName = '/valet-ios';
+					else routingName = '/valet-android';
+				}
+
 			}
 
 		}
@@ -1252,43 +1272,57 @@ export class HomeComponent implements OnInit {
 
 								if (routingName == '/valet-android') {
 									this.snackBar.OPEN('Please settle your bill to continue.', 'Close');
-									this.router.navigate(['/bill/view']);
+									// this.router.navigate(['/bill/view']);
 								} else {
-									// this.router.navigate(['/bill/confirm']);
-									this.router.navigate(['/bill/view']);
+									// this.router.navigate(['/bill/view']);
 								}
 
 							} else {
 
 								if (routingName == '/valet-android') {
-									this.router.navigate(['/valet-android']);
+									if (this.commonService.valetStatus) {
+										if (this.commonService.valetStatus === 'delivered') 
+										this.router.navigate(['/valet-android']);
+										else
+										document.getElementById("openValetStatusOpenModal").click();
+									} else {
+										this.router.navigate(['/valet-android']);
+									}
 								} else {
-									// this.router.navigate(['/bill/confirm']);
-									this.router.navigate(['/bill/view']);
+									// this.router.navigate(['/bill/view']);
 								}
-
-								// this.router.navigate(['/bill/view']);
 							}
 
 						} else {
 							console.log('asdfg.....', routingName);
 							if (routingName == '/valet-android') {
-								this.router.navigate(['/valet-android']);
+								if (this.commonService.valetStatus) {
+									if (this.commonService.valetStatus === 'delivered') 
+									this.router.navigate(['/valet-android']);
+									else
+									document.getElementById("openValetStatusOpenModal").click();
+								} else {
+									this.router.navigate(['/valet-android']);
+								}
 							} else {
-								// this.router.navigate(['/bill/confirm']);
-								this.router.navigate(['/bill/view']);
+								// this.router.navigate(['/bill/view']);
 							}
-							// this.router.navigate(['/bill/view']);
 						}
 					}
 					else {
 						//No orders found table
 						console.log('asdfg.....', routingName);
 						if (routingName == '/valet-android') {
-							this.router.navigate(['/valet-android']);
+							if (this.commonService.valetStatus) {
+								if (this.commonService.valetStatus === 'delivered') 
+								this.router.navigate(['/valet-android']);
+								else
+								document.getElementById("openValetStatusOpenModal").click();
+							} else {
+								this.router.navigate(['/valet-android']);
+							}
 						} else {
-							// this.router.navigate(['/bill/confirm']);
-							this.router.navigate(['/bill/view']);
+							// this.router.navigate(['/bill/view']);
 						}
 					}
 
@@ -1307,10 +1341,24 @@ export class HomeComponent implements OnInit {
 		}
 		else {
 			if (routingName === '/valet-android') {
-				this.router.navigate(['/valet-android']);
+				if (this.commonService.valetStatus) {
+					if (this.commonService.valetStatus === 'delivered') 
+					this.router.navigate(['/valet-android']);
+					else
+					document.getElementById("openValetStatusOpenModal").click();
+				} else {
+					this.router.navigate(['/valet-android']);
+				}
 			}
 			else if (routingName === '/valet-ios') {
-				this.router.navigate(['/valet-ios']);
+				if (this.commonService.valetStatus) {
+					if (this.commonService.valetStatus === 'delivered') 
+					this.router.navigate(['/valet-ios']);
+					else
+					document.getElementById("openValetStatusOpenModal").click();
+				} else {
+					this.router.navigate(['/valet-ios']);
+				}
 			}
 			else {
 				this.page_redirect = routingName;
@@ -1740,10 +1788,6 @@ export class HomeComponent implements OnInit {
 			this.loginForm.password = ""
 			this.mob_num_exist = false
 		}
-
-
-
-
 	}
 
 	userLogin(modalName) {

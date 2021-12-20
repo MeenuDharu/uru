@@ -10,6 +10,7 @@ import { Socket } from 'ngx-socket-io';
 import { Location, PlatformLocation } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { AuthService, GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
+import { UserBrowserService } from 'src/app/_services/user-browser.service';
 @Component({
 	selector: 'app-valet-status',
 	templateUrl: './valet-status.component.html',
@@ -37,7 +38,7 @@ export class ValetStatusComponent implements OnInit {
 	mobile_num: any;
 	isReadonly: boolean = false; mobile: any;
 	enterEmailField: boolean = true;
-	enterNameField: boolean = false;
+	enterNameField: boolean = true;
 	enterSurNameField: boolean = false;
 	enterPasswordField: boolean = false;
 	confirmPasswordField: boolean = false;
@@ -48,7 +49,7 @@ export class ValetStatusComponent implements OnInit {
 	customer_id: any;
 	photo_url: string;
 	take_aways: boolean = false;
-	loaderStatus: boolean = true;
+	loaderStatus: boolean = false;
 	mob_num_exist: boolean = false;
 	interval: any;
 	user_name: any;
@@ -67,7 +68,17 @@ export class ValetStatusComponent implements OnInit {
 		this._location.go('/bill/confirm')
 	}
 
-	constructor(public commonService: CommonService, private router: Router, private apiService: ApiService, private loadScript: LoadscriptService, private socket: Socket, public userService: UserService, private socialAuthService: AuthService, private _location: Location) { }
+	constructor(
+		public commonService: CommonService, 
+		private router: Router, 
+		private apiService: ApiService, 
+		private loadScript: LoadscriptService, 
+		private socket: Socket, 
+		public userService: UserService, 
+		private socialAuthService: AuthService, 
+		private _location: Location,
+		public browserService: UserBrowserService
+		) { }
 
 	ngOnInit() {
 		this.confirm_click = true;
@@ -151,7 +162,8 @@ export class ValetStatusComponent implements OnInit {
 
 
 	cancelValet() {
-		this.router.navigate(['/bill/confirm']);
+		// this.router.navigate(['/bill/confirm']);
+		this.router.navigate(['/home']);
 	}
 
 	setPlusFive() {
@@ -274,6 +286,7 @@ export class ValetStatusComponent implements OnInit {
 	}
 
 	onConfirm() {
+		this.loaderStatus = true;
 		let valet_details = JSON.parse(localStorage.getItem('valet_details'));
 		console.log("valet Details............", valet_details)
 		let serial_no = this.commonService.valet_details.serial_number;
@@ -343,8 +356,13 @@ export class ValetStatusComponent implements OnInit {
 	}
 
 	onConfirm1(newUserModal) {
+		this.loaderStatus = true;
+		this.socialLogo = true;
+		this.userService.continueBtn = false;
+		this.userService.loginSocialDisable = true;
+		this.mobile_num = "";
 		console.log("confirm1")
-		this.confirm_click = false;
+		this.confirm_click = true;
 		let restaurant_details = JSON.parse(localStorage.getItem('restaurant_details'));
 		let user_details = JSON.parse(localStorage.getItem('user_details'));
 
@@ -400,6 +418,7 @@ export class ValetStatusComponent implements OnInit {
 
 		}
 		else {
+			this.loaderStatus = false;
 			newUserModal.show();
 		}
 	}
@@ -470,6 +489,7 @@ export class ValetStatusComponent implements OnInit {
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 			'smsType': environment.smsType,
+			'smsApiStatus': environment.smsApiStatus
 		}
 
 		this.userService.UPDATE_USER(sendUserData).then((userResp: any) => {
@@ -477,16 +497,22 @@ export class ValetStatusComponent implements OnInit {
 			// this.timeLeft = 60;
 			// this.timeLeftString = '00 : 60';
 			// this.startTimer();
+			newUserModal.hide();
+			this.mobileShow = false;
+			this.otpForm.otp = "";
+			this.sendOTP = true;
+			this.loaderStatus = false;
+			environment.smsApiStatus ?
+				this.signinVerify(newOTPModal) :
+				newOTPModal.show();
 			this.customer_id = userResp.customer_id;
 		})
-
-		newUserModal.hide();
-		this.mobileShow = false;
-		this.otpForm.otp = "";
-		this.sendOTP = true;
-		newOTPModal.show();
-
-
+		this.loaderStatus = true;
+		// newUserModal.hide();
+		// this.mobileShow = false;
+		// this.otpForm.otp = "";
+		// this.sendOTP = true;
+		// newOTPModal.show();
 	}
 
 	signinVerify(newOTPModal) {
@@ -497,7 +523,7 @@ export class ValetStatusComponent implements OnInit {
 			'customer_id': this.customer_id,
 			'otp_status': 'verified',
 			'type': 'otpverify',
-			'otp': String(this.otpForm.otp),
+			'otp': environment.smsApiStatus ? '123456' : String(this.otpForm.otp),
 			'company_id': this.restaurant_details.company_id,
 			'branch_id': this.restaurant_details.branch_id,
 
@@ -599,8 +625,8 @@ export class ValetStatusComponent implements OnInit {
 				this.userService.user_name = userData.name;
 				this.photo_url = userData.photoUrl;
 				newOTPModal.hide();
-				this.loaderStatus = false;
-				if (userData.user_type === 'existing_user') {
+				this.loaderStatus = true;
+				// if (userData.user_type === 'existing_user') {
 					let orderType = JSON.parse(localStorage.getItem('restaurant_details')).order_type;
 
 					if (orderType == 'in_house') {
@@ -608,7 +634,7 @@ export class ValetStatusComponent implements OnInit {
 							// let order_list = result.orders.order_list;
 							console.log("result of confirm orders............", result)
 
-							this.onConfirm1(newOTPModal)
+							// this.onConfirm1(newOTPModal)
 
 							if (result.status != 0) {
 								let order_list = result.orders.order_list;
@@ -632,7 +658,7 @@ export class ValetStatusComponent implements OnInit {
 
 						})
 					}
-				}
+				// }
 
 			}
 			else this.signupForm.error_msg = result.message;
@@ -743,6 +769,7 @@ export class ValetStatusComponent implements OnInit {
 		modalName.hide();
 		this.loaderStatus = false;
 	}
+
 	goBack(m1, m2) {
 		if (this.enterEmailField) {
 			m1.hide();
@@ -752,7 +779,7 @@ export class ValetStatusComponent implements OnInit {
 		else if (this.enterNameField && this.enterPasswordField && this.confirmPasswordField) {
 			this.enterEmailField = true;
 			this.enterOtpField = false;
-			this.enterNameField = false;
+			this.enterNameField = true;
 			this.enterPasswordField = false;
 			this.confirmPasswordField = false;
 			this.pleasewait = false;
@@ -760,17 +787,13 @@ export class ValetStatusComponent implements OnInit {
 			this.loginForm.password = ""
 			this.mob_num_exist = false
 		}
-
-
-
-
 	}
 
 	closeLogin() {
 		// console.log("jhggeghjhegbj");
 		this.enterEmailField = true;
 		this.enterOtpField = false;
-		this.enterNameField = false;
+		this.enterNameField = true;
 		this.enterMobileField = false;
 		this.enterSurNameField = false;
 		this.enterPasswordField = false;
@@ -780,10 +803,88 @@ export class ValetStatusComponent implements OnInit {
 		this.loginForm = {};
 		clearInterval(this.interval);
 	}
+
+	// userEmailCheck(modalName) {
+	// 	this.passwordMismatch = true;
+	// 	if (this.loginForm.name) {
+	// 		this.enterEmailField = false;
+	// 		this.enterOtpField = false;
+	// 		this.enterNameField = true;
+	// 		this.enterPasswordField = true;
+	// 		this.confirmPasswordField = true;
+	// 		this.mob_num_exist = false;
+
+	// 		if (this.loginForm.password !== this.loginForm.confirm_password) {
+	// 			console.log("Mismatch password....");
+	// 			this.passwordMismatch = true;
+	// 			this.userService.pass_error = "Password Mismatch"
+
+	// 		} else {
+	// 			this.userService.pass_error = ""
+	// 			this.passwordMismatch = false;
+	// 			this.loaderStatus = true;
+
+	// 			let newSignupForm = {
+	// 				'email': this.loginForm.username,
+	// 				'name': this.loginForm.name,
+	// 				'surname': this.loginForm.surname,
+	// 				'mobile': this.mobile_num,
+	// 				'password': this.loginForm.password,
+	// 				'confirm_password': this.loginForm.confirm_password,
+	// 				"company_id": this.restaurant_details.company_id,
+	// 				"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
+	// 				"smsType": environment.smsType
+	// 			}
+
+	// 			console.log("Signup Details...", newSignupForm)
+
+	// 			this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
+	// 				console.log("signup result Data.........", result)
+	// 				if (result.status) {
+	// 					this.loaderStatus = false;
+	// 					this.customer_id = result.customer_id;
+	// 					this.user_name = result.name;
+	// 					let sendData = {
+	// 						"user": this.customer_id,
+	// 						"company_id": this.restaurant_details.company_id,
+	// 						"branch_id": this.restaurant_details.branch_id,
+	// 						"userBaseURL": environment.userBaseURL
+	// 					}
+	// 					this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
+	// 						console.log("mail result...", result);
+	// 						if (result.status) {
+	// 							this.loaderStatus = false;
+
+	// 						}
+	// 						else {
+	// 							this.loaderStatus = false;
+	// 						}
+
+	// 					})
+
+	// 					this.enterPasswordField = false;
+	// 					this.confirmPasswordField = false;
+	// 					this.enterNameField = false;
+	// 					this.mob_num_exist = false;
+	// 					this.enterOtpField = true;
+	// 				}
+	// 				else {
+	// 					console.log('response', result);
+	// 					this.loaderStatus = false;
+	// 					this.loginForm.error_msg = result.message;
+	// 					this.signupForm.error_msg = result.message;
+	// 				}
+	// 			});
+
+	// 		}
+
+	// 	}
+	// }
+
 	userEmailCheck(modalName) {
 		// console.log(this.loginForm)
 		this.passwordMismatch = true;
-		if (this.loginForm.password && this.loginForm.confirm_password && this.loginForm.name) {
+		if (this.loginForm.name) {
 			// console.log("password and confirm");
 			this.enterEmailField = false;
 			this.enterOtpField = false;
@@ -792,77 +893,124 @@ export class ValetStatusComponent implements OnInit {
 			this.confirmPasswordField = true;
 			this.mob_num_exist = false;
 
-			if (this.loginForm.password !== this.loginForm.confirm_password) {
-				console.log("Mismatch password....");
-				this.passwordMismatch = true;
-				this.userService.pass_error = "Password Mismatch"
 
-			} else {
-				this.userService.pass_error = ""
-				this.passwordMismatch = false;
-				this.loaderStatus = true;
-				//this.pleasewait = true;
+			this.userService.pass_error = ""
+			this.passwordMismatch = false;
+			this.loaderStatus = true;
+			//this.pleasewait = true;
 
-				let newSignupForm = {
-					'email': this.loginForm.username,
-					'name': this.loginForm.name,
-					'surname': this.loginForm.surname,
-					'mobile': this.mobile_num,
-					'password': this.loginForm.password,
-					'confirm_password': this.loginForm.confirm_password,
-					"company_id": this.restaurant_details.company_id,
-					"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
-					"smsType": environment.smsType
-				}
-
-				console.log("Signup Details...", newSignupForm)
-
-				this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
-					//  this.signupForm.submit = false;
-					console.log("signup result Data.........", result)
-					if (result.status) {
-						//	this.pleasewait = false;
-						this.loaderStatus = false;
-						this.customer_id = result.customer_id;
-						this.user_name = result.name;
-						let sendData = {
-							"user": this.customer_id,
-							"company_id": this.restaurant_details.company_id,
-							"branch_id": this.restaurant_details.branch_id,
-							"userBaseURL": environment.userBaseURL
-						}
-						this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
-							console.log("mail result...", result);
-							if (result.status) {
-								this.loaderStatus = false;
-
-							}
-							else {
-								this.loaderStatus = false;
-							}
-
-						})
-
-						this.enterPasswordField = false;
-						this.confirmPasswordField = false;
-						this.enterNameField = false;
-						this.mob_num_exist = false;
-						this.enterOtpField = true;
-						//this.loginForm.name = "";
-						//this.loginForm.password = "";
-						//this.loginForm.confirm_password = "";
-					}
-					else {
-						console.log('response', result);
-						this.loaderStatus = false;
-						//this.pleasewait = false;						
-						this.loginForm.error_msg = result.message;
-						this.signupForm.error_msg = result.message;
-					}
-				});
-
+			if (environment.password === false) {
+				this.loginForm.password = '123456'
+				this.loginForm.confirm_password = '123456'
 			}
 
+			let newSignupForm = {
+				'email': this.loginForm.username,
+				'name': this.loginForm.name,
+				'surname': this.loginForm.surname,
+				'mobile': this.mobile_num,
+				'password': this.loginForm.password,
+				'confirm_password': this.loginForm.confirm_password,
+				"company_id": this.restaurant_details.company_id,
+				"branch": { "branch_id": this.restaurant_details.branch_id, count: 0 },
+				"smsType": environment.smsType,
+				'smsUrl': environment.smsUrl
+			}
+
+			console.log("Signup Details...", newSignupForm)
+
+			this.apiService.DINAMIC_SIGNUP(newSignupForm).subscribe(result => {
+				//  this.signupForm.submit = false;
+				console.log("signup result Data.........", result)
+				if (result.status) {
+					//	this.pleasewait = false;
+					this.loaderStatus = false;
+					this.customer_id = result.customer_id;
+					this.user_name = result.name;
+					let sendData = {
+						"user": this.customer_id,
+						"company_id": this.restaurant_details.company_id,
+						"branch_id": this.restaurant_details.branch_id,
+						"userBaseURL": environment.userBaseURL
+					}
+					this.apiService.SEND_CONFIRM_EMAIL_LINK(sendData).subscribe(result => {
+						console.log("mail result...", result);
+						if (result.status) {
+							this.loaderStatus = false;
+
+						}
+						else {
+							this.loaderStatus = false;
+						}
+
+					})
+
+					this.enterPasswordField = false;
+					this.confirmPasswordField = false;
+					this.enterNameField = false;
+					this.mob_num_exist = false;
+					this.enterOtpField = true;
+					//this.loginForm.name = "";
+					//this.loginForm.password = "";
+					//this.loginForm.confirm_password = "";
+				}
+				else {
+					console.log('response', result);
+					this.loaderStatus = false;
+					//this.pleasewait = false;						
+					this.loginForm.error_msg = result.message;
+					this.signupForm.error_msg = result.message;
+				}
+			});
+
+
+
 		}
+
+		else if (this.loginForm.password) {
+			this.userService.LOGIN(this.loginForm).then((result: any) => {
+				console.log('user login....', result);
+				if (result.status) {
+					this.ngOnInit();
+					modalName.hide();
+				}
+				else this.loginForm.error_msg = result.message;
+			});
+		}
+
+		else if (this.loginForm.username) {
+
+			this.enterEmailField = false;
+			this.enterNameField = true;
+			this.enterPasswordField = true;
+			this.confirmPasswordField = true;
+			this.enterOtpField = false;
+			this.mob_num_exist = false;
+			//this.loginForm.name = "";
+			this.loginForm.password = "";
+
+
+		}
+
 	}
+
+	userOtpValidate(modalName) {
+		console.log("validate initiated...", this.customer_id)
+		this.loaderStatus = true;
+		if (this.otpForm.otp !== '') {
+			this.userService.SIGNUP_OTP_VALIDATE({ customer_id: this.customer_id, otp: String(this.otpForm.otp) }).then((result: any) => {
+				console.log("OTP Result.....", result)
+				if (result.status) {
+					this.onConfirm1(modalName);
+				}
+				else {
+					this.loaderStatus = false;
+					this.otpForm.error_msg = result.message;
+					console.log("error OTP")
+				};
+			});
+		}
+
+	}
+
 }
