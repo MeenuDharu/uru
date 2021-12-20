@@ -112,9 +112,6 @@ export class BillConfirmComponent implements OnInit {
 							this.userService.vehicle.delivery_time = Number(result.data.delivery_time);
 						}
 
-
-
-
 						if (valet_delivery) {
 							this.commonService.deliveryTime = Number(valet_delivery);
 						}
@@ -156,11 +153,6 @@ export class BillConfirmComponent implements OnInit {
 							}
 
 						}
-
-
-
-
-
 
 						if (this.valet_status === 'awaiting' || this.valet_status === 'on_hold' || this.valet_status === 'confirmed' || this.valet_status === 'vehicle_ready' || this.valet_status === 'vehicle_re_ready' || this.valet_status === 're_confirmed' || this.valet_status === 'vehicle_parked' || this.valet_status === 'delivered' || this.valet_status === 're_request') {
 							if (this.valet_status == 're_request') {

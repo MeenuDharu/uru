@@ -78,6 +78,10 @@ export class CategoriesComponent implements OnInit {
 	deviceStringLogo: string;
 	deviceStringItem: string;
 	alterUrl: any;
+	waitersArray: any = [
+		{ name: 'Xavier', mobile: '7090395550' },
+		{ name: 'Alfred', mobile: '8197679388' }
+	];
 
 	@HostListener('window:popstate', ['$event'])
 	onPopState(event) {
@@ -1074,7 +1078,7 @@ export class CategoriesComponent implements OnInit {
 			this.otpForm.otp = "";
 			this.sendOTP = true;
 			this.loaderStatus = false;
-			environment.smsApiStatus ? 
+			environment.smsApiStatus ?
 				this.signinVerify(newOTPModal) :
 				newOTPModal.show()
 			this.customer_id = userResp.customer_id;

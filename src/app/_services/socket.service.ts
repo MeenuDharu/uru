@@ -697,6 +697,7 @@ export class SocketService {
 			} else if (data.vehicle_status == "vehicle_ready") {
 				this.commonService.valetStatus = 'vehicle_ready';
 				localStorage.setItem('valet_status', 'vehicle_ready');
+				document.getElementById("openValetStatusOpenModal").click();
 				this.userService.vehicle.delivery_time = data.delivery_time;
 				this.commonService.deliveryTime = data.delivery_time;
 				localStorage.setItem('valet_delivery', this.commonService.deliveryTime);
